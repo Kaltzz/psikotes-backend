@@ -1,0 +1,149 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+  
+}
+
+datasource db {
+  provider = "postgresql"
+  
+}
+
+
+enum JenisKelamin {
+  LAKI_LAKI
+  PEREMPUAN
+}
+
+enum Tests {
+  CFIT 
+  DISC 
+  MSDT 
+  MBTI 
+  KRAEPELIN 
+  PAPIKOSTICK
+}
+
+// Peserta
+
+model Peserta {
+  id Int @id @default(autoincrement())
+  nama String
+  jenisKelamin JenisKelamin
+  usia Int
+  pendidikanTerakhir String
+  jurusan String
+
+  testSession TestSession[]
+
+  tokenId Int
+  token Token @relation(fields: [tokenId], references: [id])  
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Questions
+
+model CfitQuestion {
+  id              Int      @id @default(autoincrement())
+  questionImages  String[]
+  answerImages    String[]
+  correctAnswer   Int
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model MsdtQuestion {
+  id        Int      @id @default(autoincrement())
+  sentences Json
+  createdAt DateTime @default(now())
+}
+
+model DiscQuestion {
+  id        Int      @id @default(autoincrement())
+  words     Json
+  createdAt DateTime @default(now())
+}
+
+model MbtiQuestion {
+  id        Int       @id @default(autoincrement())
+  sentences Json
+  createdAt DateTime  @default(now())  
+}
+
+model PapikostickQuestion {
+  id        Int       @id @default(autoincrement())
+  sentences Json
+  createdAt DateTime  @default(now())
+}
+
+// Token
+
+model Token {
+  id Int @id @default(autoincrement())
+  token String @unique
+  tests Tests
+  kuota Int
+  usedCount Int @default(0)
+  isActive Boolean @default(true)
+
+  peserta Peserta[]
+  
+  createdAt DateTime @default(now())
+  expiredAt DateTime? 
+}
+
+// jawaban
+
+model TestSession {
+  id         Int       @id @default(autoincrement())
+  pesertaId Int
+  token     String
+
+  startedAt DateTime  @default(now())
+  finishedAt DateTime?
+
+  peserta   Peserta   @relation(fields: [pesertaId], references: [id])
+  attempts  TestAttempt[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model TestAttempt {
+  id         Int       @id @default(autoincrement())
+  sessionId Int
+  testType  String    // CFIT | MBTI | DISC | PAPI | MSDT
+
+  startedAt DateTime  @default(now())
+  finishedAt DateTime?
+
+  session   TestSession @relation(fields: [sessionId], references: [id])
+  answers   JawabanPeserta[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+
+model JawabanPeserta {
+  id        Int    @id @default(autoincrement())
+  attemptId Int
+  questionId Int
+
+  answer    Json   // format tergantung test
+
+  attempt  TestAttempt @relation(fields: [attemptId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+model Admin {
+  id Int @id @default(autoincrement())
+  username String
+  password String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
