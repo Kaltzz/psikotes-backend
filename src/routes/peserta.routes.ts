@@ -2,7 +2,7 @@ import { Router } from "express";
 import { postPeserta, statusPeserta} from "../controllers/peserta.controller";
 import { 
     answersCfit, 
-    answersDisc, 
+    // answersDisc, 
     answersKraepelin,
     n8nAnswersKraepelin
 } from "../controllers/answers.controller"
@@ -25,7 +25,7 @@ router.put('/peserta/status/:id', statusPeserta)
 
 //jawaban
 router.post('/answers/cfit/:id', answersCfit)
-router.post('/answers/disc/:id', answersDisc)
+// router.post('/answers/disc/:id', answersDisc)
 router.post('/answers/kraepelin/:id', answersKraepelin)
 router.post('/answers/n8nKraepelin', n8nAnswersKraepelin)
 
