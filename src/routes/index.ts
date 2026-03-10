@@ -13,4 +13,8 @@ router.use('/user', pesertaRoutes)
 
 router.use('/n8n', n8nRoutes)
 
+router.use('/test', ()=> {
+    console.log("Server running")
+})
+
 export default router
