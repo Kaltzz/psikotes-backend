@@ -13,8 +13,8 @@ router.use('/user', pesertaRoutes)
 
 router.use('/n8n', n8nRoutes)
 
-router.use('/test', ()=> {
-    console.log("Server running")
-})
+router.get('/', (req, res) => {
+  console.log('Hello World! This is a GET request response.');
+});
 
 export default router
