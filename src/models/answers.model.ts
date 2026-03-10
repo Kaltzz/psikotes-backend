@@ -51,16 +51,16 @@ export const answersCfitModel = async (data:any, sessionId: number) => {
         })
 }
 
-export const answersDiscModel = async (data:any, res:any) => {
-    const payload: DiscAnswerPayload[] = data
-    // console.log('ini model:', data)
-    return await prisma.jawabanDisc.createMany({
-        data: payload.map(item => ({
-            ...item
-        })),
-        skipDuplicates: true
-    })
-}
+// export const answersDiscModel = async (data:any, res:any) => {
+//     const payload: DiscAnswerPayload[] = data
+//     // console.log('ini model:', data)
+//     return await prisma.jawabanDisc.createMany({
+//         data: payload.map(item => ({
+//             ...item
+//         })),
+//         skipDuplicates: true
+//     })
+// }
 
 export const answersKraepelinModel = async (kraepelinAnswers:any, sessionId:number) => {
     const payload: kraepelinAnswersPayload[] = kraepelinAnswers
