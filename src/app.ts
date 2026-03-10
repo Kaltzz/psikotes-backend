@@ -10,6 +10,10 @@ app.use(cors({
   // origin: 'http://localhost:3000', //jika local
   origin: 'https://psikotes-frontend.vercel.app',
   credentials: true,
+
+  //tambahan
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
 }))
 
 app.use(cookieParser())
