@@ -35,7 +35,7 @@ export const loginService= async (dataLogin: any, res:any) => {
                     httpOnly: true,
                     secure: process.env.NODE_ENV === 'production',
                     maxAge: 15 * 60 * 1000, //15 menit
-                    sameSite: 'strict'
+                    sameSite: 'none'
                 })
 
                 return ({
