@@ -35,8 +35,8 @@ model TestSession {
   statusTest  Int
   jawabanCfit JawabanCfit[]
   jawabanKraepelin JawabanKraepelin[]
-  kraepelinLog KraepelinLog[]
   jawabanDisc JawabanDisc[]
+  kraepelinLog KraepelinLog[]
   attempts    TestAttempt[]
   peserta     Peserta       @relation(fields: [pesertaId], references: [id])
 }
@@ -91,6 +91,8 @@ model CfitOption {
 
   @@index([questionId])
 }
+
+
 
 model MsdtQuestion {
   id        Int      @id @default(autoincrement())
@@ -161,6 +163,16 @@ model JawabanCfit {
   session    TestSession @relation(fields: [sessionId], references: [id])
 }
 
+model JawabanDisc {
+  id            Int @id @default(autoincrement())
+  sessionId     Int
+  questionIndex Int
+  most          Int
+  least         Int
+
+  session       TestSession @relation(fields: [sessionId], references: [id])
+}
+
 model DiscQuestion {
   id Int @id @default(autoincrement())
   sentences String
@@ -168,21 +180,7 @@ model DiscQuestion {
   optionIndex Int
 }
 
-model JawabanDisc {
-  id Int @id @default(autoincrement())
-  sessionId Int
-  questionIndex Int
-  p1 Int
-  p2 Int
-  p3 Int
-  p4 Int
-  k1 Int
-  k2 Int
-  k3 Int
-  k4 Int
 
-  session TestSession @relation(fields: [sessionId], references: [id])
-}
 
 model Testing {
   id Int @id @default(autoincrement())
