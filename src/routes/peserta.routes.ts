@@ -16,6 +16,7 @@ import {
     getCfit3QuestionsSoal,
     getCfit4QuestionsContoh,
     getCfit4QuestionsSoal,
+    getDiscQuestions
 } from "../controllers/questions.controller"
 
 const router = Router()
@@ -39,4 +40,7 @@ router.get('/questions/cfit3/contoh', getCfit3QuestionsContoh)
 router.get('/questions/cfit3/soal', getCfit3QuestionsSoal)
 router.get('/questions/cfit4/contoh', getCfit4QuestionsContoh)
 router.get('/questions/cfit4/soal', getCfit4QuestionsSoal)
+
+//DISC
+router.get('/questions/disc', getDiscQuestions)
 export default router

@@ -92,6 +92,22 @@ model CfitOption {
   @@index([questionId])
 }
 
+model DiscQuestion {
+  id Int @id @default(autoincrement())
+  questionIndex Int
+
+  option DiscOption[]
+}
+
+model DiscOption {
+  id Int @id @default(autoincrement())
+  questionId Int
+  sentences String
+  optionIndex Int
+
+  disc DiscQuestion @relation(fields: [questionId], references: [id])
+}
+
 
 
 model MsdtQuestion {
@@ -172,15 +188,6 @@ model JawabanDisc {
 
   session       TestSession @relation(fields: [sessionId], references: [id])
 }
-
-model DiscQuestion {
-  id Int @id @default(autoincrement())
-  sentences String
-  questionIndex Int
-  optionIndex Int
-}
-
-
 
 model Testing {
   id Int @id @default(autoincrement())

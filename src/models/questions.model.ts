@@ -153,3 +153,19 @@ export const getCfit4QuestionsSoalModel = async (req:any, res:any) => {
         }
     })
 }
+
+export const getDiscQuestionsModel = async (req:any, res:any) => {
+    return await prisma.discQuestion.findMany({
+        select: {
+            id: true,
+            questionIndex: true,
+            option: {
+                select: {
+                    questionId: true,
+                    sentences: true,
+                    optionIndex: true
+                }
+            }
+        }
+    })
+}
