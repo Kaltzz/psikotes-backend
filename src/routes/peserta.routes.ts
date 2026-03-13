@@ -2,7 +2,7 @@ import { Router } from "express";
 import { postPeserta, statusPeserta} from "../controllers/peserta.controller";
 import { 
     answersCfit, 
-    // answersDisc, 
+    answersDisc, 
     answersKraepelin,
     n8nAnswersKraepelin
 } from "../controllers/answers.controller"
@@ -16,6 +16,7 @@ import {
     getCfit3QuestionsSoal,
     getCfit4QuestionsContoh,
     getCfit4QuestionsSoal,
+    getDiscQuestions
 } from "../controllers/questions.controller"
 
 const router = Router()
@@ -25,7 +26,7 @@ router.put('/peserta/status/:id', statusPeserta)
 
 //jawaban
 router.post('/answers/cfit/:id', answersCfit)
-// router.post('/answers/disc/:id', answersDisc)
+router.post('/answers/disc/:id', answersDisc)
 router.post('/answers/kraepelin/:id', answersKraepelin)
 router.post('/answers/n8nKraepelin', n8nAnswersKraepelin)
 
@@ -39,4 +40,7 @@ router.get('/questions/cfit3/contoh', getCfit3QuestionsContoh)
 router.get('/questions/cfit3/soal', getCfit3QuestionsSoal)
 router.get('/questions/cfit4/contoh', getCfit4QuestionsContoh)
 router.get('/questions/cfit4/soal', getCfit4QuestionsSoal)
+
+//DISC
+router.get('/questions/disc', getDiscQuestions)
 export default router

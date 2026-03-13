@@ -1,6 +1,6 @@
 import { 
     answersCfitModel, 
-    // answersDiscModel,
+    answersDiscModel,
     answersKraepelinModel,
     answersKraepelinLogModel,
     n8nAnswersKraepelinModel
@@ -8,7 +8,7 @@ import {
 
 type DiscAnswerInput = {
     groupId: number
-    type: string
+    questionIndex: number
 }
 
 type DiscAnswerPayload = {
@@ -48,42 +48,44 @@ export const answersCfitService = async (data:any, res:any, sessionId:number) =>
     }
 }
 
-// export const answersDiscService = async (data:any, sessionId: number, res:any) => {
-//     const answersMost: DiscAnswerInput[] = data.most
-//     const most = answersMost.map(item=>({
-//         ...item,
-//         sessionId: Number(sessionId)
-//     }))
+export const answersDiscService = async (data:any, sessionId: number, res:any) => {
+    const answersMost: DiscAnswerInput[] = data.most
+    const most = answersMost.map(item=>({
+        ...item,
+        sessionId: Number(sessionId)
+    }))
 
-//     const answersLeast: DiscAnswerInput[] = data.least
-//     const least = answersLeast.map(item=>({
-//         ...item,
-//         sessionId: Number(sessionId)
-//     }))
-//     const mergedArray = most.map( item1 => {
-//         const leastData = least.find(item2 => item2.groupId === item1.groupId)
-//         return ({
-//             questionId: item1.groupId,
-//             most: item1.type,
-//             least: leastData?.type,
-//             sessionId: item1.sessionId
-//         })
-//     })
+    const answersLeast: DiscAnswerInput[] = data.least
+    const least = answersLeast.map(item=>({
+        ...item,
+        sessionId: Number(sessionId)
+    }))
+    const mergedArray = most.map( item1 => {
+        const leastData = least.find(item2 => item2.groupId === item1.groupId)
+        return ({
+            sessionId: item1.sessionId,
+            questionIndex: item1.groupId+1,
+            most: item1.questionIndex,
+            least: leastData?.questionIndex,
+        })
+    })
+
+    // const answers = await answersDiscModel(mergedArray, res)
     
-//     try {
-//         const answers = await answersDiscModel(mergedArray, res)
-//         return({
-//             status: true,
-//             message: 'berhasil menyimpan jawaban',
-//             data: answers
-//         })
-//     } catch(error) {
-//         return ({
-//             status: false,
-//             message: error
-//         })
-//     }
-// }
+    try {
+        const answers = await answersDiscModel(mergedArray, res)
+        return({
+            status: true,
+            message: 'berhasil menyimpan jawaban',
+            data: answers
+        })
+    } catch(error) {
+        return ({
+            status: false,
+            message: error
+        })
+    }
+}
 
 export const answersKraepelinService = async (data: any, sessionId: number, res:any) => {
     

@@ -6,7 +6,8 @@ import {
     getCfit3QuestionsContohModel,
     getCfit3QuestionsSoalModel,
     getCfit4QuestionsContohModel,
-    getCfit4QuestionsSoalModel
+    getCfit4QuestionsSoalModel,
+    getDiscQuestionsModel
 } from '../models/questions.model'
 
 export const getCfit1QuestionsContohService = async (req:any, res:any) => {
@@ -135,6 +136,36 @@ export const getCfit4QuestionsSoalService = async (req:any, res:any) => {
         return({
             status: true,
             message: 'berhasil mengambil data soal cfit 4',
+            data: questions
+        })
+    } catch(error) {
+        return({
+            status: false,
+            message: error,
+        })
+    }
+}
+
+export const getDiscQuestionsService = async (req:any, res:any) => {
+    try{
+        const questions = await getDiscQuestionsModel(req, res)
+
+        // const discs = questions.map((item) => {
+        //     const {id, sentences, questionIndex, optionIndex} = item
+        //     const disc = {
+        //         id: id, 
+        //         questionIndex: questionIndex, 
+        //         // questions: {
+        //         //     sentences: sentences, 
+        //         //     optionIndex: optionIndex
+        //         // }
+        //     }
+        //     return disc
+        // })
+
+        return({
+            status: true,
+            message: 'berhasil mengambil data soal disc',
             data: questions
         })
     } catch(error) {

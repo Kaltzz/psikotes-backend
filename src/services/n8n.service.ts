@@ -1,6 +1,7 @@
 import { 
     n8nCfitModel,
-    n8nKraepelinModel
+    n8nKraepelinModel,
+    n8nDiscModel
 } from "../models/n8n.model"
 
 export const triggerN8NService = async (pesertaId: number, tests: string) => {
@@ -227,6 +228,106 @@ export const n8nKraepelinService = async (req:any, res:any, id:number) => {
         return ({
             status: false,
             message: 'Gagal mendapatkan data jawaban kraepelin peserta'
+        })
+    }
+}
+
+export const n8nDiscService = async (req:any, res:any, id:number) => {
+    try {
+        const pesertaId = id
+        const n8n = await n8nDiscModel(pesertaId)
+
+        if(n8n === null) {
+            return ({
+                status: false,
+                message: "data tidak ditemukan"
+            })
+        }
+
+        let unit:string = n8n.unit
+        let unitTrue = ''
+        switch(unit) {
+          case 'MPP':
+            unitTrue = 'PT. Makassar Putra Prima'
+            break
+            
+          case 'ACS':
+            unitTrue = 'PT. Aptana Citra Solusindo'
+            break
+            
+          case 'MMPP':
+            unitTrue = 'PT. Makassar Megaputra Prima'
+            break
+
+          case 'IMP':
+            unitTrue = 'PT. Indo Mega Prima'
+            break
+          
+          case 'PPH':
+            unitTrue = 'PT. Putra Prima Hotel'
+            break
+          
+          case 'SMP':
+            unitTrue = 'PT. Samamaju Prima'
+            break
+        }
+        
+        let jenisKelamin:string = n8n.jenisKelamin
+        let gender = ''
+        
+        switch(jenisKelamin) {
+          case 'LAKI_LAKI':
+            gender = 'Laki-laki'
+            break
+          
+          case 'PEREMPUAN':
+            gender = 'Perempuan'
+            break
+        }
+
+        const disc:any = {
+            "nama": n8n.nama,
+            "email": n8n.email,
+            "jenis kelamin": gender,
+            "usia": n8n.usia,
+            "pendidikan terakhir": n8n.pendidikanTerakhir,
+            "jurusan": n8n.jurusan,
+            "posisi yang dilamar": n8n.posisi,
+            "bisnis unit": unitTrue
+        }
+
+        n8n.testSession.forEach(session => {
+            session.jawabanDisc.forEach(jawaban => {
+                const most = `most${jawaban.questionIndex}`
+                disc[`${most}`] = jawaban.most
+                const least = `least${jawaban.questionIndex}`
+                disc[`${least}`] = jawaban.least
+            })
+        })
+
+        // n8n.testSession.forEach(session => {
+        //     session.jawabanKraepelin.forEach(jawaban => {
+        //         // const key = `S${jawaban.subtest}_Q${jawaban.questionId}`
+        //         const totalAnswered = `total_L${jawaban.columnIndex+1}`
+        //         const correctAnswers = `benar_L${jawaban.columnIndex+1}`
+        //         const wrongAnswers = `salah_L${jawaban.columnIndex+1}`
+        //         const answers = `jawaban_L${jawaban.columnIndex+1}`
+
+        //         kraepelin[`${totalAnswered}`] = jawaban.totalAnswered
+        //         kraepelin[`${correctAnswers}`] = jawaban.correctAnswers
+        //         kraepelin[`${wrongAnswers}`] = jawaban.wrongAnswers
+        //         kraepelin[`${answers}`] = jawaban.answers.join(",")
+        //     })
+        // })
+        return ({
+            status: true,
+            message: "data berhasil diambil",
+            data: disc
+        })
+    } catch (error) {
+        return ({
+            status: false,
+            message: 'Gagal mendapatkan data jawaban disc peserta'
         })
     }
 }
