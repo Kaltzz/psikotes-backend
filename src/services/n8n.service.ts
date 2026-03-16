@@ -296,29 +296,36 @@ export const n8nDiscService = async (req:any, res:any, id:number) => {
             "bisnis unit": unitTrue
         }
 
+        //most
         n8n.testSession.forEach(session => {
             session.jawabanDisc.forEach(jawaban => {
-                const most = `most${jawaban.questionIndex}`
-                disc[`${most}`] = jawaban.most
-                const least = `least${jawaban.questionIndex}`
-                disc[`${least}`] = jawaban.least
+                for(let i = 1; i < 5; i++) {
+                    const most = `most${jawaban.questionIndex}_option${i}` //most1_option1
+                    if (i === jawaban.most) {
+                        disc[`${most}`] = 1
+                    } else {
+                        disc[`${most}`] = 0
+                    }
+                    
+                }
             })
         })
 
-        // n8n.testSession.forEach(session => {
-        //     session.jawabanKraepelin.forEach(jawaban => {
-        //         // const key = `S${jawaban.subtest}_Q${jawaban.questionId}`
-        //         const totalAnswered = `total_L${jawaban.columnIndex+1}`
-        //         const correctAnswers = `benar_L${jawaban.columnIndex+1}`
-        //         const wrongAnswers = `salah_L${jawaban.columnIndex+1}`
-        //         const answers = `jawaban_L${jawaban.columnIndex+1}`
+        //least
+        n8n.testSession.forEach(session => {
+            session.jawabanDisc.forEach(jawaban => {
+                for(let i = 1; i < 5; i++) {
+                    const least = `least${jawaban.questionIndex}_option${i}` //least1_option1
+                    if (i === jawaban.least) {
+                        disc[`${least}`] = 1
+                    } else {
+                        disc[`${least}`] = 0
+                    }
+                    
+                }
+            })
+        })
 
-        //         kraepelin[`${totalAnswered}`] = jawaban.totalAnswered
-        //         kraepelin[`${correctAnswers}`] = jawaban.correctAnswers
-        //         kraepelin[`${wrongAnswers}`] = jawaban.wrongAnswers
-        //         kraepelin[`${answers}`] = jawaban.answers.join(",")
-        //     })
-        // })
         return ({
             status: true,
             message: "data berhasil diambil",

@@ -64,7 +64,7 @@ export const answersDiscService = async (data:any, sessionId: number, res:any) =
         const leastData = least.find(item2 => item2.groupId === item1.groupId)
         return ({
             sessionId: item1.sessionId,
-            questionIndex: item1.groupId+1,
+            questionIndex: item1.groupId,
             most: item1.questionIndex,
             least: leastData?.questionIndex,
         })
