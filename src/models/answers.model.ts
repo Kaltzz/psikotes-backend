@@ -32,6 +32,11 @@ type kraepelinLogPayload = {
     toPair: number
 }
 
+type papikostikPayload = {
+    groupId: number
+    type: number
+}
+
 type n8nAnswersKraepelin = {
     id: number
     row_number: number
@@ -53,6 +58,7 @@ export const answersCfitModel = async (data:any, sessionId: number) => {
 
 export const answersDiscModel = async (data:any, res:any) => {
     const payload: DiscAnswerPayload[] = data
+    
     return await prisma.jawabanDisc.createMany({
         data: payload.map(item => ({
             ...item
@@ -95,6 +101,18 @@ export const answersKraepelinLogModel = async (log:any, sessionId:number) => {
     })
 }
 
+export const answersPapikostickModel = async (data:any, sessionId: number, res:any) => {
+    const payload: papikostikPayload[] = data
+    console.log('ini data: ', data)
+    return await prisma.jawabanPapikostik.createMany({
+        data: payload.map(item => ({
+            sessionId: sessionId,
+            questionIndex: item.groupId,
+            type: item.type
+        }))
+    })
+}
+
 export const n8nAnswersKraepelinModel = async (data:any) => {
     const payload: n8nAnswersKraepelin[] = data
     return await prisma.testing.createMany({
@@ -105,3 +123,4 @@ export const n8nAnswersKraepelinModel = async (data:any) => {
         }))
     })
 }
+

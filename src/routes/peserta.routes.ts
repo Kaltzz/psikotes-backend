@@ -4,6 +4,7 @@ import {
     answersCfit, 
     answersDisc, 
     answersKraepelin,
+    answersPapikostick,
     n8nAnswersKraepelin
 } from "../controllers/answers.controller"
 
@@ -16,7 +17,8 @@ import {
     getCfit3QuestionsSoal,
     getCfit4QuestionsContoh,
     getCfit4QuestionsSoal,
-    getDiscQuestions
+    getDiscQuestions,
+    getPapikostikQuestions
 } from "../controllers/questions.controller"
 
 const router = Router()
@@ -28,6 +30,7 @@ router.put('/peserta/status/:id', statusPeserta)
 router.post('/answers/cfit/:id', answersCfit)
 router.post('/answers/disc/:id', answersDisc)
 router.post('/answers/kraepelin/:id', answersKraepelin)
+router.post('/answers/papikostik/:id', answersPapikostick)
 router.post('/answers/n8nKraepelin', n8nAnswersKraepelin)
 
 //pertanyaan
@@ -43,4 +46,8 @@ router.get('/questions/cfit4/soal', getCfit4QuestionsSoal)
 
 //DISC
 router.get('/questions/disc', getDiscQuestions)
+
+//PAPIKOSTICK
+router.get('/questions/papikostik', getPapikostikQuestions)
+
 export default router

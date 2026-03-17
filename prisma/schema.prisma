@@ -36,6 +36,8 @@ model TestSession {
   jawabanCfit JawabanCfit[]
   jawabanKraepelin JawabanKraepelin[]
   jawabanDisc JawabanDisc[]
+  jawabanPapikostik JawabanPapikostik[]
+  
   kraepelinLog KraepelinLog[]
   attempts    TestAttempt[]
   peserta     Peserta       @relation(fields: [pesertaId], references: [id])
@@ -108,6 +110,21 @@ model DiscOption {
   disc DiscQuestion @relation(fields: [questionId], references: [id])
 }
 
+model PapikostickQuestion {
+  id Int @id @default(autoincrement())
+  questionIndex Int
+  
+  option PapikostickOption[]
+}
+
+model PapikostickOption {
+  id Int @id @default(autoincrement())
+  questionId Int
+  sentences String
+  optionType Int
+
+  papikostick PapikostickQuestion @relation(fields: [questionId], references: [id])
+}
 
 
 model MsdtQuestion {
@@ -122,11 +139,7 @@ model MbtiQuestion {
   createdAt DateTime @default(now())
 }
 
-model PapikostickQuestion {
-  id        Int      @id @default(autoincrement())
-  sentences Json
-  createdAt DateTime @default(now())
-}
+
 
 model Token {
   id        Int       @id @default(autoincrement())
@@ -187,6 +200,15 @@ model JawabanDisc {
   least         Int
 
   session       TestSession @relation(fields: [sessionId], references: [id])
+}
+
+model JawabanPapikostik {
+  id              Int @id @default(autoincrement())
+  sessionId       Int
+  questionIndex   Int
+  type            Int
+
+  session TestSession @relation(fields: [sessionId], references: [id])
 }
 
 model Testing {

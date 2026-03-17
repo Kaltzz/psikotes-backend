@@ -7,7 +7,8 @@ import {
     getCfit3QuestionsSoalService,
     getCfit4QuestionsContohService,
     getCfit4QuestionsSoalService,
-    getDiscQuestionsService
+    getDiscQuestionsService,
+    getPapikostikQuestionsService
 } from '../services/questions.service'
 
 //subtest 1
@@ -99,10 +100,20 @@ export const getCfit4QuestionsSoal = async (req:any, res:any) => {
 }
 
 //DISC
-
 export const getDiscQuestions = async (req:any, res:any) => {
     const questions = await getDiscQuestionsService(req, res)
     
+    if(!(questions.status)) {
+        return res.status(400).json(questions)
+    }
+
+    return res.status(201).json(questions)
+}
+
+//Papikostik
+export const getPapikostikQuestions = async (req:any, res:any) => {
+    const questions = await getPapikostikQuestionsService(req, res)
+
     if(!(questions.status)) {
         return res.status(400).json(questions)
     }

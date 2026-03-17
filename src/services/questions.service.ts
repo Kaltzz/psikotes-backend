@@ -7,7 +7,8 @@ import {
     getCfit3QuestionsSoalModel,
     getCfit4QuestionsContohModel,
     getCfit4QuestionsSoalModel,
-    getDiscQuestionsModel
+    getDiscQuestionsModel,
+    getPapikostikQuestionsModel
 } from '../models/questions.model'
 
 export const getCfit1QuestionsContohService = async (req:any, res:any) => {
@@ -148,7 +149,7 @@ export const getCfit4QuestionsSoalService = async (req:any, res:any) => {
 
 export const getDiscQuestionsService = async (req:any, res:any) => {
     try{
-        const questions = await getDiscQuestionsModel(req, res)
+        const questions = await getDiscQuestionsModel()
 
         // const discs = questions.map((item) => {
         //     const {id, sentences, questionIndex, optionIndex} = item
@@ -174,4 +175,23 @@ export const getDiscQuestionsService = async (req:any, res:any) => {
             message: error,
         })
     }
+}
+
+export const getPapikostikQuestionsService = async (req:any, res:any) => {
+    try {
+        const questions = await getPapikostikQuestionsModel()
+
+        return({
+            status: true,
+            message: "Data pertanyaan papikostick berhasil diambil",
+            data: questions
+        })
+    } catch(error) {
+        return({
+            status: false,
+            message: error
+        })
+    }
+    
+    
 }

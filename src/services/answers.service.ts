@@ -3,6 +3,7 @@ import {
     answersDiscModel,
     answersKraepelinModel,
     answersKraepelinLogModel,
+    answersPapikostickModel,
     n8nAnswersKraepelinModel
  } from "../models/answers.model"
 
@@ -121,6 +122,24 @@ export const answersKraepelinService = async (data: any, sessionId: number, res:
 
     // console.log(answers, summary, log)
     // console.log(data.columnResults[0].answers)
+}
+
+export const answersPapikostickService = async (data:any, sessionId: number, res:any) => {
+    try {
+        const papikostik = await answersPapikostickModel(data, sessionId, res)
+        console.log('ini service data: ', data)
+        return {
+            status: true,
+            message: "Jawaban Papikostik berhasil disimpan",
+            data: papikostik 
+        }
+    } catch (error) {
+        return {
+            status: false,
+            message: error
+        }
+    }
+    
 }
 
 export const n8nAnswersKraepelinService = async (data:any) => {

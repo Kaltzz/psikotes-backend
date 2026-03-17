@@ -154,7 +154,7 @@ export const getCfit4QuestionsSoalModel = async (req:any, res:any) => {
     })
 }
 
-export const getDiscQuestionsModel = async (req:any, res:any) => {
+export const getDiscQuestionsModel = async () => {
     return await prisma.discQuestion.findMany({
         select: {
             id: true,
@@ -164,6 +164,20 @@ export const getDiscQuestionsModel = async (req:any, res:any) => {
                     questionId: true,
                     sentences: true,
                     optionIndex: true
+                }
+            }
+        }
+    })
+}
+
+export const getPapikostikQuestionsModel = async () => {
+    return await prisma.papikostickQuestion.findMany({
+        select: {
+            questionIndex:true,
+            option: {
+                select: {
+                    sentences: true,
+                    optionType: true
                 }
             }
         }

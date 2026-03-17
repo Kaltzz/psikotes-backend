@@ -2,6 +2,7 @@ import {
     answersCfitService, 
     answersDiscService,
     answersKraepelinService,
+    answersPapikostickService,
     n8nAnswersKraepelinService
 } from "../services/answers.service"
 
@@ -41,6 +42,19 @@ export const answersKraepelin = async (req:any, res:any) => {
     }
 
     return res.status(201).json(answers)
+}
+
+export const answersPapikostick = async (req:any, res:any) => {
+    const sessionId = parseInt(req.params.id)
+    const data = req.body
+    console.log('data controller: ', data)
+    const papikostick = await answersPapikostickService(data, sessionId, res)
+
+    if (!(papikostick.status)) {
+        return res.status(400).json(papikostick)
+    }
+
+    return res.status(201).json(papikostick)
 }
 
 export const n8nAnswersKraepelin = async (req:any, res:any) => {
