@@ -2,7 +2,8 @@ import {
     triggerN8NService,
     n8nCfitService,
     n8nKraepelinService, 
-    n8nDiscService
+    n8nDiscService,
+    n8nPapikostikService
 } from "../services/n8n.service" 
 
 export const triggerN8N = async (req: any, res: any) => {
@@ -62,5 +63,16 @@ export const n8nDisc = async (req:any, res:any) => {
     }
     // console.log(n8n)
 
+    return res.status(201).json(n8n)
+}
+
+export const n8nPapikostik = async (req:any, res:any) => {
+    const pesertaId = req.params.pesertaId
+    const n8n = await n8nPapikostikService(req, res, pesertaId)
+
+    if (!(n8n.status)) {
+        return res.status(400).json(n8n)
+    }
+    
     return res.status(201).json(n8n)
 }

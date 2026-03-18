@@ -102,3 +102,31 @@ export const n8nDiscModel = async (id: number) => {
         }
     })
 }
+
+export const n8nPapikostikModal = async (id:number) => {
+    return prisma.peserta.findUnique({
+        where: {
+            id: Number(id)
+        },
+        select: {
+            nama: true,
+            email:true,
+            jenisKelamin: true,
+            usia: true,
+            pendidikanTerakhir: true,
+            unit: true,
+            posisi:true,
+            jurusan: true,
+            testSession: {
+                select: {
+                    jawabanPapikostik: {
+                        select:{
+                            questionIndex: true,
+                            type: true
+                        }
+                    }
+                }
+            }
+        }
+    })
+}
