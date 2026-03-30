@@ -3,7 +3,8 @@ import {
     answersDiscService,
     answersKraepelinService,
     answersPapikostickService,
-    n8nAnswersKraepelinService
+    n8nAnswersKraepelinService,
+    answersMsdtService
 } from "../services/answers.service"
 
 // CFIT
@@ -67,4 +68,19 @@ export const n8nAnswersKraepelin = async (req:any, res:any) => {
     
     return res.status(201).json(kraepelin)
     // console.log("ini kraepelin",data)
+}
+
+export const answersMsdt = async (req:any, res:any) => {
+    const sessionId = parseInt(req.params.id)
+    const data = req.body
+
+    console.log("ini data: ", data)
+
+    const msdt = await answersMsdtService(sessionId, data)
+
+    if(!(msdt.status)) {
+        return res.status(400).json(msdt)
+    }
+
+    return res.status(201).json(msdt)
 }

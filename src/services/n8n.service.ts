@@ -2,7 +2,8 @@ import {
     n8nCfitModel,
     n8nKraepelinModel,
     n8nDiscModel,
-    n8nPapikostikModal
+    n8nPapikostikModal,
+    n8nMsdtModel
 } from "../models/n8n.model"
 
 export const triggerN8NService = async (pesertaId: number, tests: string) => {
@@ -404,7 +405,6 @@ export const n8nPapikostikService = async(req:any, res:any, id:number) => {
             "bisnis unit": unitTrue,
         }
 
-        //most
         n8n.testSession.forEach(session => {
             session.jawabanPapikostik.forEach(jawaban => {
                 papikostik[`jawaban`] = jawaban.type
@@ -414,8 +414,7 @@ export const n8nPapikostikService = async(req:any, res:any, id:number) => {
                             papikostik[`${a}`] = 1 
                         } else {
                             papikostik[`${a}`] = 0
-                        } //most1_option1
-                    //Lanjut............... 
+                        }
                 }
             })
         })
@@ -428,26 +427,10 @@ export const n8nPapikostikService = async(req:any, res:any, id:number) => {
                             papikostik[`${b}`] = 1 
                         } else {
                             papikostik[`${b}`] = 0
-                        } //most1_option1
-                    //Lanjut............... 
+                        }
                 }
             })
         })
-
-        //least
-        // n8n.testSession.forEach(session => {
-        //     session.jawabanDisc.forEach(jawaban => {
-        //         for(let i = 1; i < 5; i++) {
-        //             const least = `least${jawaban.questionIndex}_option${i}` //least1_option1
-        //             if (i === jawaban.least) {
-        //                 disc[`${least}`] = 1
-        //             } else {
-        //                 disc[`${least}`] = 0
-        //             }
-                    
-        //         }
-        //     })
-        // })
 
         return ({
             status: true,
@@ -461,4 +444,107 @@ export const n8nPapikostikService = async(req:any, res:any, id:number) => {
         })
     }
 
+}
+
+export const n8nMsdtService = async(req:any, res:any, id:number) => {
+    try {
+        const pesertaId = id
+        const n8n = await n8nMsdtModel(pesertaId)
+
+        if(n8n === null) {
+            return ({
+                status: false,
+                message: "data tidak ditemukan"
+            })
+        }
+
+        let unit:string = n8n.unit
+        let unitTrue = ''
+        switch(unit) {
+          case 'MPP':
+            unitTrue = 'PT. Makassar Putra Prima'
+            break
+            
+          case 'ACS':
+            unitTrue = 'PT. Aptana Citra Solusindo'
+            break
+            
+          case 'MMPP':
+            unitTrue = 'PT. Makassar Megaputra Prima'
+            break
+
+          case 'IMP':
+            unitTrue = 'PT. Indo Mega Prima'
+            break
+          
+          case 'PPH':
+            unitTrue = 'PT. Putra Prima Hotel'
+            break
+          
+          case 'SMP':
+            unitTrue = 'PT. Samamaju Prima'
+            break
+        }
+        
+        let jenisKelamin:string = n8n.jenisKelamin
+        let gender = ''
+        
+        switch(jenisKelamin) {
+          case 'LAKI_LAKI':
+            gender = 'Laki-laki'
+            break
+          
+          case 'PEREMPUAN':
+            gender = 'Perempuan'
+            break
+        }
+
+        const msdt:any = {
+            "nama": n8n.nama,
+            "email": n8n.email,
+            "jenis kelamin": gender,
+            "usia": n8n.usia,
+            "pendidikan terakhir": n8n.pendidikanTerakhir,
+            "jurusan": n8n.jurusan,
+            "posisi yang dilamar": n8n.posisi,
+            "bisnis unit": unitTrue,
+        }
+
+        n8n.testSession.forEach(session => {
+            session.jawabanMsdt.forEach(jawaban => {
+                for(let i = 1; i<3; i++) {
+                    const a = `${jawaban.questionIndex}A`
+                        if(jawaban.type === 1) {
+                            msdt[`${a}`] = 1 
+                        } else {
+                            msdt[`${a}`] = 0
+                        }
+                }
+            })
+        })
+
+        n8n.testSession.forEach(session => {
+            session.jawabanMsdt.forEach(jawaban => {
+                for(let i = 1; i<3; i++) {
+                    const b = `${jawaban.questionIndex}B`
+                        if(jawaban.type === 2) {
+                            msdt[`${b}`] = 1 
+                        } else {
+                            msdt[`${b}`] = 0
+                        }
+                }
+            })
+        })
+
+        return ({
+            status: true,
+            message: "data berhasil diambil",
+            data: msdt
+        })
+    } catch (error) {
+        return ({
+            status: false,
+            message: 'Gagal mendapatkan data jawaban disc peserta'
+        })
+    }
 }

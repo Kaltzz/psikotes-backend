@@ -8,7 +8,8 @@ import {
     getCfit4QuestionsContohModel,
     getCfit4QuestionsSoalModel,
     getDiscQuestionsModel,
-    getPapikostikQuestionsModel
+    getPapikostikQuestionsModel,
+    getMsdtQuestionsModel
 } from '../models/questions.model'
 
 export const getCfit1QuestionsContohService = async (req:any, res:any) => {
@@ -192,6 +193,22 @@ export const getPapikostikQuestionsService = async (req:any, res:any) => {
             message: error
         })
     }
-    
-    
+}
+
+export const getMsdtQuestionsService = async (req:any, res:any) => {
+    try {
+        const questions = await getMsdtQuestionsModel()
+
+        return({
+            status: true,
+            message: "Data pertanyaan MSDT berhasil diambil",
+            data: questions
+        })
+
+    } catch (error) {
+        return({
+            status: false,
+            message: error
+        })
+    }
 }

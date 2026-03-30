@@ -37,6 +37,8 @@ model TestSession {
   jawabanKraepelin JawabanKraepelin[]
   jawabanDisc JawabanDisc[]
   jawabanPapikostik JawabanPapikostik[]
+  jawabanMbti JawabanMbti[]
+  jawabanMsdt JawabanMsdt[]
   
   kraepelinLog KraepelinLog[]
   attempts    TestAttempt[]
@@ -95,48 +97,69 @@ model CfitOption {
 }
 
 model DiscQuestion {
-  id Int @id @default(autoincrement())
+  id            Int @id @default(autoincrement())
   questionIndex Int
 
   option DiscOption[]
 }
 
 model DiscOption {
-  id Int @id @default(autoincrement())
-  questionId Int
-  sentences String
+  id          Int @id @default(autoincrement())
+  questionId  Int
+  sentences   String
   optionIndex Int
 
   disc DiscQuestion @relation(fields: [questionId], references: [id])
 }
 
 model PapikostickQuestion {
-  id Int @id @default(autoincrement())
+  id            Int @id @default(autoincrement())
   questionIndex Int
   
   option PapikostickOption[]
 }
 
 model PapikostickOption {
-  id Int @id @default(autoincrement())
-  questionId Int
-  sentences String
-  optionType Int
+  id          Int @id @default(autoincrement())
+  questionId  Int
+  sentences   String
+  optionType  Int
 
   papikostick PapikostickQuestion @relation(fields: [questionId], references: [id])
 }
 
-
 model MsdtQuestion {
-  id        Int      @id @default(autoincrement())
-  sentences Json
-  createdAt DateTime @default(now())
+  id            Int @id @default(autoincrement())
+  questionIndex Int
+
+  option MsdtOption[]
 }
 
-model MbtiQuestion {
-  id        Int      @id @default(autoincrement())
-  sentences Json
-  createdAt DateTime @default(now())
+model MsdtOption{
+  id          Int @id @default(autoincrement())
+  questionId  Int
+  sentences   String
+  optionType  Int
+
+  msdt MsdtQuestion @relation(fields: [questionId], references: [id])
+}
+
+
+model mbtiQuestion {
+  id              Int @id @default(autoincrement())
+  question        String
+  questionIndex   Int
+
+  options mbtiOption[]
+}
+
+model mbtiOption {
+  id          Int @id @default(autoincrement())
+  questionId  Int
+  sentences   String
+  optionType  Int
+
+  mbti mbtiQuestion @relation(fields: [questionId], references: [id])
 }
 
 
@@ -207,6 +230,24 @@ model JawabanPapikostik {
   sessionId       Int
   questionIndex   Int
   type            Int
+
+  session TestSession @relation(fields: [sessionId], references: [id])
+}
+
+model JawabanMbti {
+  id              Int @id @default(autoincrement())
+  sessionId       Int
+  questionIndex   Int
+  type            Int
+
+  session TestSession @relation(fields: [sessionId], references: [id])
+}
+
+model JawabanMsdt {
+  id Int @id @default(autoincrement())
+  sessionId Int
+  questionIndex Int
+  type Int
 
   session TestSession @relation(fields: [sessionId], references: [id])
 }

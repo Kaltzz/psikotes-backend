@@ -43,6 +43,11 @@ type n8nAnswersKraepelin = {
     kesimpulan: string
 }
 
+type msdtPayload = {
+    groupId: number
+    type: number
+}
+
 export const answersCfitModel = async (data:any, sessionId: number) => {
     const payload: CfitAnswerPayload[] = data
     return await prisma.jawabanCfit.createMany({
@@ -124,3 +129,13 @@ export const n8nAnswersKraepelinModel = async (data:any) => {
     })
 }
 
+export const answersMsdtModel = async (sessionId:number, data:any) => {
+    const payload: msdtPayload[] = data
+    return await prisma.jawabanMsdt.createMany({
+        data: payload.map(item => ({
+            sessionId: sessionId,
+            questionIndex: item.groupId,
+            type: item.type
+        }))
+    })
+} 
