@@ -5,7 +5,8 @@ import {
     answersDisc, 
     answersKraepelin,
     answersPapikostick,
-    n8nAnswersKraepelin
+    n8nAnswersKraepelin,
+    answersMsdt
 } from "../controllers/answers.controller"
 
 import {
@@ -18,7 +19,8 @@ import {
     getCfit4QuestionsContoh,
     getCfit4QuestionsSoal,
     getDiscQuestions,
-    getPapikostikQuestions
+    getPapikostikQuestions,
+    getMsdtQuestions
 } from "../controllers/questions.controller"
 
 const router = Router()
@@ -32,6 +34,7 @@ router.post('/answers/disc/:id', answersDisc)
 router.post('/answers/kraepelin/:id', answersKraepelin)
 router.post('/answers/papikostik/:id', answersPapikostick)
 router.post('/answers/n8nKraepelin', n8nAnswersKraepelin)
+router.post('/answers/msdt/:id', answersMsdt)
 
 //pertanyaan
 //CFIT
@@ -49,5 +52,8 @@ router.get('/questions/disc', getDiscQuestions)
 
 //PAPIKOSTICK
 router.get('/questions/papikostik', getPapikostikQuestions)
+
+// MSDT
+router.get('/questions/msdt', getMsdtQuestions)
 
 export default router

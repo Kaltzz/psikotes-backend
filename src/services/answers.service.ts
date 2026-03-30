@@ -4,7 +4,8 @@ import {
     answersKraepelinModel,
     answersKraepelinLogModel,
     answersPapikostickModel,
-    n8nAnswersKraepelinModel
+    n8nAnswersKraepelinModel,
+    answersMsdtModel
  } from "../models/answers.model"
 
 type DiscAnswerInput = {
@@ -170,4 +171,22 @@ export const n8nAnswersKraepelinService = async (data:any) => {
         }
     }
     
+}
+
+export const answersMsdtService = async (sessionId: number, data:any) => {
+    try {
+        const msdt = await answersMsdtModel(sessionId, data)
+
+        return ({
+            status: true,
+            message: "Jawaban MSDT berhasil ditambahkan",
+            data: msdt
+        })
+
+    } catch (error) {
+        return({
+            status: false,
+            message: error
+        })
+    }
 }

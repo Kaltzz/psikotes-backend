@@ -183,3 +183,17 @@ export const getPapikostikQuestionsModel = async () => {
         }
     })
 }
+
+export const getMsdtQuestionsModel = async () => {
+    return await prisma.msdtQuestion.findMany({
+        select: {
+            questionIndex: true,
+            option: {
+                select: {
+                    sentences: true,
+                    optionType: true
+                }
+            }
+        }
+    })
+}
