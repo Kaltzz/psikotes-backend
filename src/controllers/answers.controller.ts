@@ -4,7 +4,8 @@ import {
     answersKraepelinService,
     answersPapikostickService,
     n8nAnswersKraepelinService,
-    answersMsdtService
+    answersMsdtService,
+    answersMbtiService
 } from "../services/answers.service"
 
 // CFIT
@@ -83,4 +84,17 @@ export const answersMsdt = async (req:any, res:any) => {
     }
 
     return res.status(201).json(msdt)
+}
+
+export const answersMbti = async (req:any, res:any) => {
+    const sessionId = parseInt(req.params.id)
+    const data = req.body
+
+    const mbti = await answersMbtiService(sessionId, data)
+
+    if (!(mbti.status)) {
+        return res.status(400).json(mbti)
+    }
+
+    return res.status(201).json(mbti)
 }

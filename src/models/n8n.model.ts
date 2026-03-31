@@ -158,3 +158,31 @@ export const n8nMsdtModel = async (id: number) => {
         }
     })
 }
+
+export const n8nMbtiModel = async (id: number) => {
+    return await prisma.peserta.findUnique({
+        where: {
+            id: Number(id)
+        },
+        select: {
+            nama: true,
+            email:true,
+            jenisKelamin: true,
+            usia: true,
+            pendidikanTerakhir: true,
+            unit: true,
+            posisi:true,
+            jurusan: true,
+            testSession: {
+                select: {
+                    jawabanMbti: {
+                        select: {
+                            questionIndex: true,
+                            type: true
+                        }
+                    }
+                }
+            }
+        }
+    })
+}
