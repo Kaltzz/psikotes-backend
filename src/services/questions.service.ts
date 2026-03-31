@@ -9,7 +9,8 @@ import {
     getCfit4QuestionsSoalModel,
     getDiscQuestionsModel,
     getPapikostikQuestionsModel,
-    getMsdtQuestionsModel
+    getMsdtQuestionsModel,
+    getMbtiQuestionsModel
 } from '../models/questions.model'
 
 export const getCfit1QuestionsContohService = async (req:any, res:any) => {
@@ -209,6 +210,23 @@ export const getMsdtQuestionsService = async (req:any, res:any) => {
         return({
             status: false,
             message: error
+        })
+    }
+}
+
+export const getMbtiQuestionsService = async (req: any, res:any) => {
+    try {
+        const question = await getMbtiQuestionsModel()
+
+        return ({
+            status: true,
+            message: "Data pertanyaan MBTI berhasil diambil",
+            data: question
+        })
+    } catch (error) {
+        return({
+            status: false,
+            message: "Data pertanyaan MBTI gagal diambil"
         })
     }
 }

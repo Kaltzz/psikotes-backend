@@ -20,7 +20,8 @@ import {
     getCfit4QuestionsSoal,
     getDiscQuestions,
     getPapikostikQuestions,
-    getMsdtQuestions
+    getMsdtQuestions,
+    getMbtiQuestions
 } from "../controllers/questions.controller"
 
 const router = Router()
@@ -55,5 +56,8 @@ router.get('/questions/papikostik', getPapikostikQuestions)
 
 // MSDT
 router.get('/questions/msdt', getMsdtQuestions)
+
+// MBTI
+router.get('/questions/mbti', getMbtiQuestions)
 
 export default router

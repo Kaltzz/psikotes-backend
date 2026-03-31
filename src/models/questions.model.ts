@@ -197,3 +197,18 @@ export const getMsdtQuestionsModel = async () => {
         }
     })
 }
+
+export const getMbtiQuestionsModel = async () => {
+    return await prisma.mbtiQuestion.findMany({
+        select: {
+            questionIndex: true,
+            question: true,
+            options: {
+                select: {
+                    sentences: true,
+                    optionType: true
+                }
+            }
+        }
+    })
+}
