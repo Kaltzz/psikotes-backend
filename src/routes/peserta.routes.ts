@@ -6,7 +6,8 @@ import {
     answersKraepelin,
     answersPapikostick,
     n8nAnswersKraepelin,
-    answersMsdt
+    answersMsdt,
+    answersMbti
 } from "../controllers/answers.controller"
 
 import {
@@ -36,6 +37,7 @@ router.post('/answers/kraepelin/:id', answersKraepelin)
 router.post('/answers/papikostik/:id', answersPapikostick)
 router.post('/answers/n8nKraepelin', n8nAnswersKraepelin)
 router.post('/answers/msdt/:id', answersMsdt)
+router.post('/answers/mbti/:id', answersMbti)
 
 //pertanyaan
 //CFIT

@@ -5,7 +5,8 @@ import {
     answersKraepelinLogModel,
     answersPapikostickModel,
     n8nAnswersKraepelinModel,
-    answersMsdtModel
+    answersMsdtModel,
+    answersMbtiModel
  } from "../models/answers.model"
 
 type DiscAnswerInput = {
@@ -183,6 +184,23 @@ export const answersMsdtService = async (sessionId: number, data:any) => {
             data: msdt
         })
 
+    } catch (error) {
+        return({
+            status: false,
+            message: error
+        })
+    }
+}
+
+export const answersMbtiService = async (sessionId: number, data: any) => {
+    try {
+        const msdt = await answersMbtiModel(sessionId, data)
+
+        return ({
+            status: true,
+            message: "Data jawaban berhasil dikirim",
+            data: msdt
+        })
     } catch (error) {
         return({
             status: false,

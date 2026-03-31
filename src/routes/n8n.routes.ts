@@ -5,7 +5,8 @@ import {
     n8nKraepelin,
     n8nDisc,
     n8nPapikostik,
-    n8nMsdt
+    n8nMsdt,
+    n8nMbti
  } from "../controllers/n8n.controller";
 
 const router = Router()
@@ -17,5 +18,6 @@ router.get('/kraepelin/:pesertaId', n8nKraepelin)
 router.get('/disc/:pesertaId', n8nDisc)
 router.get('/papikostick/:pesertaId', n8nPapikostik)
 router.get('/msdt/:pesertaId', n8nMsdt)
+router.get('/mbti/:pesertaId', n8nMbti)
 
 export default router

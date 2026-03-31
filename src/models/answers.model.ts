@@ -48,6 +48,11 @@ type msdtPayload = {
     type: number
 }
 
+type mbtiPayload = {
+    groupId: number
+    type: number
+}
+
 export const answersCfitModel = async (data:any, sessionId: number) => {
     const payload: CfitAnswerPayload[] = data
     return await prisma.jawabanCfit.createMany({
@@ -139,3 +144,15 @@ export const answersMsdtModel = async (sessionId:number, data:any) => {
         }))
     })
 } 
+
+export const answersMbtiModel = async (sessionId: number, data: any) => {
+    const payload: mbtiPayload[] = data
+
+    return await prisma.jawabanMbti.createMany({
+        data: payload.map(item => ({
+            sessionId: sessionId,
+            questionIndex: item.groupId,
+            type: item.type
+        }))
+    })
+}
