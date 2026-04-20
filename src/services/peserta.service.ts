@@ -255,14 +255,14 @@ export const hasilTesService = async (id: number) => {
         const newPeserta:any = {
             "nama": peserta.nama,
             "email": peserta.email,
-            "tanggal lahir": tglLahir,
-            "tanggal tes": tglTes,
+            "tanggalLahir": tglLahir,
+            "tanggalTes": tglTes,
             "usia": peserta.usia,
-            "jenis kelamin": gender,
-            "pendidikan terakhir": peserta.pendidikanTerakhir,
-            "bisnis unit": unitTrue,
+            "jenisKelamin": gender,
+            "pendidikanTerakhir": peserta.pendidikanTerakhir,
+            "bisnisUnit": unitTrue,
             "jurusan": peserta.jurusan,
-            "posisi yang dilamar": peserta.posisi,
+            "posisiYangDilamar": peserta.posisi,
             "jawaban": peserta.testSession,
             "tests": peserta.token.tests
         }
