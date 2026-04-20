@@ -11,6 +11,7 @@ import {
     getSpecificToken,
      
 } from "../models/token.model"
+import { scoringCfit } from "../utils/scoring.utils";
 
 const dateConverter = (date: any) => {
     const dateParser = new Date(date);
@@ -208,6 +209,9 @@ export const hasilTesService = async (id: number) => {
             })
         }
 
+        const jawabanCfit = peserta.testSession.flatMap(s => s.jawabanCfit ?? [])
+        const skorCfit = jawabanCfit.length > 0 ? scoringCfit(jawabanCfit) : null
+
         let unit:string = peserta.unit
         let unitTrue = ''
         switch(unit) {
@@ -263,8 +267,9 @@ export const hasilTesService = async (id: number) => {
             "bisnisUnit": unitTrue,
             "jurusan": peserta.jurusan,
             "posisiYangDilamar": peserta.posisi,
-            "jawaban": peserta.testSession,
-            "tests": peserta.token.tests
+            // "jawaban": peserta.testSession,
+            "tests": peserta.token.tests,
+            "skorCfit": skorCfit
         }
 
         return({
@@ -275,7 +280,7 @@ export const hasilTesService = async (id: number) => {
     } catch(error) {
         return({
             status: false,
-            message: "Gagal mendapatkan data"
+            message: error
         })
     }
 }

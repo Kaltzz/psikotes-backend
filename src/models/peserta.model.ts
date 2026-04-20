@@ -119,9 +119,11 @@ export const hasilPesertaModel = async () => {
 
 export const hasilTesModel = async (id:number) => {
     return await prisma.peserta.findUnique({
+
         where: {
             id: Number(id)
         },
+        
         select: {
             nama: true,
             email: true,
@@ -154,3 +156,4 @@ export const hasilTesModel = async (id:number) => {
         }
     })
 }
+
