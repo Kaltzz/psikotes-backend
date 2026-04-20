@@ -134,6 +134,7 @@ export const n8nCfitService = async (req:any, res:any, id: number) => {
         const tglTes = dateConverter(n8n.createdAt)
 
         const peserta:any = {
+            "id": pesertaId,
             "nama": n8n.nama,
             "email": n8n.email,
             "tanggal lahir": tglLahir,
