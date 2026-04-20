@@ -2,6 +2,24 @@ import { PrismaClient } from "@prisma/client"
 
 const prisma = new PrismaClient
 
+const dateConverter = (date: any) => {
+    const dateParser = new Date(date);
+        const witaFormatter = new Intl.DateTimeFormat('id-ID', {
+        timeZone: 'Asia/Makassar',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+        });
+        
+        const time = witaFormatter.format(dateParser).split(", ")
+        const dateTest = time[0]+':'+time[1]+' WITA'
+
+    return dateTest
+}
+
 export const postPesertaModel = async (post:any, res:any, id:any) => {
     return await prisma.peserta.create({
         data: {
@@ -105,6 +123,16 @@ export const hasilTesModel = async (id:number) => {
             id: Number(id)
         },
         select: {
+            nama: true,
+            email: true,
+            jenisKelamin: true,
+            usia: true,
+            pendidikanTerakhir: true,
+            jurusan: true, 
+            unit: true,
+            posisi: true,
+            tanggalLahir: true,
+            createdAt: true,
             testSession: {
                 select: {
                     jawabanCfit: {
