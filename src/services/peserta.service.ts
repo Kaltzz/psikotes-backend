@@ -263,7 +263,8 @@ export const hasilTesService = async (id: number) => {
             "bisnis unit": unitTrue,
             "jurusan": peserta.jurusan,
             "posisi yang dilamar": peserta.posisi,
-            "jawaban": peserta.testSession
+            "jawaban": peserta.testSession,
+            "tests": peserta.token.tests
         }
 
         return({
