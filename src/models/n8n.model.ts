@@ -10,6 +10,8 @@ export const n8nCfitModel = async (id:number) => {
         select: {
             nama: true,
             email:true,
+            tanggalLahir: true,
+            createdAt: true,
             jenisKelamin: true,
             usia: true,
             pendidikanTerakhir: true,
@@ -41,6 +43,8 @@ export const n8nKraepelinModel = async (id:number) => {
         select: {
             nama: true,
             email:true,
+            tanggalLahir: true,
+            createdAt: true,
             jenisKelamin: true,
             usia: true,
             pendidikanTerakhir: true,
@@ -82,6 +86,8 @@ export const n8nDiscModel = async (id: number) => {
         select: {
             nama: true,
             email:true,
+            tanggalLahir: true,
+            createdAt: true,
             jenisKelamin: true,
             usia: true,
             pendidikanTerakhir: true,
@@ -111,6 +117,8 @@ export const n8nPapikostikModal = async (id:number) => {
         select: {
             nama: true,
             email:true,
+            tanggalLahir: true,
+            createdAt: true,
             jenisKelamin: true,
             usia: true,
             pendidikanTerakhir: true,
@@ -139,6 +147,8 @@ export const n8nMsdtModel = async (id: number) => {
         select: {
             nama: true,
             email:true,
+            tanggalLahir: true,
+            createdAt: true,
             jenisKelamin: true,
             usia: true,
             pendidikanTerakhir: true,
@@ -167,6 +177,8 @@ export const n8nMbtiModel = async (id: number) => {
         select: {
             nama: true,
             email:true,
+            tanggalLahir: true,
+            createdAt: true,
             jenisKelamin: true,
             usia: true,
             pendidikanTerakhir: true,

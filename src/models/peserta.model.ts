@@ -14,6 +14,7 @@ export const postPesertaModel = async (post:any, res:any, id:any) => {
             jurusan: post.jurusan,
             posisi: post.posisi,
             tokenId: id,
+            tanggalLahir: post.tanggalLahir,
             
             testSession: {
                 create : [
@@ -90,8 +91,31 @@ export const hasilPesertaModel = async () => {
         select: {
             peserta: {
                 select: {
+                    id: true,
                     nama: true,
                     createdAt: true
+                }
+            }
+        }
+    })
+}
+
+export const hasilTesModel = async (id:number) => {
+    return await prisma.peserta.findUnique({
+        where: {
+            id: Number(id)
+        },
+        select: {
+            testSession: {
+                select: {
+                    jawabanCfit: {
+                        select: {
+                            id: true,
+                            subtest: true,
+                            questionId: true,
+                            answers: true
+                        }
+                    }
                 }
             }
         }

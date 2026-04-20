@@ -12,9 +12,9 @@ async function main() {
     // await adminSeed()
     // await cfitSeed()
     // await discSeed()
-    // await papikostickSeed()
+    await papikostickSeed()
     // await msdtSeed()
-    await mbtiSeed()
+    // await mbtiSeed()
 
 }
 
