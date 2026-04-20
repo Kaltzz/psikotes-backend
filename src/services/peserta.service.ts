@@ -3,7 +3,8 @@ import {
     getAllPesertaModel , 
     getDetailPesertaModel, 
     statusPesertaModel,
-    hasilPesertaModel
+    hasilPesertaModel,
+    hasilTesModel
 } from "../models/peserta.model"
 import { 
     addCount, 
@@ -137,6 +138,8 @@ export const hasilPesertaService = async () => {
                 message: "gagal mendapatkan data"
             }
         }
+
+        console.log(peserta)
         
         const dateParser = new Date(date);
         const witaFormatter = new Intl.DateTimeFormat('id-ID', {
@@ -152,10 +155,16 @@ export const hasilPesertaService = async () => {
         const time = witaFormatter.format(dateParser).split(", ")
         const dateTest = time[0]+':'+time[1]+' WITA'
 
-        const newPeserta = {
-            name: peserta[0]?.peserta.nama,
-            date : dateTest
-        }
+        // const newPeserta = {
+        //     id: peserta[0]?.peserta.id,
+        //     name: peserta[0]?.peserta.nama,
+        //     date : dateTest
+        // }
+
+        const newPeserta = peserta.map(obj =>  ({
+            ...obj.peserta,
+            tanggal: dateTest
+        }))
 
         return ({
             status: true,
@@ -167,6 +176,22 @@ export const hasilPesertaService = async () => {
             status: false,
             message: "gagal mendapatkan data"
         })
+    } 
+}
+
+export const hasilTesService = async (id: number) => {
+    try {
+        const peserta = await hasilTesModel(id)
+
+        return({
+            status: true,
+            message: "berhasil mendapatkan data",
+            data: peserta
+        })
+    } catch(error) {
+        return({
+            status: false,
+            message: "Gagal mendapatkan data"
+        })
     }
-    
 }

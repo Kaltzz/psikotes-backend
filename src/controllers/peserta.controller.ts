@@ -2,7 +2,8 @@ import { postPesertaService,
         getAllPesertaService, 
         getDetailPesertaService,
         statusPesertaService,
-        hasilPesertaService
+        hasilPesertaService,
+        hasilTesService
     } from "../services/peserta.service"
 
 
@@ -62,6 +63,15 @@ export const hasilPesertaController = async (req:any, res:any) => {
     if (!(peserta.status)) {
         return res.status(400).json(peserta)
     }
+    return res.status(201).json(peserta)
+}
 
+export const hasilTesController = async (req:any, res:any) => {
+    const pesertaId = req.params.id
+    const peserta = await hasilTesService(pesertaId)
+
+    if (!(peserta.status)) {
+        return res.status(400).json(peserta)
+    }
     return res.status(201).json(peserta)
 }

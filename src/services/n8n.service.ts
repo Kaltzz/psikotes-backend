@@ -7,6 +7,24 @@ import {
     n8nMbtiModel
 } from "../models/n8n.model"
 
+const dateConverter = (date: any) => {
+    const dateParser = new Date(date);
+        const witaFormatter = new Intl.DateTimeFormat('id-ID', {
+        timeZone: 'Asia/Makassar',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+        });
+        
+        const time = witaFormatter.format(dateParser).split(", ")
+        const dateTest = time[0]+':'+time[1]+' WITA'
+
+    return dateTest
+}
+
 export const triggerN8NService = async (pesertaId: number, tests: string) => {
     const N8N_WEBHOOK_URL_PRODUCTION = process.env.N8N_WEBHOOK_URL_PRODUCTION;
     console.log('ini test trigger:', typeof(tests))
@@ -112,9 +130,14 @@ export const n8nCfitService = async (req:any, res:any, id: number) => {
             break
         }
 
+        const tglLahir = dateConverter(n8n.tanggalLahir)
+        const tglTes = dateConverter(n8n.createdAt)
+
         const peserta:any = {
             "nama": n8n.nama,
             "email": n8n.email,
+            "tanggal lahir": tglLahir,
+            "tanggal tes": tglTes,
             "usia": n8n.usia,
             "jenis kelamin": gender,
             "pendidikan terakhir": n8n.pendidikanTerakhir,
@@ -196,15 +219,20 @@ export const n8nKraepelinService = async (req:any, res:any, id:number) => {
             break
         }
 
+        const tglLahir = dateConverter(n8n.tanggalLahir)
+        const tglTes = dateConverter(n8n.createdAt)
+
         const kraepelin:any = {
             "nama": n8n.nama,
             "email": n8n.email,
-            "jenis kelamin": gender,
+            "tanggal lahir": tglLahir,
+            "tanggal tes": tglTes,
             "usia": n8n.usia,
+            "jenis kelamin": gender,
             "pendidikan terakhir": n8n.pendidikanTerakhir,
+            "bisnis unit": unitTrue,
             "jurusan": n8n.jurusan,
-            "posisi yang dilamar": n8n.posisi,
-            "bisnis unit": unitTrue
+            "posisi yang dilamar": n8n.posisi
         } 
 
         n8n.testSession.forEach(session => {
@@ -288,16 +316,21 @@ export const n8nDiscService = async (req:any, res:any, id:number) => {
             break
         }
 
+        const tglLahir = dateConverter(n8n.tanggalLahir)
+        const tglTes = dateConverter(n8n.createdAt)
+
         const disc:any = {
             "nama": n8n.nama,
             "email": n8n.email,
-            "jenis kelamin": gender,
+            "tanggal lahir": tglLahir,
+            "tanggal tes": tglTes,
             "usia": n8n.usia,
+            "jenis kelamin": gender,
             "pendidikan terakhir": n8n.pendidikanTerakhir,
-            "jurusan": n8n.jurusan,
-            "posisi yang dilamar": n8n.posisi,
             "bisnis unit": unitTrue,
-        }
+            "jurusan": n8n.jurusan,
+            "posisi yang dilamar": n8n.posisi
+        } 
 
         //most
         n8n.testSession.forEach(session => {
@@ -395,16 +428,21 @@ export const n8nPapikostikService = async(req:any, res:any, id:number) => {
             break
         }
 
+        const tglLahir = dateConverter(n8n.tanggalLahir)
+        const tglTes = dateConverter(n8n.createdAt)
+
         const papikostik:any = {
             "nama": n8n.nama,
             "email": n8n.email,
-            "jenis kelamin": gender,
+            "tanggal lahir": tglLahir,
+            "tanggal tes": tglTes,
             "usia": n8n.usia,
+            "jenis kelamin": gender,
             "pendidikan terakhir": n8n.pendidikanTerakhir,
-            "jurusan": n8n.jurusan,
-            "posisi yang dilamar": n8n.posisi,
             "bisnis unit": unitTrue,
-        }
+            "jurusan": n8n.jurusan,
+            "posisi yang dilamar": n8n.posisi
+        } 
 
         n8n.testSession.forEach(session => {
             session.jawabanPapikostik.forEach(jawaban => {
@@ -500,16 +538,21 @@ export const n8nMsdtService = async(req:any, res:any, id:number) => {
             break
         }
 
+        const tglLahir = dateConverter(n8n.tanggalLahir)
+        const tglTes = dateConverter(n8n.createdAt)
+
         const msdt:any = {
             "nama": n8n.nama,
             "email": n8n.email,
-            "jenis kelamin": gender,
+            "tanggal lahir": tglLahir,
+            "tanggal tes": tglTes,
             "usia": n8n.usia,
+            "jenis kelamin": gender,
             "pendidikan terakhir": n8n.pendidikanTerakhir,
-            "jurusan": n8n.jurusan,
-            "posisi yang dilamar": n8n.posisi,
             "bisnis unit": unitTrue,
-        }
+            "jurusan": n8n.jurusan,
+            "posisi yang dilamar": n8n.posisi
+        } 
 
         n8n.testSession.forEach(session => {
             session.jawabanMsdt.forEach(jawaban => {
@@ -603,16 +646,21 @@ export const n8nMbtiService = async (req:any, res:any, id: number) => {
             break
         }
 
+        const tglLahir = dateConverter(n8n.tanggalLahir)
+        const tglTes = dateConverter(n8n.createdAt)
+
         const mbti:any = {
             "nama": n8n.nama,
             "email": n8n.email,
-            "jenis kelamin": gender,
+            "tanggal lahir": tglLahir,
+            "tanggal tes": tglTes,
             "usia": n8n.usia,
+            "jenis kelamin": gender,
             "pendidikan terakhir": n8n.pendidikanTerakhir,
-            "jurusan": n8n.jurusan,
-            "posisi yang dilamar": n8n.posisi,
             "bisnis unit": unitTrue,
-        }
+            "jurusan": n8n.jurusan,
+            "posisi yang dilamar": n8n.posisi
+        } 
 
         n8n.testSession.forEach(session => {
             session.jawabanMbti.forEach(jawaban => {
