@@ -12,6 +12,24 @@ import {
      
 } from "../models/token.model"
 
+const dateConverter = (date: any) => {
+    const dateParser = new Date(date);
+        const witaFormatter = new Intl.DateTimeFormat('id-ID', {
+        timeZone: 'Asia/Makassar',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+        });
+        
+        const time = witaFormatter.format(dateParser).split(", ")
+        const dateTest = time[0]+':'+time[1]+' WITA'
+
+    return dateTest
+}
+
 export const postPesertaService = async (post:any, res:any) => {
     const postToken = post.tokenPeserta
     const token = await getSpecificToken(postToken)
@@ -183,10 +201,75 @@ export const hasilTesService = async (id: number) => {
     try {
         const peserta = await hasilTesModel(id)
 
+        if( peserta === null) {
+            return ({
+                status: false,
+                message: 'data tidak ditemukan'
+            })
+        }
+
+        let unit:string = peserta.unit
+        let unitTrue = ''
+        switch(unit) {
+          case 'MPP':
+            unitTrue = 'PT. Makassar Putra Prima'
+            break
+            
+          case 'ACS':
+            unitTrue = 'PT. Aptana Citra Solusindo'
+            break
+            
+          case 'MMPP':
+            unitTrue = 'PT. Makassar Megaputra Prima'
+            break
+
+          case 'IMP':
+            unitTrue = 'PT. Indo Mega Prima'
+            break
+          
+          case 'PPH':
+            unitTrue = 'PT. Putra Prima Hotel'
+            break
+          
+          case 'SMP':
+            unitTrue = 'PT. Samamaju Prima'
+            break
+        }
+        
+        let jenisKelamin:string = peserta.jenisKelamin
+        let gender = ''
+        
+        switch(jenisKelamin) {
+          case 'LAKI_LAKI':
+            gender = 'Laki-laki'
+            break
+          
+          case 'PEREMPUAN':
+            gender = 'Perempuan'
+            break
+        }
+
+        const tglLahir = dateConverter(peserta.tanggalLahir)
+        const tglTes = dateConverter(peserta.createdAt)
+
+        const newPeserta:any = {
+            "nama": peserta.nama,
+            "email": peserta.email,
+            "tanggal lahir": tglLahir,
+            "tanggal tes": tglTes,
+            "usia": peserta.usia,
+            "jenis kelamin": gender,
+            "pendidikan terakhir": peserta.pendidikanTerakhir,
+            "bisnis unit": unitTrue,
+            "jurusan": peserta.jurusan,
+            "posisi yang dilamar": peserta.posisi,
+            "jawaban": peserta.testSession
+        }
+
         return({
             status: true,
             message: "berhasil mendapatkan data",
-            data: peserta
+            data: newPeserta
         })
     } catch(error) {
         return({
