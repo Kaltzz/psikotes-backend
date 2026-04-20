@@ -133,6 +133,11 @@ export const hasilTesModel = async (id:number) => {
             posisi: true,
             tanggalLahir: true,
             createdAt: true,
+            token: {
+                select: {
+                    tests: true
+                }
+            },
             testSession: {
                 select: {
                     jawabanCfit: {
@@ -145,6 +150,7 @@ export const hasilTesModel = async (id:number) => {
                     }
                 }
             }
+            
         }
     })
 }
