@@ -14,8 +14,7 @@ export const postPesertaModel = async (post:any, res:any, id:any) => {
             jurusan: post.jurusan,
             posisi: post.posisi,
             tokenId: id,
-            tanggalLahir: post.tanggalLahir,
-            
+            tanggalLahir: new Date(post.tanggalLahir),
             testSession: {
                 create : [
                     {
