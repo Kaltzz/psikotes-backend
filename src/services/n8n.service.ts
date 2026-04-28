@@ -10,17 +10,35 @@ import {
 const dateConverter = (date: any) => {
     const dateParser = new Date(date);
         const witaFormatter = new Intl.DateTimeFormat('id-ID', {
-        timeZone: 'Asia/Makassar',
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false
+            timeZone: 'Asia/Makassar',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
         });
         
         const time = witaFormatter.format(dateParser).split(", ")
         const dateTest = time[0]+':'+time[1]+' WITA'
+
+    return dateTest
+}
+
+const dateBornConverter = (date: any) => {
+    const dateParser = new Date(date);
+        const witaFormatter = new Intl.DateTimeFormat('id-ID', {
+            timeZone: 'Asia/Makassar',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        });
+        
+        const time = witaFormatter.format(dateParser).split(", ")
+        const dateTest = time[0]
 
     return dateTest
 }
@@ -130,7 +148,7 @@ export const n8nCfitService = async (req:any, res:any, id: number) => {
             break
         }
 
-        const tglLahir = dateConverter(n8n.tanggalLahir)
+        const tglLahir = dateBornConverter(n8n.tanggalLahir)
         const tglTes = dateConverter(n8n.createdAt)
 
         const peserta:any = {
@@ -220,7 +238,7 @@ export const n8nKraepelinService = async (req:any, res:any, id:number) => {
             break
         }
 
-        const tglLahir = dateConverter(n8n.tanggalLahir)
+        const tglLahir = dateBornConverter(n8n.tanggalLahir)
         const tglTes = dateConverter(n8n.createdAt)
 
         const kraepelin:any = {
@@ -317,7 +335,7 @@ export const n8nDiscService = async (req:any, res:any, id:number) => {
             break
         }
 
-        const tglLahir = dateConverter(n8n.tanggalLahir)
+        const tglLahir = dateBornConverter(n8n.tanggalLahir)
         const tglTes = dateConverter(n8n.createdAt)
 
         const disc:any = {
@@ -429,7 +447,7 @@ export const n8nPapikostikService = async(req:any, res:any, id:number) => {
             break
         }
 
-        const tglLahir = dateConverter(n8n.tanggalLahir)
+        const tglLahir = dateBornConverter(n8n.tanggalLahir)
         const tglTes = dateConverter(n8n.createdAt)
 
         const papikostik:any = {
@@ -539,7 +557,7 @@ export const n8nMsdtService = async(req:any, res:any, id:number) => {
             break
         }
 
-        const tglLahir = dateConverter(n8n.tanggalLahir)
+        const tglLahir = dateBornConverter(n8n.tanggalLahir)
         const tglTes = dateConverter(n8n.createdAt)
 
         const msdt:any = {
@@ -647,7 +665,7 @@ export const n8nMbtiService = async (req:any, res:any, id: number) => {
             break
         }
 
-        const tglLahir = dateConverter(n8n.tanggalLahir)
+        const tglLahir = dateBornConverter(n8n.tanggalLahir)
         const tglTes = dateConverter(n8n.createdAt)
 
         const mbti:any = {
