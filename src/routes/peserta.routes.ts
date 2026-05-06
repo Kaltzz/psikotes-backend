@@ -7,7 +7,8 @@ import {
     answersPapikostick,
     n8nAnswersKraepelin,
     answersMsdt,
-    answersMbti
+    answersMbti,
+    tabSwitch
 } from "../controllers/answers.controller"
 
 import {
@@ -61,5 +62,8 @@ router.get('/questions/msdt', getMsdtQuestions)
 
 // MBTI
 router.get('/questions/mbti', getMbtiQuestions)
+
+//Tabs moved Log
+router.post('/tab-switch', tabSwitch) 
 
 export default router

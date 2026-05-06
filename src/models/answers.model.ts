@@ -156,3 +156,13 @@ export const answersMbtiModel = async (sessionId: number, data: any) => {
         }))
     })
 }
+
+export const tabSwitchModel = async (data:any) => {
+    return await prisma.movedTabLog.create({
+        data: {
+            sessionId: data.sessionId,
+            eventsType: data.eventsType,
+            timeStamp: new Date(data.timeStamp)
+        }
+    })
+}

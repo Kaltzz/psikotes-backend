@@ -1,3 +1,4 @@
+import { timeStamp } from "console"
 import { 
     answersCfitModel, 
     answersDiscModel,
@@ -6,7 +7,8 @@ import {
     answersPapikostickModel,
     n8nAnswersKraepelinModel,
     answersMsdtModel,
-    answersMbtiModel
+    answersMbtiModel,
+    tabSwitchModel
  } from "../models/answers.model"
 
 type DiscAnswerInput = {
@@ -207,4 +209,32 @@ export const answersMbtiService = async (sessionId: number, data: any) => {
             message: error
         })
     }
+}
+
+export const tabSwitchService = async (data:any) => {
+    try {
+        console.log('ini service', data)
+        const dateConvert = new Date(data.timestamp)
+        const newDate = dateConvert.toLocaleString('id-ID')
+        console.log('ini newDate', newDate)
+        const postLog = {
+            sessionId: data.sessionId,
+            eventsType: data.events[0].type,
+            timeStamp: data.timestamp
+        }
+        const tabSwitch = await tabSwitchModel(postLog)
+        console.log('ini isi postLog', postLog)
+
+        return ({
+            status: true,
+            message: "Data berhasil ditambahkan",
+            data: tabSwitch
+        })
+    } catch(error) {
+        return({
+            status: false,
+            message: error
+        })
+    }
+    
 }

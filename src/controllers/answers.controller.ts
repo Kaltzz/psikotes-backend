@@ -5,7 +5,8 @@ import {
     answersPapikostickService,
     n8nAnswersKraepelinService,
     answersMsdtService,
-    answersMbtiService
+    answersMbtiService,
+    tabSwitchService
 } from "../services/answers.service"
 
 // CFIT
@@ -97,4 +98,15 @@ export const answersMbti = async (req:any, res:any) => {
     }
 
     return res.status(201).json(mbti)
+}
+
+export const tabSwitch = async (req:any, res:any) => {
+    console.log('ini isi tabSwitch new', req.body)
+    const tabSwitch = await tabSwitchService(req.body)
+
+    if(!(tabSwitch.status)) {
+        return res.status(400).json(tabSwitch)
+    }
+
+    return res.status(201).json(tabSwitch)
 }

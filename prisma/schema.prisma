@@ -43,6 +43,8 @@ model TestSession {
   
   kraepelinLog KraepelinLog[]
   attempts    TestAttempt[]
+
+  tabSwitch MovedTabLog[]
   peserta     Peserta       @relation(fields: [pesertaId], references: [id])
 }
 
@@ -249,6 +251,15 @@ model JawabanMsdt {
   sessionId Int
   questionIndex Int
   type Int
+
+  session TestSession @relation(fields: [sessionId], references: [id])
+}
+
+model MovedTabLog {
+  id Int @id @default(autoincrement())
+  sessionId Int
+  eventsType String
+  timeStamp DateTime
 
   session TestSession @relation(fields: [sessionId], references: [id])
 }
