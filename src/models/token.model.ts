@@ -1,8 +1,8 @@
-// import { PrismaClient } from "@prisma/client";
-import { prisma } from '../utils/prisma'
+import { PrismaClient } from "@prisma/client";
+// import { prisma } from '../utils/prisma'
 import { generateTestToken } from "../utils/token.utils";
 
-// const prisma = new PrismaClient
+const prisma = new PrismaClient
 
 //read token (semua)
 export const fetchTokenModel = async () => {

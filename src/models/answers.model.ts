@@ -1,7 +1,7 @@
-// import { PrismaClient } from "@prisma/client"
-import { prisma } from '../utils/prisma'
+import { PrismaClient } from "@prisma/client"
+// import { prisma } from '../utils/prisma'
 
-// const prisma = new PrismaClient
+const prisma = new PrismaClient
 
 type CfitAnswerPayload = {
     questionId: number

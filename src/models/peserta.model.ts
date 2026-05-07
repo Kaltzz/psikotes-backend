@@ -1,7 +1,7 @@
-// import { PrismaClient } from "@prisma/client"
-import { prisma } from '../utils/prisma'
+import { PrismaClient } from "@prisma/client"
+// import { prisma } from '../utils/prisma'
 
-// const prisma = new PrismaClient
+const prisma = new PrismaClient
 
 const dateConverter = (date: any) => {
     const dateParser = new Date(date);
