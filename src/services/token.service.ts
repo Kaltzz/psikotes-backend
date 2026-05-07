@@ -31,17 +31,13 @@ export const getTokenService = async () => {
 }
 
 export const addTokenService = async (postToken:any, res:any) => {
-    const toUTC = (localDateString: string) => {
-        const date = new Date(localDateString) // browser otomatis baca sebagai waktu lokal
-        return date.toISOString() // konversi ke UTC → "2026-05-07T06:49:00.000Z"
-    }
     // console.log('ini di Model: ', postToken)
     try{
         const newDataToken = {
             tests: postToken.tests,
             kuota: postToken.kuota,
-            activeDate: toUTC(postToken.activeDate),
-            expiredDate: toUTC(postToken.expiredDate)
+            activeDate: new Date(postToken.activeDate),
+            expiredDate: new Date(postToken.expiredDate)
         }
         const dataToken = await postTokenModel(newDataToken, res)
         return ({
