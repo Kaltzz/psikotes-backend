@@ -1,6 +1,7 @@
-import { PrismaClient } from "@prisma/client"
+// import { PrismaClient } from "@prisma/client"
+import { prisma } from '../utils/prisma'
 
-const prisma = new PrismaClient()
+// const prisma = new PrismaClient()
 
 export const n8nCfitModel = async (id:number) => {
     return await prisma.peserta.findUnique({
