@@ -35,6 +35,8 @@ export const postPesertaService = async (post:any, res:any) => {
     const postToken = post.tokenPeserta
     const token = await getSpecificToken(postToken)
 
+    const dateNow = new Date
+
     if (token === null|| token == undefined || !token ) {
         return {
             status: false,
@@ -46,7 +48,14 @@ export const postPesertaService = async (post:any, res:any) => {
                 status: false,
                 message: 'Token tidak aktif'
             }
-        }
+        } else {
+            if (dateNow < token.activeDate || dateNow > token.expiredDate) {
+                return {
+                    status: false,
+                    message: 'Token Kadaluwarsa'
+                }
+            }
+        }   
 
         if (token.usedCount < token.kuota){
             const postResult = await postPesertaModel(post, res, token.id)

@@ -173,6 +173,8 @@ model Token {
   kuota     Int
   usedCount Int       @default(0)
   isActive  Boolean   @default(true)
+  activeDate DateTime @default(now())
+  expiredDate DateTime @default(now())
   createdAt DateTime  @default(now())
   expiredAt DateTime?
   tests     Tests[]

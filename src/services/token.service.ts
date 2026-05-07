@@ -30,7 +30,13 @@ export const getTokenService = async () => {
 export const addTokenService = async (postToken:any, res:any) => {
     // console.log('ini di Model: ', postToken)
     try{
-        const dataToken = await postTokenModel(postToken, res)
+        const newDataToken = {
+            tests: postToken.tests,
+            kuota: postToken.kuota,
+            activeDate: new Date(postToken.activeDate),
+            expiredDate: new Date(postToken.expiredDate)
+        }
+        const dataToken = await postTokenModel(newDataToken, res)
         return ({
             status: true,
             message: 'berhasil menambahkan token',
