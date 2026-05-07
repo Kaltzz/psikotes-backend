@@ -1,6 +1,6 @@
-import { PrismaClient } from "@prisma/client"
-
-const prisma = new PrismaClient
+// import { PrismaClient } from "@prisma/client"
+import { prisma } from '../utils/prisma'
+// const prisma = new PrismaClient
 
 export const getCfit1QuestionsContohModel = async (req:any, res:any) => {
     return await prisma.cfitQuestion.findMany({
