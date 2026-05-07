@@ -1,5 +1,8 @@
 // import { nonactiveToken, tokenList, tokenPost } from "../models/token.model"
 import { tokenNonactiveModel, fetchTokenModel, postTokenModel } from "../models/token.model"
+
+
+
 export const getTokenService = async () => {
     try {
         const dataToken = await fetchTokenModel()
@@ -28,13 +31,17 @@ export const getTokenService = async () => {
 }
 
 export const addTokenService = async (postToken:any, res:any) => {
+    const toUTC = (localDateString: string) => {
+        const date = new Date(localDateString) // browser otomatis baca sebagai waktu lokal
+        return date.toISOString() // konversi ke UTC → "2026-05-07T06:49:00.000Z"
+    }
     // console.log('ini di Model: ', postToken)
     try{
         const newDataToken = {
             tests: postToken.tests,
             kuota: postToken.kuota,
-            activeDate: new Date(postToken.activeDate),
-            expiredDate: new Date(postToken.expiredDate)
+            activeDate: toUTC(postToken.activeDate),
+            expiredDate: toUTC(postToken.expiredDate)
         }
         const dataToken = await postTokenModel(newDataToken, res)
         return ({
