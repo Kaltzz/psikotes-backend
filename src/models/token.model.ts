@@ -12,7 +12,9 @@ export const fetchTokenModel = async () => {
             tests: true,
             kuota: true,
             usedCount: true,
-            isActive: true
+            isActive: true,
+            activeDate: true,
+            expiredDate: true
         }
     })
 }
@@ -29,7 +31,9 @@ export const getSpecificToken = async (tokenInput:string) => {
                 usedCount: true,
                 kuota: true,
                 id: true,
-                isActive: true
+                isActive: true,
+                activeDate: true,
+                expiredDate: true
             }
         })
 }
@@ -40,7 +44,9 @@ export const postTokenModel = async (postToken:any, res:any) => {
         data: {
             token: generateTestToken(5),
             tests: postToken.tests,
-            kuota: postToken.kuota
+            kuota: postToken.kuota,
+            activeDate: postToken.activeDate,
+            expiredDate: postToken.expiredDate
         }
     })
 }

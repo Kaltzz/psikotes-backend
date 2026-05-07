@@ -14,7 +14,7 @@ export const getToken = async (req:any, res:any) => {
 
 export const addToken = async (req:any, res:any) => {
     const token = await addTokenService(req.body, res)
-
+    console.log('ini token update: ',req.body)
     if(!token.status) {
         return res.status(400).json(token)
     }
@@ -30,7 +30,7 @@ export const spesificToken = async (req:any, res:any) => {
 export const nonactiveToken = async (req:any, res:any) => {
     const id = Number(req.params.id)
     const statusActive = req.body
-    console.log('ini contriller:', statusActive)
+    console.log('ini controller:', statusActive)
     const token = await nonactiveTokenService(id, res, statusActive)
     
     if (!token.status) {
