@@ -3,7 +3,9 @@ import { postPesertaService,
         getDetailPesertaService,
         statusPesertaService,
         hasilPesertaService,
-        hasilTesService
+        hasilTesService,
+        userExpiredService,
+        // setTrueService
     } from "../services/peserta.service"
 
 
@@ -75,3 +77,25 @@ export const hasilTesController = async (req:any, res:any) => {
     }
     return res.status(201).json(peserta)
 }
+
+export const userExpired = async (req:any, res:any) => {
+    const nik = req.params.nik
+    const peserta = await userExpiredService(nik)
+    // console.log(nik)
+
+    if(!(peserta.status)) {
+        return res.status(400).json(peserta)
+    }
+
+    return res.status(201).json(peserta)
+}
+
+// export const setTrue = async (req:any, res:any) => {
+//     const id = req.params.id
+//     const peserta = await setTrueService(id)
+
+//     if(!(peserta.status)) 
+//         return res.status(400).json(peserta)
+
+//     return res.status(201).json(peserta)    
+// }

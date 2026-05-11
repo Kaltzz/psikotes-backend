@@ -12,6 +12,7 @@ model Peserta {
   nama               String
   jenisKelamin       JenisKelamin
   usia               Int
+  nik                String        @unique  @default(dbgenerated("LPAD(FLOOR(RANDOM() * 10000000000000000)::TEXT, 16, '0')"))
   pendidikanTerakhir String
   jurusan            String
   tanggalLahir       DateTime      @default(now())
@@ -23,6 +24,17 @@ model Peserta {
   posisi             String        @default("null")
   token              Token         @relation(fields: [tokenId], references: [id])
   testSession        TestSession[]
+  statusExpired      StatusExpired[]
+}
+
+model StatusExpired {
+  id Int @id @default(autoincrement())
+  pesertaId Int
+  isExpired Boolean
+  createdAt DateTime @default(now())
+  expiredAt DateTime 
+
+  peserta Peserta @relation(fields: [pesertaId], references: [id])
 }
 
 model TestSession {

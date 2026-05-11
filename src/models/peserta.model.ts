@@ -22,10 +22,13 @@ const dateConverter = (date: any) => {
 }
 
 export const postPesertaModel = async (post:any, res:any, id:any) => {
+    const expiredAt = new Date()
+    expiredAt.setMonth(expiredAt.getMonth() + 3)
     return await prisma.peserta.create({
         data: {
             nama: post.nama,
             email: post.email,
+            nik: post.nik,
             jenisKelamin: post.jenisKelamin,
             unit: post.unit,
             usia: post.usia,
@@ -41,7 +44,16 @@ export const postPesertaModel = async (post:any, res:any, id:any) => {
                     statusTest: 0
                 }
                 ]
+            },
+            statusExpired: {
+                create: 
+                    {
+                        isExpired: false,
+                        expiredAt: expiredAt
+                    }
+                
             }
+            
         },
         include: {
             testSession: true,
@@ -158,3 +170,62 @@ export const hasilTesModel = async (id:number) => {
     })
 }
 
+export const userExpiredModel = async (nik:string) => {
+    return await prisma.peserta.findFirst({
+    where: {
+        nik: nik,
+        testSession: {
+            some: {
+                statusTest: 2
+            }
+        }
+    },
+    select: {
+        id: true,
+        statusExpired: {
+            where: { isExpired: false },  
+            orderBy: { createdAt: 'desc' },
+            take: 1,
+            select: {
+                id: true,        
+                pesertaId: true,
+                isExpired: true,
+                createdAt: true,
+                expiredAt: true
+            }
+        }
+    }
+})
+}
+
+export const setTrueModel = async (statusExpiredId: number) => {
+    return await prisma.statusExpired.update({
+        where: {
+            id: statusExpiredId
+        },
+        data: {
+            isExpired: true
+        }
+    })
+}
+
+export const newTestSessionModel = async (pesertaId:number, token:number,) => {
+    return await prisma.testSession.create({
+        data: {
+            pesertaId: pesertaId,
+            token: token.toString(),
+            statusTest: 0
+        },
+        include: {
+            peserta: {
+                include: {
+                    token: {
+                        select: {
+                            tests: true
+                        }
+                    }
+                }
+            }
+        }
+    })
+}

@@ -4,7 +4,10 @@ import {
     getDetailPesertaModel, 
     statusPesertaModel,
     hasilPesertaModel,
-    hasilTesModel
+    hasilTesModel,
+    userExpiredModel,
+    setTrueModel,
+    newTestSessionModel
 } from "../models/peserta.model"
 import { 
     addCount, 
@@ -29,6 +32,59 @@ const dateConverter = (date: any) => {
         const dateTest = time[0]+':'+time[1]+' WITA'
 
     return dateTest
+}
+
+export const userExpiredService = async (nik: string) => {
+    try {
+        const peserta = await userExpiredModel(nik)
+
+        // 1. Peserta tidak ditemukan
+        if (!peserta) {
+            return {
+                status: true,
+                message: 'Data tidak ditemukan',
+                statusCode: 0
+            }
+        }
+
+        // 2. Status expired tidak ditemukan
+        const latestStatus = peserta.statusExpired[0]
+        if (!latestStatus?.expiredAt) {
+            return {
+                status: true,
+                message: 'Status expired tidak ditemukan',
+                statusCode: 1
+            }
+        }
+
+        const now = new Date()
+        const expiredDate = new Date(latestStatus.expiredAt)
+
+        // 3. Sudah expired → set true, boleh tes ulang
+        if (now >= expiredDate) {
+            await setTrueModel(latestStatus.id)  // ✅ cukup id StatusExpired
+            return {
+                status: true,
+                message: 'Peserta expired, silakan tes ulang',
+                data: peserta,
+                statusCode: 2
+            }
+        }
+
+        // 4. Belum expired
+        return {
+            status: true,
+            message: 'Peserta belum expired',
+            data: peserta,
+            statusCode: 3
+        }
+
+    } catch (error) {
+        return {
+            status: false,
+            message: error
+        }
+    }
 }
 
 export const postPesertaService = async (post:any, res:any) => {
@@ -58,38 +114,77 @@ export const postPesertaService = async (post:any, res:any) => {
         }   
 
         if (token.usedCount < token.kuota){
-            const postResult = await postPesertaModel(post, res, token.id)
-            const usedCount = await addCount(token.id)
+            const nikCheck = await userExpiredService(post.nik)
+            if (nikCheck.statusCode === 0) {
+                const postResult = await postPesertaModel(post, res, token.id)
+                const usedCount = await addCount(token.id)
 
-            const sessionId = postResult.testSession?.[0]?.id
+                const sessionId = postResult.testSession?.[0]?.id
 
-            if (!sessionId) {
-                return{
+                if (!sessionId) {
+                    return{
+                        status: false,
+                        message: 'Gagal memuat sesi ujian'
+                    }
+                }
+                return {
+                    status: true,
+                    message: 'Token yang dimasukkan benar',
+                    // data: [postResult, token.tests]
+                    data: {
+                        pesertaId: postResult.id,
+                        sessionId: sessionId,
+                        tests: postResult.token.tests
+                    },
+                    statusCode: 0
+                }
+            } else if( nikCheck.statusCode === 2) {
+                const pesertaId = nikCheck.data?.statusExpired[0]?.pesertaId
+                
+                if (!pesertaId) {
+                    return {
+                        status: false,
+                        message: 'peserta id tidak ditemukan saat pengecekan NIK'
+                    }
+                } 
+                const newTestSession = await newTestSessionModel(pesertaId, postToken)
+                const usedCount = await addCount(token.id)
+                return ({
+                    status: true,
+                    message: 'test session baru ditambahkan',
+                    statusCode: 2,
+                    data: {
+                        pesertaId: newTestSession.pesertaId,
+                        sessionId: newTestSession.id,
+                        tests: newTestSession.peserta.token.tests
+                    }
+                })
+            } else if ( nikCheck.statusCode === 3) {
+                return ({
+                    status: true,
+                    message: 'hasil tes peserta belum expired',
+                    statusCode: 3
+                })
+            } else {
+                return ({
                     status: false,
-                    message: 'Gagal memuat sesi ujian'
-                }
+                    message: 'nik ditemukan tapi statusExpired tidak ditemukan',
+                    statusCode: nikCheck.statusCode
+                })
             }
-            return {
-                status: true,
-                message: 'Token yang dimasukkan benar',
-                // data: [postResult, token.tests]
-                data: {
-                    pesertaId: postResult.id,
-                    sessionId: sessionId,
-                    tests: postResult.token.tests
-                }
-            }
+            
         } else {
             return {
                 status: false,
                 message: 'Kuota telah melebihi batas'
             }
-        }
-        
-
-        
+        }       
     }
 }
+
+
+
+
 
 export const getAllPesertaService = async () => {
     try {
@@ -293,3 +388,57 @@ export const hasilTesService = async (id: number) => {
         })
     }
 }
+
+// export const userExpiredService = async (nik:string) => {
+//     try {
+//         const peserta = await userExpiredModel(nik)
+//         console.log(peserta)
+
+//         if (peserta === null) {
+//             return ({
+//                 status: false,
+//                 message: 'data tidak ditemukan',
+//                 statusCode: 3
+//             })
+//         }
+
+//         // if (peserta.statusExpired == undefined) return
+//         const expiredAt = peserta?.statusExpired[0]?.expiredAt
+//         const now = new Date()
+//         if (expiredAt === null || expiredAt ===undefined ) {
+//             return ({
+//                 status: false,
+//                 message: 'Data tidak ditemukan'
+//             })
+//         } 
+//         const expiredDate = new Date(expiredAt)
+
+
+//         if (now >= expiredDate) {
+//             const setTrue = await setTrueModel(peserta.id, peserta?.statusExpired[0]?.pesertaId)
+//             // tes ulang
+//             return ({
+//             status: true,
+//             message: 'peserta expired',
+//             data: peserta,
+//             statusCode: 2
+//         })
+//         }
+//         else {
+//             return ({
+//             status: true,
+//             message: 'peserta belum expired',
+//             data: peserta,
+//             statusCode: 3
+//         })
+//         }
+        
+//     } catch (error) {
+//         return ({
+//             status: false,
+//             message: error
+//         })
+//     }
+    
+// }
+
