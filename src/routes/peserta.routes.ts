@@ -1,5 +1,7 @@
 import { Router } from "express";
-import { postPeserta, statusPeserta} from "../controllers/peserta.controller";
+import { postPeserta, 
+    // setTrue, 
+    statusPeserta, userExpired} from "../controllers/peserta.controller";
 import { 
     answersCfit, 
     answersDisc, 
@@ -64,6 +66,10 @@ router.get('/questions/msdt', getMsdtQuestions)
 router.get('/questions/mbti', getMbtiQuestions)
 
 //Tabs moved Log
-router.post('/tab-switch', tabSwitch) 
+router.post('/tab-switch', tabSwitch)
+
+//cek peserta sudah expired atau belum
+router.patch(`/user-expired/:nik`, userExpired)
+// router.put(`/user-expired/:id`, setTrue)
 
 export default router
