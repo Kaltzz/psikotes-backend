@@ -21,7 +21,7 @@ const processQueue = async () => {
     }
     // Jeda 2 detik antar trigger — n8n tidak kewalahan
     if (queue.length > 0) {
-      await new Promise(resolve => setTimeout(resolve, 20000));
+      await new Promise(resolve => setTimeout(resolve, 100000));
     }
   }
 
