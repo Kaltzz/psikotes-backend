@@ -22,7 +22,7 @@ export const triggerN8N = async (req: any, res: any) => {
     triggerN8NService(Number(pesertaId), tests)
         .then(result => {
             if (result.status) {
-                console.log(`✅ N8N triggered for peserta ${pesertaId} dan ${result.data}`);
+                console.log(`✅ N8N triggered for peserta ${pesertaId} dan ${result.message}`);
             } else {
                 console.error(`❌ N8N trigger failed for peserta ${pesertaId}`);
             }

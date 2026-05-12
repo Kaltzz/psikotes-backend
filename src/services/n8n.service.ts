@@ -1,3 +1,4 @@
+import { PrismaClient } from "@prisma/client";
 import { 
     n8nCfitModel,
     n8nKraepelinModel,
@@ -6,6 +7,9 @@ import {
     n8nMsdtModel,
     n8nMbtiModel
 } from "../models/n8n.model"
+import { addToN8NQueue } from "../utils/n8nqueue";
+
+const prisma = new PrismaClient
 
 const dateConverter = (date: any) => {
     const dateParser = new Date(date);
@@ -43,58 +47,59 @@ const dateBornConverter = (date: any) => {
     return dateTest
 }
 
+// triggerN8NService.ts — hapus setTimeout 3000, pindah logika ke sini
 export const triggerN8NService = async (pesertaId: number, tests: string) => {
-    const N8N_WEBHOOK_URL_PRODUCTION = process.env.N8N_WEBHOOK_URL_PRODUCTION;
-    console.log('ini test trigger:', typeof(tests))
+  const N8N_WEBHOOK_URL_PRODUCTION = process.env.N8N_WEBHOOK_URL_PRODUCTION;
 
-    if (!N8N_WEBHOOK_URL_PRODUCTION) {
-        console.warn('⚠️ N8N_WEBHOOK_URL_PRODUCTION not configured');
-        return {
-            status: false,
-            message: 'N8N webhook URL not configured'
-        };
+  if (!N8N_WEBHOOK_URL_PRODUCTION) {
+    return { status: false, message: 'N8N webhook URL not configured' };
+  }
+
+  // Validasi jawaban dulu sebelum masuk queue
+  const session = await prisma.testSession.findFirst({
+    where: { pesertaId: Number(pesertaId) },
+    orderBy: { createdAt: 'desc' }
+  });
+
+  if (!session) {
+    return { status: false, message: 'Session tidak ditemukan' };
+  }
+
+  const jawabanCount = await prisma.jawabanCfit.count({
+    where: { sessionId: session.id }
+  });
+
+  if (jawabanCount === 0) {
+    return { status: false, message: 'Jawaban belum tersimpan' };
+  }
+
+  // Masukkan ke queue — tidak langsung fire
+  addToN8NQueue(async () => {
+    console.log(`🔔 [Queue] Triggering N8N peserta ${pesertaId} (${jawabanCount} jawaban)...`);
+
+    const response = await fetch(N8N_WEBHOOK_URL_PRODUCTION, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            body: {
+            pesertaId,
+            tests,
+            timestamp: new Date().toISOString(),
+            event: 'test_completed'
+            }
+        }),
+      signal: AbortSignal.timeout(15000) // timeout 15 detik
+    });
+
+    if (!response.ok) {
+      throw new Error(`N8N responded with status ${response.status}`);
     }
 
-    try {
-        console.log(`🔔 Triggering N8N for peserta ${pesertaId}...`);
+    console.log(`✅ [Queue] N8N triggered peserta ${pesertaId}`);
+  });
 
-        const response = await fetch(N8N_WEBHOOK_URL_PRODUCTION, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                pesertaId: pesertaId,
-                tests: tests,
-                timestamp: new Date().toISOString(),
-                event: 'test_completed'
-            })
-        });
-
-        console.log('isi body: ', response.body)
-
-        if (!response.ok) {
-            throw new Error(`N8N responded with status ${response.status}`);
-        }
-
-        console.log(`✅ N8N triggered successfully for peserta ${pesertaId}`);
-
-        return {
-            status: true,
-            message: 'N8N triggered successfully',
-            data: response.body
-        };
-
-    } catch (error) {
-        console.error(`❌ Failed to trigger N8N for peserta ${pesertaId}:`, error);
-
-        return {
-            status: false,
-            message: 'Failed to trigger N8N'
-        };
-    }
+  return { status: true, message: 'N8N trigger queued' };
 };
-
 export const n8nCfitService = async (req:any, res:any, id: number) => {
     try {
         const pesertaId = id

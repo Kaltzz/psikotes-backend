@@ -80,6 +80,7 @@ export const userExpiredService = async (nik: string) => {
         }
 
     } catch (error) {
+        console.log('error userExpiredService:', error) 
         return {
             status: false,
             message: error
@@ -115,6 +116,7 @@ export const postPesertaService = async (post:any, res:any) => {
 
         if (token.usedCount < token.kuota){
             const nikCheck = await userExpiredService(post.nik)
+            console.log('nikCheck:', nikCheck)
             if (nikCheck.statusCode === 0) {
                 const postResult = await postPesertaModel(post, res, token.id)
                 const usedCount = await addCount(token.id)
