@@ -1,11 +1,16 @@
 // import { nonactiveToken, tokenList, tokenPost } from "../models/token.model"
-import { tokenNonactiveModel, fetchTokenModel, postTokenModel } from "../models/token.model"
+import { Role } from "@prisma/client"
+import { tokenNonactiveModel, fetchTokenModel, postTokenModel, fetchTokenModelAdmin } from "../models/token.model"
 
 
 
-export const getTokenService = async () => {
+export const getTokenService = async (role:string) => {
     try {
-        const dataToken = await fetchTokenModel()
+        let dataToken
+        if(role === Role.ADMIN) {
+            dataToken = await fetchTokenModelAdmin()
+        }
+            dataToken = await fetchTokenModel(role)
         return ({
             status: true,
             message: 'berhasil mendapatkan token',
@@ -30,12 +35,13 @@ export const getTokenService = async () => {
     // })
 }
 
-export const addTokenService = async (postToken:any, res:any) => {
+export const addTokenService = async (postToken:any, res:any, role:string) => {
     // console.log('ini di Model: ', postToken)
     try{
         const newDataToken = {
             tests: postToken.tests,
             kuota: postToken.kuota,
+            role: role,
             activeDate: new Date(postToken.activeDate),
             expiredDate: new Date(postToken.expiredDate)
         }

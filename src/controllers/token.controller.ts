@@ -3,7 +3,8 @@ import { getTokenService, addTokenService, nonactiveTokenService } from "../serv
 
 
 export const getToken = async (req:any, res:any) => {
-    const tokenList = await getTokenService()
+    const role = req.user.role
+    const tokenList = await getTokenService(role)
 
     if(!tokenList.status) {
         return res.status(400).json(tokenList)
@@ -13,7 +14,8 @@ export const getToken = async (req:any, res:any) => {
 }
 
 export const addToken = async (req:any, res:any) => {
-    const token = await addTokenService(req.body, res)
+    const role = req.user.role
+    const token = await addTokenService(req.body, res, role)
     console.log('ini token update: ',req.body)
     if(!token.status) {
         return res.status(400).json(token)

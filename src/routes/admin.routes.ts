@@ -8,6 +8,7 @@ import {
     hasilTesController
 } from "../controllers/peserta.controller";
 import { getDashboard } from "../controllers/dashboard.controller";
+import { authRoleMiddleware } from "../middlewares/autRole.middleware";
 
 
 
@@ -30,6 +31,4 @@ router.get('/dashboard', (req, res)=>{})
 //hasil tes
 router.get('/hasiltes', hasilPesertaController)
 router.get('/hasiltes/hasil/:id', hasilTesController)
-
-
 export default router

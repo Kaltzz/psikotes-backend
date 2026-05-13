@@ -20,7 +20,8 @@ export const postPeserta = async (req:any, res:any) => {
 }
 
 export const getAllPeserta = async (req: any, res:any) => {
-    const peserta = await getAllPesertaService()
+    const role = req.user.role
+    const peserta = await getAllPesertaService(role)
 
     if (!peserta.status) {
         return res.status(400).json(peserta)
@@ -60,7 +61,8 @@ export const statusPeserta = async (req:any, res:any) => {
 //hasil tes
 
 export const hasilPesertaController = async (req:any, res:any) => {
-    const peserta = await hasilPesertaService()
+    const role = req.user.role
+    const peserta = await hasilPesertaService(role)
 
     if (!(peserta.status)) {
         return res.status(400).json(peserta)
