@@ -1,11 +1,29 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Role } from "@prisma/client";
 // import { prisma } from '../utils/prisma'
 import { generateTestToken } from "../utils/token.utils";
 
 const prisma = new PrismaClient
 
 //read token (semua)
-export const fetchTokenModel = async () => {
+export const fetchTokenModel = async (role:string) => {
+    return await prisma.token.findMany({
+        where: {
+            role: role as Role
+        },
+        select: {
+            id:true,
+            token: true,
+            tests: true,
+            kuota: true,
+            usedCount: true,
+            isActive: true,
+            activeDate: true,
+            expiredDate: true
+        }
+    })
+}
+
+export const fetchTokenModelAdmin = async () => {
     return await prisma.token.findMany({
         select: {
             id:true,
@@ -40,14 +58,15 @@ export const getSpecificToken = async (tokenInput:string) => {
 }
 
 //tambah token
-export const postTokenModel = async (postToken:any, res:any) => {
+export const postTokenModel = async (newDataToken:any, res:any) => {
     return await prisma.token.create({
         data: {
             token: generateTestToken(5),
-            tests: postToken.tests,
-            kuota: postToken.kuota,
-            activeDate: postToken.activeDate,
-            expiredDate: postToken.expiredDate
+            tests: newDataToken.tests,
+            role: newDataToken.role,
+            kuota: newDataToken.kuota,
+            activeDate: newDataToken.activeDate,
+            expiredDate: newDataToken.expiredDate
         }
     })
 }

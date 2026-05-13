@@ -1,3 +1,4 @@
+import { Role } from "@prisma/client";
 import { 
     postPesertaModel, 
     getAllPesertaModel , 
@@ -7,7 +8,9 @@ import {
     hasilTesModel,
     userExpiredModel,
     setTrueModel,
-    newTestSessionModel
+    newTestSessionModel,
+    hasilPesertaModelAdmin,
+    getAllPesertaModelAdmin
 } from "../models/peserta.model"
 import { 
     addCount, 
@@ -188,9 +191,14 @@ export const postPesertaService = async (post:any, res:any) => {
 
 
 
-export const getAllPesertaService = async () => {
+export const getAllPesertaService = async (role:string) => {
     try {
-        const peserta = await getAllPesertaModel()
+        let peserta
+        if (role === Role.ADMIN) {
+            peserta = await getAllPesertaModelAdmin()
+        } else {
+            peserta = await getAllPesertaModel(role)
+        }
         return ({
             status: true,
             message: 'data ditemukan',
@@ -251,9 +259,14 @@ export const statusPesertaService = async (sessionId:number, res:any) => {
 }
 
 // Hasil Tes
-export const hasilPesertaService = async () => {
+export const hasilPesertaService = async (role:string) => {
     try {
-        const peserta = await hasilPesertaModel()
+        let peserta
+        if (role === Role.ADMIN) {
+            peserta = await hasilPesertaModelAdmin()
+        } else {
+            peserta = await hasilPesertaModel(role)
+        }
         const date = peserta[0]?.peserta.createdAt
         console.log(date)
 

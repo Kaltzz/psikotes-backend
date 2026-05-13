@@ -9,10 +9,10 @@ import { mbtiSeed } from './seeds/mbti';
 const prisma = new PrismaClient();
 
 async function main() {
-    // await adminSeed()
+    await adminSeed()
     // await cfitSeed()
     // await discSeed()
-    await papikostickSeed()
+    // await papikostickSeed()
     // await msdtSeed()
     // await mbtiSeed()
 

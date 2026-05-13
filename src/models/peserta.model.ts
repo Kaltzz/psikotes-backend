@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client"
+import { PrismaClient, Role, Unit } from "@prisma/client"
 // import { prisma } from '../utils/prisma'
 
 const prisma = new PrismaClient
@@ -62,7 +62,28 @@ export const postPesertaModel = async (post:any, res:any, id:any) => {
     })
 }
 
-export const getAllPesertaModel = async () => {
+export const getAllPesertaModel = async (role:string) => {
+    return await prisma.peserta.findMany({
+        where: {
+            unit: role as Unit
+        },
+        select: {
+            nama: true,
+            id: true,
+            // jenisKelamin: true,
+            // usia: true,
+            // pendidikanTerakhir: true,
+            // jurusan: true,
+            testSession: {
+                select: {
+                    statusTest: true
+                }
+            }
+        }
+    })
+}
+
+export const getAllPesertaModelAdmin = async () => {
     return await prisma.peserta.findMany({
         select: {
             nama: true,
@@ -113,10 +134,31 @@ export const statusPesertaModel = async (sessionId: number, res:any) => {
 }
 
 //Hasil Tes
-export const hasilPesertaModel = async () => {
+export const hasilPesertaModel = async (role:string) => {
     return await prisma.testSession.findMany({
         where: {
-            statusTest: 2
+            statusTest: 2,
+            peserta: {
+                unit: role as Unit
+            }
+        },
+        select: {
+            peserta: {
+                select: {
+                    id: true,
+                    nama: true,
+                    createdAt: true
+                }
+            }
+        }
+    })
+}
+
+export const hasilPesertaModelAdmin = async () => {
+    return await prisma.testSession.findMany({
+        where: {
+            statusTest: 2,
+            
         },
         select: {
             peserta: {

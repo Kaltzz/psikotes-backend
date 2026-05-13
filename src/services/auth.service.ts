@@ -22,7 +22,8 @@ export const loginService= async (dataLogin: any, res:any) => {
             if (match) {
                 const payload = {
                     id: dataAdmin.id,
-                    username: dataAdmin.username
+                    username: dataAdmin.username,
+                    role: dataAdmin.role
                 }
                 const secret = process.env.ACCESS_TOKEN_SECRET!
                 const token = jwt.sign(
