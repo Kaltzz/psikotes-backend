@@ -247,6 +247,7 @@ export const n8nKraepelinService = async (req:any, res:any, id:number) => {
         const tglTes = dateConverter(n8n.createdAt)
 
         const kraepelin:any = {
+            "id": pesertaId,
             "nama": n8n.nama,
             "email": n8n.email,
             "tanggal lahir": tglLahir,
@@ -344,6 +345,7 @@ export const n8nDiscService = async (req:any, res:any, id:number) => {
         const tglTes = dateConverter(n8n.createdAt)
 
         const disc:any = {
+            "id": pesertaId,
             "nama": n8n.nama,
             "email": n8n.email,
             "tanggal lahir": tglLahir,
@@ -456,6 +458,7 @@ export const n8nPapikostikService = async(req:any, res:any, id:number) => {
         const tglTes = dateConverter(n8n.createdAt)
 
         const papikostik:any = {
+            "id": pesertaId,
             "nama": n8n.nama,
             "email": n8n.email,
             "tanggal lahir": tglLahir,
@@ -566,6 +569,7 @@ export const n8nMsdtService = async(req:any, res:any, id:number) => {
         const tglTes = dateConverter(n8n.createdAt)
 
         const msdt:any = {
+            "id": pesertaId,
             "nama": n8n.nama,
             "email": n8n.email,
             "tanggal lahir": tglLahir,
@@ -674,6 +678,7 @@ export const n8nMbtiService = async (req:any, res:any, id: number) => {
         const tglTes = dateConverter(n8n.createdAt)
 
         const mbti:any = {
+            "id": pesertaId,
             "nama": n8n.nama,
             "email": n8n.email,
             "tanggal lahir": tglLahir,
