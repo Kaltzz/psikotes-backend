@@ -99,6 +99,7 @@ export const n8nDiscModel = async (id: number) => {
                 select: {
                     jawabanDisc: {
                         select: {
+                            id: true,
                             questionIndex: true,
                             most: true, 
                             least: true
@@ -130,6 +131,7 @@ export const n8nPapikostikModal = async (id:number) => {
                 select: {
                     jawabanPapikostik: {
                         select:{
+                            
                             questionIndex: true,
                             type: true
                         }
