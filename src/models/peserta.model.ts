@@ -70,6 +70,8 @@ export const getAllPesertaModel = async (role:string) => {
         select: {
             nama: true,
             id: true,
+            createdAt:true,
+            posisi: true,
             // jenisKelamin: true,
             // usia: true,
             // pendidikanTerakhir: true,
@@ -88,6 +90,8 @@ export const getAllPesertaModelAdmin = async () => {
         select: {
             nama: true,
             id: true,
+            createdAt:true,
+            posisi: true,
             // jenisKelamin: true,
             // usia: true,
             // pendidikanTerakhir: true,
@@ -147,11 +151,13 @@ export const hasilPesertaModel = async (role:string) => {
                 select: {
                     id: true,
                     nama: true,
-                    createdAt: true
+                    createdAt: true,
+                    posisi: true
                 }
             }
         }
     })
+    
 }
 
 export const hasilPesertaModelAdmin = async () => {
@@ -165,7 +171,8 @@ export const hasilPesertaModelAdmin = async () => {
                 select: {
                     id: true,
                     nama: true,
-                    createdAt: true
+                    createdAt: true,
+                    posisi: true
                 }
             }
         }

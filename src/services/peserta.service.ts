@@ -193,23 +193,63 @@ export const postPesertaService = async (post:any, res:any) => {
 
 export const getAllPesertaService = async (role:string) => {
     try {
-        let peserta
-        if (role === Role.ADMIN) {
-            peserta = await getAllPesertaModelAdmin()
-        } else {
-            peserta = await getAllPesertaModel(role)
-        }
-        return ({
-            status: true,
-            message: 'data ditemukan',
-            data: peserta
-        })
-    } catch (error) {
-        return ({
-            status: false,
-            message: 'data tidak ditemukan'
-        })
+
+    let peserta
+
+    if (role === Role.ADMIN) {
+        peserta = await getAllPesertaModelAdmin()
+    } else {
+        peserta = await getAllPesertaModel(role)
     }
+
+    if (!peserta || peserta.length === 0) {
+        return {
+            status: false,
+            message: "gagal mendapatkan data"
+        }
+    }
+
+    // formatter dibuat sekali
+    const witaFormatter = new Intl.DateTimeFormat('id-ID', {
+        timeZone: 'Asia/Makassar',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+    })
+
+    // mapping semua peserta
+    const newPeserta = peserta.map(obj => {
+
+        const time = witaFormatter
+            .format(new Date(obj.createdAt))
+            .split(", ")
+
+        const dateTest =
+            `${time[0]}:${time[1]} WITA`
+
+        return {
+            ...obj,
+            tanggal: dateTest
+        }
+    })
+
+    console.log(newPeserta)
+
+    return {
+        status: true,
+        data: newPeserta
+    }
+
+} catch (err: any) {
+
+    return {
+        status: false,
+        message: err.message
+    }
+}
 }
 
 export const getDetailPesertaService = async (id:number, res:any) => {
@@ -267,55 +307,58 @@ export const hasilPesertaService = async (role:string) => {
         } else {
             peserta = await hasilPesertaModel(role)
         }
-        const date = peserta[0]?.peserta.createdAt
-        console.log(date)
-
-        if(date == undefined) {
-            return {
-                status: false,
-                message: "gagal mendapatkan data"
-            }
-        }
-
-        console.log(peserta)
-        
-        const dateParser = new Date(date);
-        const witaFormatter = new Intl.DateTimeFormat('id-ID', {
-        timeZone: 'Asia/Makassar',
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false
-        });
-        
-        const time = witaFormatter.format(dateParser).split(", ")
-        const dateTest = time[0]+':'+time[1]+' WITA'
-
-        // const newPeserta = {
-        //     id: peserta[0]?.peserta.id,
-        //     name: peserta[0]?.peserta.nama,
-        //     date : dateTest
-        // }
-
-        const newPeserta = peserta.map(obj =>  ({
-            ...obj.peserta,
-            tanggal: dateTest
-        }))
-
-        return ({
-            status: true,
-            message: "berhasil mendapatkan data",
-            data: newPeserta
-        })
-    } catch (error) {
-        return ({
+        if (!peserta || peserta.length === 0) {
+        return {
             status: false,
             message: "gagal mendapatkan data"
+        }
+    }
+
+        // formatter dibuat sekali
+        const witaFormatter = new Intl.DateTimeFormat('id-ID', {
+            timeZone: 'Asia/Makassar',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
         })
+
+        // mapping semua peserta
+        const newPeserta = peserta.map(obj => {
+
+            const time = witaFormatter
+                .format(new Date(obj.peserta.createdAt))
+                .split(", ")
+
+            const dateTest =
+                `${time[0]}:${time[1]} WITA`
+
+            return {
+                id: obj.peserta.id,
+                nama: obj.peserta.nama,
+                createdAt: obj.peserta.createdAt,
+                posisi: obj.peserta.posisi,
+                tanggal: dateTest
+            }
+        })
+
+        console.log(newPeserta)
+
+        return {
+            status: true,
+            data: newPeserta
+        }
+
+    } catch (err: any) {
+
+        return {
+            status: false,
+            message: err.message
+        }
     } 
-}
+    }
 
 export const hasilTesService = async (id: number) => {
     try {
