@@ -62,7 +62,7 @@ export const postPesertaModel = async (post:any, res:any, id:any) => {
     })
 }
 
-export const getAllPesertaModel = async (role:string) => {
+export const getAllPesertaModel = async (role:string, page:number, limit:number, offset:number) => {
     return await prisma.peserta.findMany({
         where: {
             unit: role as Unit
@@ -85,8 +85,13 @@ export const getAllPesertaModel = async (role:string) => {
     })
 }
 
-export const getAllPesertaModelAdmin = async () => {
+export const getAllPesertaModelAdmin = async (page: number, limit: number, offset:number, posisi?:string) => {
     return await prisma.peserta.findMany({
+        take: limit,
+        skip: offset,
+        where: {
+            ...(posisi ? {posisi}: {})
+        },
         select: {
             nama: true,
             id: true,
@@ -103,6 +108,14 @@ export const getAllPesertaModelAdmin = async () => {
             }
         }
     })
+}
+
+export const allDataAdminModel = async () => {
+    return await prisma.peserta.count()
+}
+
+export const allDataModel = async (role:string) => {
+    return await prisma.peserta.count()
 }
 
 export const getDetailPesertaModel = async (id:number, res:any) => {
@@ -123,6 +136,15 @@ export const getDetailPesertaModel = async (id:number, res:any) => {
                 }
             }
         },            
+    })
+}
+
+export const getAllPosisiModel = async () => {
+    return await prisma.peserta.groupBy({
+        by: ['posisi'],
+        _count: {
+            posisi: true
+        }
     })
 }
 
