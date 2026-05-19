@@ -10,7 +10,10 @@ import {
     setTrueModel,
     newTestSessionModel,
     hasilPesertaModelAdmin,
-    getAllPesertaModelAdmin
+    getAllPesertaModelAdmin,
+    allDataAdminModel,
+    allDataModel,
+    getAllPosisiModel
 } from "../models/peserta.model"
 import { 
     addCount, 
@@ -191,16 +194,25 @@ export const postPesertaService = async (post:any, res:any) => {
 
 
 
-export const getAllPesertaService = async (role:string) => {
+export const getAllPesertaService = async (role:string, page: number, limit: number, offset:any, posisi?:string) => {
     try {
 
-    let peserta
+    let peserta, allData
 
     if (role === Role.ADMIN) {
-        peserta = await getAllPesertaModelAdmin()
+        peserta = await getAllPesertaModelAdmin(page, limit, offset, posisi)
+        // if (!allDataAdmin) return
+        
+        allData = await allDataAdminModel()
+
+      
+        
     } else {
-        peserta = await getAllPesertaModel(role)
+        peserta = await getAllPesertaModel(role, page, limit, offset)
+        allData = await allDataModel(role)
     }
+
+    let totalPages = Math.ceil(allData / limit)
 
     if (!peserta || peserta.length === 0) {
         return {
@@ -232,15 +244,18 @@ export const getAllPesertaService = async (role:string) => {
 
         return {
             ...obj,
-            tanggal: dateTest
+            tanggal: dateTest,
         }
     })
 
-    console.log(newPeserta)
-
     return {
         status: true,
-        data: newPeserta
+        data: newPeserta,
+        pagination: {
+            allData: allData,
+            totalPages: totalPages
+        }
+
     }
 
 } catch (err: any) {
@@ -278,6 +293,36 @@ export const getDetailPesertaService = async (id:number, res:any) => {
     //         data: peserta
     //     })
     // }
+}
+
+export const getAllPosisiService = async () => {
+    try {
+        const posisi = await getAllPosisiModel()
+        
+        const newPosisi = posisi.map((item)=> {
+            return ({
+                label: item.posisi,
+                count: item._count.posisi
+            })
+        })
+
+        const total = newPosisi.reduce((akumulasi, item) => {
+            return akumulasi + item.count
+        }, 0)
+
+        newPosisi.unshift({label: 'Semua', count: total})
+
+        return({
+            status: true,
+            message: 'data posisi berhasil diperoleh',
+            data: newPosisi
+        })
+    } catch(error) {
+        return ({
+            status: true,
+            message: `data posisi gagal diperoleh: ${error}`
+        })
+    }
 }
 
 export const statusPesertaService = async (sessionId:number, res:any) => {    

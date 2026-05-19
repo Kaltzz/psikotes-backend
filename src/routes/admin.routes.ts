@@ -3,6 +3,7 @@ import { addToken, nonactiveToken, getToken, spesificToken } from "../controller
 import { authMiddleware } from "../middlewares/auth.middleware";
 import { 
     getAllPeserta, 
+    getAllPosisi, 
     getDetailPeserta,
     hasilPesertaController,
     hasilTesController
@@ -24,6 +25,7 @@ router.put('/token/:id', nonactiveToken)
 //peserta
 router.get('/peserta', getAllPeserta)
 router.get('/peserta/detail/:id', getDetailPeserta)
+router.get('/peserta/posisi', getAllPosisi)
 
 //dashboard
 router.get('/dashboard', (req, res)=>{})
