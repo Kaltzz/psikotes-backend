@@ -5,7 +5,8 @@ import {
     n8nDiscModel,
     n8nPapikostikModal,
     n8nMsdtModel,
-    n8nMbtiModel
+    n8nMbtiModel,
+    getAllCfitAnswersModel
 } from "../models/n8n.model"
 import { addToN8NQueue } from "../utils/n8nqueue";
 
@@ -728,4 +729,30 @@ export const n8nMbtiService = async (req:any, res:any, id: number) => {
             message: 'Gagal mendapatkan data jawaban mbti peserta'
         })
     }
+}
+
+export const getAllCfitAnswersService = async (date: string) => {
+    try{
+        
+        const answers = await getAllCfitAnswersModel(date)
+
+        if (!answers) {
+            return ({
+                status: true,
+                message: 'Data kosong'
+            })
+        }
+
+        return ({
+            status: true,
+            message: 'Data berhasil diambil',
+            data: answers
+        })
+    } catch (error) {
+        return({
+            status: false,
+            message: `Proses gagal: ${error}`
+        })
+    }
+    
 }

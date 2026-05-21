@@ -5,7 +5,8 @@ import {
     n8nDiscService,
     n8nPapikostikService,
     n8nMsdtService,
-    n8nMbtiService
+    n8nMbtiService,
+    getAllCfitAnswersService
 } from "../services/n8n.service" 
 
 export const triggerN8N = async (req: any, res: any) => {
@@ -99,4 +100,18 @@ export const n8nMbti = async (req:any, res:any) => {
     }
 
     return res.status(201).json(n8n)
+}
+
+export const getAllCfitAnswers = async (req:any, res:any) => {
+    const date = req.query.date
+    console.log('ini date ',date)
+    console.log('ini type date: ',typeof(date))
+
+    const answers = await getAllCfitAnswersService(date)
+
+    if (!(answers.status)) {
+        return res.status(400).json(answers)
+    }
+
+    return res.status(201).json(answers)
 }

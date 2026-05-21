@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client"
+import { PrismaClient, Tests } from "@prisma/client"
 // import { prisma } from '../utils/prisma'
 
 const prisma = new PrismaClient()
@@ -198,6 +198,28 @@ export const n8nMbtiModel = async (id: number) => {
                     }
                 }
             }
+        }
+    })
+}
+
+export const getAllCfitAnswersModel = async(date:string) => {
+    return prisma.testSession.findMany({
+        where: {
+            statusTest: 2,
+            createdAt: {
+                gte: new Date(date)
+            },
+            peserta: {
+                token: {
+                    tests: {
+                        has: "CFIT" as Tests
+                    } 
+                }
+            }
+        },
+        select: {
+            id: true,
+            pesertaId: true
         }
     })
 }
