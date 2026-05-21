@@ -7,7 +7,8 @@ import {
     getDetailPeserta,
     hasilPesertaController,
     hasilTesController,
-    getAllHasilPosisiController
+    getAllHasilPosisiController,
+    getCountAllPeserta
 } from "../controllers/peserta.controller";
 import { getDashboard } from "../controllers/dashboard.controller";
 import { authRoleMiddleware } from "../middlewares/autRole.middleware";
@@ -27,6 +28,7 @@ router.put('/token/:id', nonactiveToken)
 router.get('/peserta', getAllPeserta)
 router.get('/peserta/detail/:id', getDetailPeserta)
 router.get('/peserta/posisi', getAllPosisi)
+router.get('/peserta/count', getCountAllPeserta)
 // router.get('/peserta/time', getFilteredTime)
 
 //dashboard

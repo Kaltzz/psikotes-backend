@@ -17,6 +17,7 @@ import {
     allDataHasilModelAdmin,
     allDataHasilModel,
     getAllHasilPosisiModel,
+    getCountAllPesertaModel
     // getFilteredDateModel
 } from "../models/peserta.model"
 import { 
@@ -194,9 +195,24 @@ export const postPesertaService = async (post:any, res:any) => {
     }
 }
 
+export const getCountAllPesertaService = async () => {
+    try {
+        const peserta = await getCountAllPesertaModel()
 
 
+        return({
+            status: true,
+            message: "berhasil mendapatkan data",
+            data: peserta
+        })
+    } catch (error) {
+        return({
+            status: false,
+            message: "gagal mendapatkan data",
+        })
 
+    }
+ }
 
 export const getAllPesertaService = async (
     role:string, 
