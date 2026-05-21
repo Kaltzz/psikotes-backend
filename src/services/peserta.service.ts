@@ -13,7 +13,11 @@ import {
     getAllPesertaModelAdmin,
     allDataAdminModel,
     allDataModel,
-    getAllPosisiModel
+    getAllPosisiModel,
+    allDataHasilModelAdmin,
+    allDataHasilModel,
+    getAllHasilPosisiModel,
+    // getFilteredDateModel
 } from "../models/peserta.model"
 import { 
     addCount, 
@@ -194,30 +198,41 @@ export const postPesertaService = async (post:any, res:any) => {
 
 
 
-export const getAllPesertaService = async (role:string, page: number, limit: number, offset:any, posisi?:string) => {
+export const getAllPesertaService = async (
+    role:string, 
+    page: number, 
+    limit: number, 
+    offset:any, 
+    posisi?:string, 
+    nama?:string,
+    startDate?:string,
+    endDate?:string
+) => {
     try {
 
     let peserta, allData
-
+    
     if (role === Role.ADMIN) {
-        peserta = await getAllPesertaModelAdmin(page, limit, offset, posisi)
-        // if (!allDataAdmin) return
-        
-        allData = await allDataAdminModel()
-
-      
-        
+        peserta = await getAllPesertaModelAdmin(page, limit, offset, posisi, nama, startDate, endDate)
+        allData = await allDataAdminModel(posisi, nama, startDate, endDate)
     } else {
-        peserta = await getAllPesertaModel(role, page, limit, offset)
-        allData = await allDataModel(role)
+        peserta = await getAllPesertaModel(role, page, limit, offset, posisi, nama, startDate, endDate)
+        allData = await allDataModel(role, posisi, nama, startDate, endDate)
     }
 
     let totalPages = Math.ceil(allData / limit)
 
-    if (!peserta || peserta.length === 0) {
+    if (!peserta) {
         return {
             status: false,
             message: "gagal mendapatkan data"
+        }
+    }
+
+    if (peserta.length === 0) {
+        return {
+            status: true,
+            message: "Data kosong"
         }
     }
 
@@ -295,11 +310,11 @@ export const getDetailPesertaService = async (id:number, res:any) => {
     // }
 }
 
-export const getAllPosisiService = async () => {
+export const getAllPosisiService = async (nama?:string, startDate?:string, endDate?:string) => {
     try {
-        const posisi = await getAllPosisiModel()
+        const allPosisi = await getAllPosisiModel(nama, startDate, endDate)
         
-        const newPosisi = posisi.map((item)=> {
+        const newPosisi = allPosisi.map((item)=> {
             return ({
                 label: item.posisi,
                 count: item._count.posisi
@@ -325,6 +340,43 @@ export const getAllPosisiService = async () => {
     }
 }
 
+export const getAllHasilPosisiService = async (nama?:string, startDate?:string, endDate?:string) => {
+    try {
+        const allPosisi = await getAllHasilPosisiModel(nama, startDate, endDate)
+        
+        const newPosisi = allPosisi.map((item)=> {
+            return ({
+                label: item.posisi,
+                count: item._count.posisi
+            })
+        })
+
+        const total = newPosisi.reduce((akumulasi, item) => {
+            return akumulasi + item.count
+        }, 0)
+
+        newPosisi.unshift({label: 'Semua', count: total})
+
+        return({
+            status: true,
+            message: 'data posisi berhasil diperoleh',
+            data: newPosisi
+        })
+    } catch(error) {
+        return ({
+            status: true,
+            message: `data posisi gagal diperoleh: ${error}`
+        })
+    }
+}
+
+// export const getFilteredDateService = async (startDate?:string, endDate?:string) => {
+//     // console.log('ini startDate', startDate)
+//     // console.log('ini endDate', endDate)
+    
+//     const filteredDate = await getFilteredDateModel(startDate, endDate)
+// }
+
 export const statusPesertaService = async (sessionId:number, res:any) => {    
     
     try {
@@ -344,20 +396,41 @@ export const statusPesertaService = async (sessionId:number, res:any) => {
 }
 
 // Hasil Tes
-export const hasilPesertaService = async (role:string) => {
+export const hasilPesertaService = async (
+    role:string, 
+    page: number, 
+    limit: number, 
+    offset:any, 
+    posisi?:string, 
+    nama?:string,
+    startDate?:string,
+    endDate?:string
+) => {
     try {
-        let peserta
+        let peserta, allData
         if (role === Role.ADMIN) {
-            peserta = await hasilPesertaModelAdmin()
+            peserta = await hasilPesertaModelAdmin(page, limit, offset, posisi, nama, startDate, endDate)
+            allData = await allDataHasilModelAdmin(posisi, nama, startDate, endDate)
         } else {
-            peserta = await hasilPesertaModel(role)
+            peserta = await hasilPesertaModel(role, page, limit, offset, posisi, nama, startDate, endDate)
+            allData = await allDataHasilModel(role, posisi, nama, startDate, endDate)
         }
-        if (!peserta || peserta.length === 0) {
-        return {
-            status: false,
-            message: "gagal mendapatkan data"
+        
+        let totalPages = Math.ceil(allData / limit)
+
+        if (!peserta) {
+            return {
+                status: false,
+                message: "gagal mendapatkan data"
+            }
         }
-    }
+
+        if (peserta.length === 0) {
+            return {
+                status: true,
+                message: "Data kosong"
+            }
+        }
 
         // formatter dibuat sekali
         const witaFormatter = new Intl.DateTimeFormat('id-ID', {
@@ -370,30 +443,60 @@ export const hasilPesertaService = async (role:string) => {
             hour12: false
         })
 
-        // mapping semua peserta
-        const newPeserta = peserta.map(obj => {
+        // // mapping semua peserta
+        // const newPeserta = peserta.map(obj => {
 
-            const time = witaFormatter
-                .format(new Date(obj.peserta.createdAt))
-                .split(", ")
+        //     const time = witaFormatter
+        //         .format(new Date(obj.peserta.createdAt))
+        //         .split(", ")
 
-            const dateTest =
-                `${time[0]}:${time[1]} WITA`
+        //     const dateTest =
+        //         `${time[0]}:${time[1]} WITA`
 
-            return {
+        //     return {
+        //         id: obj.peserta.id,
+        //         nama: obj.peserta.nama,
+        //         createdAt: obj.peserta.createdAt,
+        //         posisi: obj.peserta.posisi,
+        //         tanggal: dateTest
+        //     }
+        // })
+
+        const pesertaNew = peserta.map(obj => {
+            return({
+                pesertaId: obj.pesertaId,
                 id: obj.peserta.id,
-                nama: obj.peserta.nama,
                 createdAt: obj.peserta.createdAt,
-                posisi: obj.peserta.posisi,
-                tanggal: dateTest
-            }
+                nama: obj.peserta.nama,
+                posisi: obj.peserta.posisi
+            })
         })
 
-        console.log(newPeserta)
+        // mapping semua peserta
+        const newPeserta = pesertaNew.map(obj => {
+
+        const time = witaFormatter
+            .format(new Date(obj.createdAt))
+            .split(", ")
+
+        const dateTest =
+            `${time[0]}:${time[1]} WITA`
+
+        return {
+            ...obj,
+            tanggal: dateTest
+        }
+    })
+
+        // console.log(newPeserta)
 
         return {
             status: true,
-            data: newPeserta
+            data: newPeserta,
+            pagination: {
+                allData: allData,
+                totalPages: totalPages
+            }
         }
 
     } catch (err: any) {

@@ -62,10 +62,27 @@ export const postPesertaModel = async (post:any, res:any, id:any) => {
     })
 }
 
-export const getAllPesertaModel = async (role:string, page:number, limit:number, offset:number) => {
+export const getAllPesertaModel = async (
+    role:string, 
+    page:number, 
+    limit:number, 
+    offset:number, 
+    posisi?:string, 
+    nama?:string, 
+    startDate?:string, 
+    endDate?:string
+) => {
     return await prisma.peserta.findMany({
         where: {
-            unit: role as Unit
+            unit: role as Unit,
+            ...(posisi ? {posisi}: {}),
+            ...(nama ? {nama: {contains:nama, mode:'insensitive'} } : {}),
+            ...(startDate || endDate ? { 
+                createdAt: { 
+                    ...(startDate ? { gte: new Date(startDate) } : {}),
+                    ...(endDate ? { lte: new Date(endDate) } : {})
+                } 
+            } : {}),
         },
         select: {
             nama: true,
@@ -85,12 +102,27 @@ export const getAllPesertaModel = async (role:string, page:number, limit:number,
     })
 }
 
-export const getAllPesertaModelAdmin = async (page: number, limit: number, offset:number, posisi?:string) => {
+export const getAllPesertaModelAdmin = async (
+    page: number, 
+    limit: number, 
+    offset:number, 
+    posisi?:string, 
+    nama?:string,
+    startDate?: string,
+    endDate?: string
+) => {
     return await prisma.peserta.findMany({
         take: limit,
         skip: offset,
         where: {
-            ...(posisi ? {posisi}: {})
+            ...(posisi ? {posisi}: {}),
+            ...(nama ? {nama: {contains:nama, mode:'insensitive'} } : {}),
+            ...(startDate || endDate ? { 
+                createdAt: { 
+                    ...(startDate ? { gte: new Date(startDate) } : {}),
+                    ...(endDate ? { lte: new Date(endDate) } : {})
+                } 
+            } : {}),
         },
         select: {
             nama: true,
@@ -110,12 +142,48 @@ export const getAllPesertaModelAdmin = async (page: number, limit: number, offse
     })
 }
 
-export const allDataAdminModel = async () => {
-    return await prisma.peserta.count()
+export const allDataAdminModel = async (
+    posisi?: string, 
+    nama?:string, 
+    startDate?:string, 
+    endDate?:string
+) => {
+    return await prisma.peserta.count({
+        where: {
+            ...(posisi ? {posisi}: {}),
+            ...(nama ? {nama: {contains:nama, mode:'insensitive'} } : {}),
+            ...(startDate || endDate ? { 
+                createdAt: { 
+                    ...(startDate ? { gte: new Date(startDate) } : {}),
+                    ...(endDate ? { lte: new Date(endDate) } : {})
+                } 
+            } : {}),
+        }
+    })
 }
 
-export const allDataModel = async (role:string) => {
-    return await prisma.peserta.count()
+export const allDataModel = async (
+    role:string, 
+    posisi?:string, 
+    nama?:string, 
+    startDate?:string, 
+    endDate?:string
+) => {
+    return await prisma.peserta.count(
+        {
+        where: {
+            unit: role as Unit,
+            ...(posisi ? {posisi}: {}),
+            ...(nama ? {nama: {contains:nama, mode:'insensitive'} } : {}),
+            ...(startDate || endDate ? { 
+                createdAt: { 
+                    ...(startDate ? { gte: new Date(startDate) } : {}),
+                    ...(endDate ? { lte: new Date(endDate) } : {})
+                } 
+            } : {}),
+        }
+    }
+)
 }
 
 export const getDetailPesertaModel = async (id:number, res:any) => {
@@ -139,14 +207,48 @@ export const getDetailPesertaModel = async (id:number, res:any) => {
     })
 }
 
-export const getAllPosisiModel = async () => {
+export const getAllPosisiModel = async (nama?:string, startDate?:string, endDate?:string) => {
     return await prisma.peserta.groupBy({
         by: ['posisi'],
         _count: {
             posisi: true
+        },
+        where: {
+            // ...(posisi ? {posisi}: {}),
+            ...(nama ? {nama: {contains:nama, mode:'insensitive'} } : {}),
+            ...(startDate || endDate ? { 
+                createdAt: { 
+                    ...(startDate ? { gte: new Date(startDate) } : {}),
+                    ...(endDate ? { lte: new Date(endDate) } : {})
+                } 
+            } : {}),
         }
     })
 }
+
+export const getAllHasilPosisiModel = async (nama?:string, startDate?:string, endDate?:string) => {
+    return await prisma.peserta.groupBy({
+        by: ['posisi'],
+        _count: {
+            posisi: true
+        },
+        where: {
+            // ...(posisi ? {posisi}: {}),
+            testSession: { some: { statusTest: 2 } },
+            ...(nama ? {nama: {contains:nama, mode:'insensitive'} } : {}),
+            ...(startDate || endDate ? { 
+                createdAt: { 
+                    ...(startDate ? { gte: new Date(startDate) } : {}),
+                    ...(endDate ? { lte: new Date(endDate) } : {})
+                } 
+            } : {}),
+        }
+    })
+}
+
+// export const getFilteredDateModel = async (startDate?:string, endDate?:string) => {
+//     return prisma.peserta.
+// }
 
 export const statusPesertaModel = async (sessionId: number, res:any) => {
     return await prisma.testSession.update({
@@ -160,15 +262,33 @@ export const statusPesertaModel = async (sessionId: number, res:any) => {
 }
 
 //Hasil Tes
-export const hasilPesertaModel = async (role:string) => {
+export const hasilPesertaModel = async (
+    role:string, 
+    page:number, 
+    limit:number, 
+    offset:number, 
+    posisi?:string, 
+    nama?:string, 
+    startDate?:string, 
+    endDate?:string
+) => {
     return await prisma.testSession.findMany({
         where: {
             statusTest: 2,
             peserta: {
-                unit: role as Unit
+                unit: role as Unit,
+                ...(posisi ? {posisi}: {}),
+                ...(nama ? {nama: {contains:nama, mode:'insensitive'} } : {}),
+                ...(startDate || endDate ? { 
+                    createdAt: { 
+                        ...(startDate ? { gte: new Date(startDate) } : {}),
+                        ...(endDate ? { lte: new Date(endDate) } : {})
+                    } 
+                } : {}),
             }
         },
         select: {
+            pesertaId: true,
             peserta: {
                 select: {
                     id: true,
@@ -182,20 +302,89 @@ export const hasilPesertaModel = async (role:string) => {
     
 }
 
-export const hasilPesertaModelAdmin = async () => {
+export const hasilPesertaModelAdmin = async (
+    page: number, 
+    limit: number, 
+    offset:number, 
+    posisi?:string, 
+    nama?:string,
+    startDate?: string,
+    endDate?: string
+) => {
     return await prisma.testSession.findMany({
+        take: limit,
+        skip: offset,
         where: {
             statusTest: 2,
+            peserta: {
+                ...(posisi ? {posisi}: {}),
+                ...(nama ? {nama: {contains:nama, mode:'insensitive'} } : {}),
+                ...(startDate || endDate ? { 
+                    createdAt: { 
+                        ...(startDate ? { gte: new Date(startDate) } : {}),
+                        ...(endDate ? { lte: new Date(endDate) } : {})
+                    } 
+                } : {}),
+            }
             
         },
         select: {
+            pesertaId: true,
             peserta: {
                 select: {
                     id: true,
                     nama: true,
                     createdAt: true,
-                    posisi: true
+                    posisi: true,
                 }
+            }
+        }
+    })
+}
+
+export const allDataHasilModelAdmin = async (
+    posisi?: string, 
+    nama?:string, 
+    startDate?:string, 
+    endDate?:string
+) => {
+    return await prisma.testSession.count({
+        where: {
+            statusTest: 2,
+            peserta: {
+                ...(posisi ? {posisi}: {}),
+                ...(nama ? {nama: {contains:nama, mode:'insensitive'} } : {}),
+                ...(startDate || endDate ? { 
+                    createdAt: { 
+                        ...(startDate ? { gte: new Date(startDate) } : {}),
+                        ...(endDate ? { lte: new Date(endDate) } : {})
+                    } 
+                } : {}),
+            }
+        }
+    })
+}
+
+export const allDataHasilModel = async (
+    role:string,
+    posisi?: string, 
+    nama?:string, 
+    startDate?:string, 
+    endDate?:string
+) => {
+    return await prisma.testSession.count({
+        where: {
+            statusTest: 2,
+            peserta: {
+                unit: role as Unit,
+                ...(posisi ? {posisi}: {}),
+                ...(nama ? {nama: {contains:nama, mode:'insensitive'} } : {}),
+                ...(startDate || endDate ? { 
+                    createdAt: { 
+                        ...(startDate ? { gte: new Date(startDate) } : {}),
+                        ...(endDate ? { lte: new Date(endDate) } : {})
+                    } 
+                } : {}),
             }
         }
     })
