@@ -8,6 +8,7 @@ import { postPesertaService,
         userExpiredService,
         getAllPosisiService,
         getAllHasilPosisiService,
+        getCountAllPesertaService
         // getFilteredDateService
         // setTrueService
     } from "../services/peserta.service"
@@ -20,6 +21,15 @@ export const postPeserta = async (req:any, res:any) => {
         return res.status(400).json(peserta)
     }
 
+    return res.status(201).json(peserta)
+}
+
+export const getCountAllPeserta = async (req:any, res:any) => {
+    const peserta = await getCountAllPesertaService()
+
+    if (!(peserta.status)) {
+        return res.status(400).json(peserta)
+    }
     return res.status(201).json(peserta)
 }
 

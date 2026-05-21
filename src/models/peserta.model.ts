@@ -62,6 +62,10 @@ export const postPesertaModel = async (post:any, res:any, id:any) => {
     })
 }
 
+export const getCountAllPesertaModel = async () => {
+    return await prisma.peserta.count()
+}
+
 export const getAllPesertaModel = async (
     role:string, 
     page:number, 
