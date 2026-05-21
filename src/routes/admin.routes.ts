@@ -6,7 +6,8 @@ import {
     getAllPosisi, 
     getDetailPeserta,
     hasilPesertaController,
-    hasilTesController
+    hasilTesController,
+    getAllHasilPosisiController
 } from "../controllers/peserta.controller";
 import { getDashboard } from "../controllers/dashboard.controller";
 import { authRoleMiddleware } from "../middlewares/autRole.middleware";
@@ -26,6 +27,7 @@ router.put('/token/:id', nonactiveToken)
 router.get('/peserta', getAllPeserta)
 router.get('/peserta/detail/:id', getDetailPeserta)
 router.get('/peserta/posisi', getAllPosisi)
+// router.get('/peserta/time', getFilteredTime)
 
 //dashboard
 router.get('/dashboard', (req, res)=>{})
@@ -33,4 +35,5 @@ router.get('/dashboard', (req, res)=>{})
 //hasil tes
 router.get('/hasiltes', hasilPesertaController)
 router.get('/hasiltes/hasil/:id', hasilTesController)
+router.get('/hasiltes/posisi', getAllHasilPosisiController)
 export default router
