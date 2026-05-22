@@ -23,6 +23,8 @@ model Peserta {
   email              String        @default("null")
   posisi             String        @default("null")
   token              Token         @relation(fields: [tokenId], references: [id])
+
+  papikostickScoring PapikostickScoring[]
   testSession        TestSession[]
   statusExpired      StatusExpired[]
 }
@@ -278,6 +280,36 @@ model MovedTabLog {
   timeStamp DateTime
 
   session TestSession @relation(fields: [sessionId], references: [id])
+}
+
+model PapikostickScoring {
+  id Int @id @default(autoincrement())
+  pesertaId Int
+  createdAt DateTime @default(now())
+  statusSent Int 
+
+  sub1  String @default("NULL")
+  sub2  String @default("NULL")
+  sub3  String @default("NULL")
+  sub4  String @default("NULL")
+  sub5  String @default("NULL")
+  sub6  String @default("NULL")
+  sub7  String @default("NULL")
+  sub8  String @default("NULL")
+  sub9  String @default("NULL")
+  sub10 String @default("NULL")
+  sub11 String @default("NULL")
+  sub12 String @default("NULL")
+  sub13 String @default("NULL")
+  sub14 String @default("NULL")
+  sub15 String @default("NULL")
+  sub16 String @default("NULL")
+  sub17 String @default("NULL")
+  sub18 String @default("NULL")
+  sub19 String @default("NULL")
+  sub20 String @default("NULL")
+
+  peserta Peserta @relation(fields: [pesertaId], references: [id])
 }
 
 model Testing {

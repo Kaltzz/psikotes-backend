@@ -1128,3 +1128,7 @@ export const getAllMbtiAnswersService = async (date:string) => {
         })
     }
 }
+
+export const postPapikostickScoringService = async () => {
+    
+}

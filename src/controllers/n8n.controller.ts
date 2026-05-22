@@ -11,7 +11,8 @@ import {
     getAllMsdtAnswersService,
     getAllPapikostickAnswersService,
     getAllDiscAnswersService,
-    getAllKraepelinAnswersService
+    getAllKraepelinAnswersService,
+    postPapikostickScoringService
 } from "../services/n8n.service" 
 
 export const triggerN8N = async (req: any, res: any) => {
@@ -189,4 +190,10 @@ export const getAllMbtiAnswers = async (req:any, res:any) => {
     }
 
     return res.status(201).json(answers)
+}
+
+export const postPapikostickScoring = async (req:any, res:any) => {
+    const body = req.body
+    console.log('ini body: ', body)
+    // const scoring = await postPapikostickScoringService()
 }
