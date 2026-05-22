@@ -219,7 +219,34 @@ export const getAllCfitAnswersModel = async(date:string) => {
         },
         select: {
             id: true,
-            pesertaId: true
+            pesertaId: true,
+            peserta: {
+                select: {
+                    nama: true,
+                    email:true,
+                    tanggalLahir: true,
+                    createdAt: true,
+                    jenisKelamin: true,
+                    usia: true,
+                    pendidikanTerakhir: true,
+                    unit: true,
+                    posisi:true,
+                    jurusan: true,
+                    testSession: {
+                        select: {
+                            jawabanCfit: {
+                                select: {
+                                    id: true,
+                                    sessionId: true,
+                                    subtest: true,
+                                    questionId: true,
+                                    answers: true
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     })
 }
