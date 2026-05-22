@@ -763,7 +763,7 @@ export const getAllCfitAnswersService = async (date: string) => {
             const gender = p.jenisKelamin
 
             const peserta: any = {
-                id: item.id,
+                id: item.pesertaId,
                 nama: p.nama,
                 email: p.email,
                 'tanggal lahir': tglLahir,
