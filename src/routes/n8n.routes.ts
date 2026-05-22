@@ -7,7 +7,12 @@ import {
     n8nPapikostik,
     n8nMsdt,
     n8nMbti,
-    getAllCfitAnswers
+    getAllCfitAnswers,
+    getAllKraepelinAnswers,
+    getAllDiscAnswers,
+    getAllPapikostickAnswers,
+    getAllMsdtAnswers,
+    getAllMbtiAnswers
  } from "../controllers/n8n.controller";
 
 const router = Router()
@@ -19,14 +24,19 @@ router.get('/cfit/:pesertaId', n8nCfit)
 router.get('/cfit', getAllCfitAnswers)
 
 router.get('/kraepelin/:pesertaId', n8nKraepelin)
+router.get('/kraepelin', getAllKraepelinAnswers)
 
 router.get('/disc/:pesertaId', n8nDisc)
+router.get('disc', getAllDiscAnswers)
 
 router.get('/papikostick/:pesertaId', n8nPapikostik)
+router.get('papikostick', getAllPapikostickAnswers)
 
 router.get('/msdt/:pesertaId', n8nMsdt)
+router.get('msdt', getAllMsdtAnswers)
 
 router.get('/mbti/:pesertaId', n8nMbti)
+router.get('mbti', getAllMbtiAnswers)
 
 
 

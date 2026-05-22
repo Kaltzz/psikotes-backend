@@ -6,7 +6,12 @@ import {
     n8nPapikostikModal,
     n8nMsdtModel,
     n8nMbtiModel,
-    getAllCfitAnswersModel
+    getAllCfitAnswersModel,
+    getAllKraepelinAnswersModel,
+    getAllDiscAnswersModel,
+    getAllPapikostickAnswersModel,
+    getAllMsdtAnswersModel,
+    getAllMbtiAnswersModel
 } from "../models/n8n.model"
 import { addToN8NQueue } from "../utils/n8nqueue";
 
@@ -797,5 +802,329 @@ export const getAllCfitAnswersService = async (date: string) => {
             message: `Proses gagal: ${error}`
         })
     }
-    
+}
+
+export const getAllKraepelinAnswersService = async (date:string) => {
+    try{
+        const answers = await getAllKraepelinAnswersModel(date)
+        if (!answers) {
+            return ({
+                status: true,
+                message: 'Data kosong'
+            })
+        }
+
+        const result = answers.map((item) => {
+            const p = item.peserta
+            const unitTrue = unitMap[p.unit] ?? p.unit
+
+            const tglLahir = dateBornConverter(p.tanggalLahir)
+            const tglTes = dateConverter(p.createdAt)
+            const gender = p.jenisKelamin
+
+            const peserta: any = {
+                id: item.pesertaId,
+                nama: p.nama,
+                email: p.email,
+                'tanggal lahir': tglLahir,
+                'tanggal tes': tglTes,
+                usia: p.usia,
+                'jenis kelamin': gender,
+                'pendidikan terakhir': p.pendidikanTerakhir,
+                'bisnis unit': unitTrue,
+                jurusan: p.jurusan,
+                'posisi yang dilamar': p.posisi,
+            }
+
+            p.testSession.forEach(session => {
+                session.jawabanKraepelin.forEach(jawaban => {
+                    // const key = `S${jawaban.subtest}_Q${jawaban.questionId}`
+                    const totalAnswered = `total_L${jawaban.columnIndex+1}`
+                    const correctAnswers = `benar_L${jawaban.columnIndex+1}`
+                    const wrongAnswers = `salah_L${jawaban.columnIndex+1}`
+                    const answers = `jawaban_L${jawaban.columnIndex+1}`
+
+                    peserta[`${totalAnswered}`] = jawaban.totalAnswered
+                    peserta[`${correctAnswers}`] = jawaban.correctAnswers
+                    peserta[`${wrongAnswers}`] = jawaban.wrongAnswers
+                    peserta[`${answers}`] = jawaban.answers.join(",")
+                })
+            })
+
+            return peserta
+        })
+
+        return ({
+            status: true,
+            message: 'Data berhasil diambil',
+            data: result
+        })
+    } catch (error) {
+        return({
+            status: false,
+            message: `Proses gagal: ${error}`
+        })
+    }
+}
+
+export const getAllDiscAnswersService = async (date:string) => {
+    try{
+        const answers = await getAllDiscAnswersModel(date)
+        if (!answers) {
+            return ({
+                status: true,
+                message: 'Data kosong'
+            })
+        }
+
+        const result = answers.map((item) => {
+            const p = item.peserta
+            const unitTrue = unitMap[p.unit] ?? p.unit
+
+            const tglLahir = dateBornConverter(p.tanggalLahir)
+            const tglTes = dateConverter(p.createdAt)
+            const gender = p.jenisKelamin
+
+            const peserta: any = {
+                id: item.pesertaId,
+                nama: p.nama,
+                email: p.email,
+                'tanggal lahir': tglLahir,
+                'tanggal tes': tglTes,
+                usia: p.usia,
+                'jenis kelamin': gender,
+                'pendidikan terakhir': p.pendidikanTerakhir,
+                'bisnis unit': unitTrue,
+                jurusan: p.jurusan,
+                'posisi yang dilamar': p.posisi,
+            }
+
+            //most
+            p.testSession.forEach(session => {
+                session.jawabanDisc.forEach(jawaban => {
+                    for(let i = 1; i < 5; i++) {
+                        const most = `most${jawaban.questionIndex}_option${i}` //most1_option1
+                        if (i === jawaban.most) {
+                            peserta[`${most}`] = 1
+                        } else {
+                            peserta[`${most}`] = 0
+                        }
+                        
+                    }
+                })
+            })
+
+            //least
+            p.testSession.forEach(session => {
+                session.jawabanDisc.forEach(jawaban => {
+                    for(let i = 1; i < 5; i++) {
+                        const least = `least${jawaban.questionIndex}_option${i}` //least1_option1
+                        if (i === jawaban.least) {
+                            peserta[`${least}`] = 1
+                        } else {
+                            peserta[`${least}`] = 0
+                        }
+                        
+                    }
+                })
+            })
+
+            return peserta
+        })
+
+        return ({
+            status: true,
+            message: 'Data berhasil diambil',
+            data: result
+        })
+    } catch (error) {
+        return({
+            status: false,
+            message: `Proses gagal: ${error}`
+        })
+    }
+}
+
+export const getAllPapikostickAnswersService = async (date:string) => {
+    try{
+        const answers = await getAllPapikostickAnswersModel(date)
+        if (!answers) {
+            return ({
+                status: true,
+                message: 'Data kosong'
+            })
+        }
+
+        const result = answers.map((item) => {
+            const p = item.peserta
+            const unitTrue = unitMap[p.unit] ?? p.unit
+
+            const tglLahir = dateBornConverter(p.tanggalLahir)
+            const tglTes = dateConverter(p.createdAt)
+            const gender = p.jenisKelamin
+
+            const peserta: any = {
+                id: item.pesertaId,
+                nama: p.nama,
+                email: p.email,
+                'tanggal lahir': tglLahir,
+                'tanggal tes': tglTes,
+                usia: p.usia,
+                'jenis kelamin': gender,
+                'pendidikan terakhir': p.pendidikanTerakhir,
+                'bisnis unit': unitTrue,
+                jurusan: p.jurusan,
+                'posisi yang dilamar': p.posisi,
+            }
+
+            p.testSession.forEach(session => {
+                session.jawabanPapikostik.forEach(jawaban => {
+                    peserta[`jawaban`] = jawaban.type
+                    for(let i = 1; i<3; i++) {
+                        const a = `${jawaban.questionIndex}A`
+                            if(jawaban.type === 1) {
+                                peserta[`${a}`] = 1 
+                            } else {
+                                peserta[`${a}`] = 0
+                            }
+                    }
+                })
+            })
+
+        return peserta
+        })
+
+        return ({
+            status: true,
+            message: 'Data berhasil diambil',
+            data: result
+        })
+    } catch (error) {
+        return({
+            status: false,
+            message: `Proses gagal: ${error}`
+        })
+    }
+}
+
+export const getAllMsdtAnswersService = async (date:string) => {
+    try{
+        const answers = await getAllMsdtAnswersModel(date)
+        if (!answers) {
+            return ({
+                status: true,
+                message: 'Data kosong'
+            })
+        }
+
+        const result = answers.map((item) => {
+            const p = item.peserta
+            const unitTrue = unitMap[p.unit] ?? p.unit
+
+            const tglLahir = dateBornConverter(p.tanggalLahir)
+            const tglTes = dateConverter(p.createdAt)
+            const gender = p.jenisKelamin
+
+            const peserta: any = {
+                id: item.pesertaId,
+                nama: p.nama,
+                email: p.email,
+                'tanggal lahir': tglLahir,
+                'tanggal tes': tglTes,
+                usia: p.usia,
+                'jenis kelamin': gender,
+                'pendidikan terakhir': p.pendidikanTerakhir,
+                'bisnis unit': unitTrue,
+                jurusan: p.jurusan,
+                'posisi yang dilamar': p.posisi,
+            }
+
+            p.testSession.forEach(session => {
+            session.jawabanMsdt.forEach(jawaban => {
+                for(let i = 1; i<3; i++) {
+                    const a = `${jawaban.questionIndex}A`
+                        if(jawaban.type === 1) {
+                            peserta[`${a}`] = 1 
+                        } else {
+                            peserta[`${a}`] = 0
+                        }
+                }
+            })
+        })
+
+        return peserta
+        })
+
+        return ({
+            status: true,
+            message: 'Data berhasil diambil',
+            data: result
+        })
+    } catch (error) {
+        return({
+            status: false,
+            message: `Proses gagal: ${error}`
+        })
+    }
+}
+
+export const getAllMbtiAnswersService = async (date:string) => {
+    try{
+        const answers = await getAllMbtiAnswersModel(date)
+        if (!answers) {
+            return ({
+                status: true,
+                message: 'Data kosong'
+            })
+        }
+
+        const result = answers.map((item) => {
+            const p = item.peserta
+            const unitTrue = unitMap[p.unit] ?? p.unit
+
+            const tglLahir = dateBornConverter(p.tanggalLahir)
+            const tglTes = dateConverter(p.createdAt)
+            const gender = p.jenisKelamin
+
+            const peserta: any = {
+                id: item.pesertaId,
+                nama: p.nama,
+                email: p.email,
+                'tanggal lahir': tglLahir,
+                'tanggal tes': tglTes,
+                usia: p.usia,
+                'jenis kelamin': gender,
+                'pendidikan terakhir': p.pendidikanTerakhir,
+                'bisnis unit': unitTrue,
+                jurusan: p.jurusan,
+                'posisi yang dilamar': p.posisi,
+            }
+
+            p.testSession.forEach(session => {
+                session.jawabanMbti.forEach(jawaban => {
+                    for(let i = 1; i<3; i++) {
+                        const a = `${jawaban.questionIndex}A`
+                            if(jawaban.type === 1) {
+                                peserta[`${a}`] = 1 
+                            } else {
+                                peserta[`${a}`] = 0
+                            }
+                    }
+                })
+            })
+
+        return peserta
+        })
+
+        return ({
+            status: true,
+            message: 'Data berhasil diambil',
+            data: result
+        })
+    } catch (error) {
+        return({
+            status: false,
+            message: `Proses gagal: ${error}`
+        })
+    }
 }
