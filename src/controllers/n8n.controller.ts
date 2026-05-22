@@ -6,7 +6,12 @@ import {
     n8nPapikostikService,
     n8nMsdtService,
     n8nMbtiService,
-    getAllCfitAnswersService
+    getAllCfitAnswersService,
+    getAllMbtiAnswersService,
+    getAllMsdtAnswersService,
+    getAllPapikostickAnswersService,
+    getAllDiscAnswersService,
+    getAllKraepelinAnswersService
 } from "../services/n8n.service" 
 
 export const triggerN8N = async (req: any, res: any) => {
@@ -108,6 +113,76 @@ export const getAllCfitAnswers = async (req:any, res:any) => {
     console.log('ini type date: ',typeof(date))
 
     const answers = await getAllCfitAnswersService(date)
+
+    if (!(answers.status)) {
+        return res.status(400).json(answers)
+    }
+
+    return res.status(201).json(answers)
+}
+
+export const getAllKraepelinAnswers = async (req:any, res:any) => {
+    const date = req.query.date
+    console.log('ini date ',date)
+    console.log('ini type date: ',typeof(date))
+
+    const answers = await getAllKraepelinAnswersService(date)
+
+    if (!(answers.status)) {
+        return res.status(400).json(answers)
+    }
+
+    return res.status(201).json(answers)
+}
+
+export const getAllDiscAnswers = async (req:any, res:any) => {
+    const date = req.query.date
+    console.log('ini date ',date)
+    console.log('ini type date: ',typeof(date))
+
+    const answers = await getAllDiscAnswersService(date)
+
+    if (!(answers.status)) {
+        return res.status(400).json(answers)
+    }
+
+    return res.status(201).json(answers)
+}
+
+export const getAllPapikostickAnswers = async (req:any, res:any) => {
+    const date = req.query.date
+    console.log('ini date ',date)
+    console.log('ini type date: ',typeof(date))
+
+    const answers = await getAllPapikostickAnswersService(date)
+
+    if (!(answers.status)) {
+        return res.status(400).json(answers)
+    }
+
+    return res.status(201).json(answers)
+}
+
+export const getAllMsdtAnswers =async (req:any, res:any) => {
+    const date = req.query.date
+    console.log('ini date ',date)
+    console.log('ini type date: ',typeof(date))
+
+    const answers = await getAllMsdtAnswersService(date)
+
+    if (!(answers.status)) {
+        return res.status(400).json(answers)
+    }
+
+    return res.status(201).json(answers)
+}
+
+export const getAllMbtiAnswers = async (req:any, res:any) => {
+    const date = req.query.date
+    console.log('ini date ',date)
+    console.log('ini type date: ',typeof(date))
+
+    const answers = await getAllMbtiAnswersService(date)
 
     if (!(answers.status)) {
         return res.status(400).json(answers)
