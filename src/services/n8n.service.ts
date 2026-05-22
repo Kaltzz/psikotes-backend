@@ -48,6 +48,15 @@ const dateBornConverter = (date: any) => {
     return dateTest
 }
 
+const unitMap: Record<string, string> = {
+  MPP: 'PT. Makassar Putra Prima',
+  ACS: 'PT. Aptana Citra Solusindo',
+  MMPP: 'PT. Makassar Megaputra Prima',
+  IMP: 'PT. Indo Mega Prima',
+  PPH: 'PT. Putra Prima Hotel',
+  SMP: 'PT. Samamaju Prima',
+}
+
 // triggerN8NService.ts — hapus setTimeout 3000, pindah logika ke sini
 export const triggerN8NService = async (pesertaId: number, tests: string) => {
   const N8N_WEBHOOK_URL_PRODUCTION = process.env.N8N_WEBHOOK_URL_PRODUCTION;
@@ -736,6 +745,8 @@ export const getAllCfitAnswersService = async (date: string) => {
         
         const answers = await getAllCfitAnswersModel(date)
 
+        
+
         if (!answers) {
             return ({
                 status: true,
@@ -743,10 +754,42 @@ export const getAllCfitAnswersService = async (date: string) => {
             })
         }
 
+        const result = answers.map((item) => {
+            const p = item.peserta
+            const unitTrue = unitMap[p.unit] ?? p.unit
+
+            const tglLahir = dateBornConverter(p.tanggalLahir)
+            const tglTes = dateBornConverter(p.createdAt)
+            const gender = p.jenisKelamin
+
+            const peserta: any = {
+                id: item.id,
+                nama: p.nama,
+                email: p.email,
+                'tanggal lahir': tglLahir,
+                'tanggal tes': tglTes,
+                usia: p.usia,
+                'jenis kelamin': gender,
+                'pendidikan terakhir': p.pendidikanTerakhir,
+                'bisnis unit': unitTrue,
+                jurusan: p.jurusan,
+                'posisi yang dilamar': p.posisi,
+            }
+
+            p.testSession.forEach((session) => {
+                session.jawabanCfit.forEach((jawaban) => {
+                const key = `S${jawaban.subtest}_Q${jawaban.questionId}`
+                peserta[key] = jawaban.answers.join(',')
+                })
+            })
+
+            return peserta
+        })
+
         return ({
             status: true,
             message: 'Data berhasil diambil',
-            data: answers
+            data: result
         })
     } catch (error) {
         return({
