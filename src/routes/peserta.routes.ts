@@ -33,7 +33,7 @@ const router = Router()
 router.post('/peserta', postPeserta)
 router.put('/peserta/status/:id', statusPeserta)
 
-//jawaban
+//kirim jawaban
 router.post('/answers/cfit/:id', answersCfit)
 router.post('/answers/disc/:id', answersDisc)
 router.post('/answers/kraepelin/:id', answersKraepelin)
