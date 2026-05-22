@@ -759,7 +759,7 @@ export const getAllCfitAnswersService = async (date: string) => {
             const unitTrue = unitMap[p.unit] ?? p.unit
 
             const tglLahir = dateBornConverter(p.tanggalLahir)
-            const tglTes = dateBornConverter(p.createdAt)
+            const tglTes = dateConverter(p.createdAt)
             const gender = p.jenisKelamin
 
             const peserta: any = {
