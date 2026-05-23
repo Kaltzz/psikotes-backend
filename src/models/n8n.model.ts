@@ -495,3 +495,12 @@ export const getAllMbtiAnswersModel = async (date:string) => {
         }
     })
 }
+
+export const postPapikostickScoringModel = async (score:any) => {
+    return await prisma.papikostickScoring.createMany({
+        data: score
+            .filter((item: any) => item.statusSent === 0)
+            .map((item: any) => ({ ...item })),
+        skipDuplicates: true,
+    });
+}
