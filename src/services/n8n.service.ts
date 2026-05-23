@@ -1132,7 +1132,7 @@ export const getAllMbtiAnswersService = async (date:string) => {
 
 export const postPapikostickScoringService = async (score: any) => {
     try{
-        const scoring = postPapikostickScoringModel(score)
+        const scoring = await postPapikostickScoringModel(score)
 
         if (!scoring) {
             return ({
