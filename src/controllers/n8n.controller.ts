@@ -193,7 +193,13 @@ export const getAllMbtiAnswers = async (req:any, res:any) => {
 }
 
 export const postPapikostickScoring = async (req:any, res:any) => {
-    const body = req.body
-    console.log('ini body: ', body)
-    // const scoring = await postPapikostickScoringService()
+    const score = req.body
+    // console.log('ini body: ', score)
+    const scoring = await postPapikostickScoringService(score)
+
+    if(!(scoring.status)) {
+        return res.status(400).json(scoring)
+    }
+    
+    return res.status(201).json(scoring)
 }

@@ -31,8 +31,8 @@ router.get('/disc/:pesertaId', n8nDisc)
 router.get('disc', getAllDiscAnswers)
 
 router.get('/papikostick/:pesertaId', n8nPapikostik)
-router.get('papikostick', getAllPapikostickAnswers)
-router.post('papikostick', postPapikostickScoring)
+router.get('/papikostick', getAllPapikostickAnswers)
+router.post('/papikostick', postPapikostickScoring)
 
 router.get('/msdt/:pesertaId', n8nMsdt)
 router.get('msdt', getAllMsdtAnswers)

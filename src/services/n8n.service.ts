@@ -11,7 +11,8 @@ import {
     getAllDiscAnswersModel,
     getAllPapikostickAnswersModel,
     getAllMsdtAnswersModel,
-    getAllMbtiAnswersModel
+    getAllMbtiAnswersModel,
+    postPapikostickScoringModel
 } from "../models/n8n.model"
 import { addToN8NQueue } from "../utils/n8nqueue";
 
@@ -1129,6 +1130,28 @@ export const getAllMbtiAnswersService = async (date:string) => {
     }
 }
 
-export const postPapikostickScoringService = async () => {
-    
+export const postPapikostickScoringService = async (score: any) => {
+    try{
+        const scoring = postPapikostickScoringModel(score)
+
+        if (!scoring) {
+            return ({
+                status: true,
+                message: "gagal post scoring papikostick",
+                data: scoring
+            })
+        }
+
+        return ({
+            status: true,
+            message: "berhasil post scoring papikostick",
+            data: scoring
+        })
+        
+    } catch (error) {
+        return({
+            status: false,
+            message: `proses gagal: ${error}`
+        })
+    }
 }
