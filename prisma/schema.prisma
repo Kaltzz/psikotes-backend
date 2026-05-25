@@ -312,6 +312,13 @@ model PapikostickScoring {
   peserta Peserta @relation(fields: [pesertaId], references: [id])
 }
 
+model DiscScoring {
+  id Int @id @default(autoincrement())
+  pesertaId Int
+
+  
+}
+
 model Testing {
   id Int @id @default(autoincrement())
   pesertaId Int

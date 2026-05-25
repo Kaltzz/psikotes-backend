@@ -1155,3 +1155,7 @@ export const postPapikostickScoringService = async (score: any) => {
         })
     }
 }
+
+// export const postCfitScoringService = async (score:any) => {
+//     // const scoring = await postCfitScoringModel()
+// }
