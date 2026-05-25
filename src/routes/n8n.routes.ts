@@ -14,7 +14,7 @@ import {
     getAllMsdtAnswers,
     getAllMbtiAnswers,
     postPapikostickScoring,
-    // postCfitScoring
+    postDiscScoring
  } from "../controllers/n8n.controller";
 
 const router = Router()
@@ -24,13 +24,13 @@ router.post('/trigger/:pesertaId', triggerN8N)
 
 router.get('/cfit/:pesertaId', n8nCfit)
 router.get('/cfit', getAllCfitAnswers)
-// router.post('/cfit', postCfitScoring)
 
 router.get('/kraepelin/:pesertaId', n8nKraepelin)
 router.get('/kraepelin', getAllKraepelinAnswers)
 
 router.get('/disc/:pesertaId', n8nDisc)
-router.get('disc', getAllDiscAnswers)
+router.get('/disc', getAllDiscAnswers)
+router.post('/disc', postDiscScoring)
 
 router.get('/papikostick/:pesertaId', n8nPapikostik)
 router.get('/papikostick', getAllPapikostickAnswers)
