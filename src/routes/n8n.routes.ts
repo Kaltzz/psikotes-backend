@@ -13,7 +13,8 @@ import {
     getAllPapikostickAnswers,
     getAllMsdtAnswers,
     getAllMbtiAnswers,
-    postPapikostickScoring
+    postPapikostickScoring,
+    // postCfitScoring
  } from "../controllers/n8n.controller";
 
 const router = Router()
@@ -23,6 +24,7 @@ router.post('/trigger/:pesertaId', triggerN8N)
 
 router.get('/cfit/:pesertaId', n8nCfit)
 router.get('/cfit', getAllCfitAnswers)
+// router.post('/cfit', postCfitScoring)
 
 router.get('/kraepelin/:pesertaId', n8nKraepelin)
 router.get('/kraepelin', getAllKraepelinAnswers)
