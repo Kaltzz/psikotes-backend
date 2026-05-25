@@ -1042,17 +1042,30 @@ export const getAllMsdtAnswersService = async (date:string) => {
             }
 
             p.testSession.forEach(session => {
-            session.jawabanMsdt.forEach(jawaban => {
-                for(let i = 1; i<3; i++) {
-                    const a = `${jawaban.questionIndex}A`
-                        if(jawaban.type === 1) {
-                            peserta[`${a}`] = 1 
-                        } else {
-                            peserta[`${a}`] = 0
-                        }
-                }
+                session.jawabanMsdt.forEach(jawaban => {
+                    for(let i = 1; i<3; i++) {
+                        const a = `${jawaban.questionIndex}A`
+                            if(jawaban.type === 1) {
+                                peserta[`${a}`] = 1 
+                            } else {
+                                peserta[`${a}`] = 0
+                            }
+                    }
+                })
             })
-        })
+
+            p.testSession.forEach(session => {
+                session.jawabanMsdt.forEach(jawaban => {
+                    for(let i = 1; i<3; i++) {
+                        const b = `${jawaban.questionIndex}B`
+                            if(jawaban.type === 2) {
+                                peserta[`${b}`] = 1 
+                            } else {
+                                peserta[`${b}`] = 0
+                            }
+                    }
+                })
+            })
 
         return peserta
         })
