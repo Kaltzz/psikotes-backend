@@ -1158,5 +1158,25 @@ export const postPapikostickScoringService = async (score: any) => {
 }
 
 export const postDiscScoringService = async (score:any) => {
-    const scoring = await postDiscScoringModel(score)
+    try {
+        const scoring = await postDiscScoringModel(score)
+        if (!scoring) {
+            return ({
+                status: true,
+                message: "gagal post scoring disc",
+                data: scoring
+            })
+        }
+
+        return ({
+            status: true,
+            message: "berhasil post scoring disc",
+            data: scoring
+        })
+    } catch (error) {
+        return({
+            status: false,
+            message: `proses gagal: ${error}`
+        })
+    }
 }
