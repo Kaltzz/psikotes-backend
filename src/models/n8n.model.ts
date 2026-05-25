@@ -498,16 +498,39 @@ export const getAllMbtiAnswersModel = async (date:string) => {
 
 export const postPapikostickScoringModel = async (score:any) => {
     const filtered = score.filter((item: any) => item.statusSent === 0);
-    
-    return await prisma.$transaction([
-    prisma.papikostickScoring.createMany({
-        data: filtered.map(({ statusSent, ...rest }: any) => ({
-        ...rest,
-        statusSent: 1, // langsung set 1 saat insert
-        })),
-        skipDuplicates: true,
-    }),
-    ]);
+
+    const dataToInsert = filtered.map(({ statusSent, ...rest }: any) => ({
+    ...rest,
+    statusSent: 1,
+    }));
+
+    await prisma.papikostickScoring.createMany({
+    data: dataToInsert,
+    skipDuplicates: true,
+    });
+
+    const result = await prisma.papikostickScoring.findMany({
+    where: {
+        pesertaId: { in: dataToInsert.map((item: any) => item.pesertaId) },
+        statusSent: 1,
+    },
+    select: {
+        pesertaId: true,
+        statusSent: true,
+    },
+    });
+
+    return result;
+
+    // return await prisma.$transaction([
+    // prisma.papikostickScoring.createMany({
+    //     data: filtered.map(({ statusSent, ...rest }: any) => ({
+    //     ...rest,
+    //     statusSent: 1, // langsung set 1 saat insert
+    //     })),
+    //     skipDuplicates: true,
+    // }),
+    // ]);
     // return await prisma.papikostickScoring.createMany({
     //     data: score
     //         .filter((item: any) => item.statusSent === 0)
