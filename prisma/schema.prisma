@@ -24,6 +24,7 @@ model Peserta {
   posisi             String        @default("null")
   token              Token         @relation(fields: [tokenId], references: [id])
 
+  discScoring        DiscScoring[]
   papikostickScoring PapikostickScoring[]
   testSession        TestSession[]
   statusExpired      StatusExpired[]
@@ -100,7 +101,6 @@ model CfitQuestion {
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
   options    CfitOption[]
-
 }
 
 model CfitOption {
@@ -315,8 +315,19 @@ model PapikostickScoring {
 model DiscScoring {
   id Int @id @default(autoincrement())
   pesertaId Int
+  createdAt DateTime @default(now())
+  statusSent Int 
 
-  
+  maskType                String @default("NULL")
+  maskCharacteristics     String @default("NULL")
+  coreType                String @default("NULL")
+  coreCharacteristics     String @default("NULL")
+  mirrorType              String @default("NULL")
+  mirrorCharacteristics   String @default("NULL")
+  personalityDescription  String @default("NULL")
+  jobMatch                String @default("NULL")
+
+  peserta                 Peserta @relation(fields: [pesertaId], references: [id])
 }
 
 model Testing {
