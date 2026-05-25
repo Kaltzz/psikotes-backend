@@ -12,7 +12,8 @@ import {
     getAllPapikostickAnswersModel,
     getAllMsdtAnswersModel,
     getAllMbtiAnswersModel,
-    postPapikostickScoringModel
+    postPapikostickScoringModel,
+    postDiscScoringModel
 } from "../models/n8n.model"
 import { addToN8NQueue } from "../utils/n8nqueue";
 
@@ -1156,6 +1157,6 @@ export const postPapikostickScoringService = async (score: any) => {
     }
 }
 
-// export const postCfitScoringService = async (score:any) => {
-//     // const scoring = await postCfitScoringModel()
-// }
+export const postDiscScoringService = async (score:any) => {
+    const scoring = await postDiscScoringModel(score)
+}
