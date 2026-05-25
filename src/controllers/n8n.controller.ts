@@ -208,4 +208,10 @@ export const postPapikostickScoring = async (req:any, res:any) => {
 export const postDiscScoring = async (req:any, res:any) => {
     const score = req.body
     const scoring = await postDiscScoringService(score)
+
+    if(!(scoring.status)) {
+        return res.status(400).json(scoring)
+    }
+
+    return res.status(201).json(scoring)
 }
