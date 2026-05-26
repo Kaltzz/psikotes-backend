@@ -1129,6 +1129,20 @@ export const getAllMbtiAnswersService = async (date:string) => {
                 })
             })
 
+            p.testSession.forEach(session => {
+                session.jawabanMbti.forEach(jawaban => {
+                    for(let i = 1; i<3; i++) {
+                        const b = `${jawaban.questionIndex}B`
+                            if(jawaban.type === 2) {
+                                peserta[`${b}`] = 1 
+                            } else {
+                                peserta[`${b}`] = 0
+                            }
+                    }
+                })
+            })
+
+
         return peserta
         })
 
@@ -1171,6 +1185,30 @@ export const postPapikostickScoringService = async (score: any) => {
     }
 }
 
+export const postMsdtScoringService = async (score:any) => {
+    try {
+        const scoring = await postMsdtScoringModel(score)
+        if (!scoring) {
+            return ({
+                status: true,
+                message: "gagal post scoring msdt",
+                data: scoring
+            })
+        }
+
+        return ({
+            status: true,
+            message: "berhasil post scoring msdt",
+            data: scoring
+        })
+    } catch (error) {
+        return({
+            status: false,
+            message: `proses gagal: ${error}`
+        })
+    }
+}
+
 export const postDiscScoringService = async (score:any) => {
     try {
         const scoring = await postDiscScoringModel(score)
@@ -1195,26 +1233,3 @@ export const postDiscScoringService = async (score:any) => {
     }
 }
 
-export const postMsdtScoringService = async (score:any) => {
-    try {
-        const scoring = await postMsdtScoringModel(score)
-        if (!scoring) {
-            return ({
-                status: true,
-                message: "gagal post scoring msdt",
-                data: scoring
-            })
-        }
-
-        return ({
-            status: true,
-            message: "berhasil post scoring msdt",
-            data: scoring
-        })
-    } catch (error) {
-        return({
-            status: false,
-            message: `proses gagal: ${error}`
-        })
-    }
-}
