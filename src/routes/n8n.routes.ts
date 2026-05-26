@@ -39,7 +39,7 @@ router.post('/papikostick', postPapikostickScoring)
 
 router.get('/msdt/:pesertaId', n8nMsdt)
 router.get('/msdt', getAllMsdtAnswers)
-router.post('msdt', postMsdtScoring)
+router.post('/msdt', postMsdtScoring)
 
 router.get('/mbti/:pesertaId', n8nMbti)
 router.get('/mbti', getAllMbtiAnswers)
