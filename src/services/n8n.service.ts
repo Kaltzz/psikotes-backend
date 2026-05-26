@@ -14,7 +14,8 @@ import {
     getAllMbtiAnswersModel,
     postPapikostickScoringModel,
     postDiscScoringModel,
-    postMsdtScoringModel
+    postMsdtScoringModel,
+    postMbtiScoringModel
 } from "../models/n8n.model"
 import { addToN8NQueue } from "../utils/n8nqueue";
 
@@ -1209,6 +1210,30 @@ export const postMsdtScoringService = async (score:any) => {
     }
 }
 
+export const postMbtiScoringService = async (score:any) => {
+    try {
+        const scoring = await postMbtiScoringModel(score)
+        if (!scoring) {
+            return ({
+                status: true,
+                message: "gagal post scoring disc",
+                data: scoring
+            })
+        }
+
+        return ({
+            status: true,
+            message: "berhasil post scoring disc",
+            data: scoring
+        })
+    } catch (error) {
+        return({
+            status: false,
+            message: `proses gagal: ${error}`
+        })
+    }
+}
+
 export const postDiscScoringService = async (score:any) => {
     try {
         const scoring = await postDiscScoringModel(score)
@@ -1232,4 +1257,5 @@ export const postDiscScoringService = async (score:any) => {
         })
     }
 }
+
 

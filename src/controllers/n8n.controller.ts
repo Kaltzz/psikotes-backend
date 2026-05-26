@@ -14,7 +14,8 @@ import {
     getAllKraepelinAnswersService,
     postPapikostickScoringService,
     postDiscScoringService,
-    postMsdtScoringService
+    postMsdtScoringService,
+    postMbtiScoringService
 } from "../services/n8n.service" 
 
 export const triggerN8N = async (req: any, res: any) => {
@@ -220,6 +221,18 @@ export const postDiscScoring = async (req:any, res:any) => {
 export const postMsdtScoring = async (req:any, res:any) => {
     const score = req.body
     const scoring = await postMsdtScoringService(score)
+
+    if(!(scoring.status)) {
+        return res.status(400).json(scoring)
+    }
+
+    return res.status(201).json(scoring)
+}
+
+export const postMbtiScoring = async (req:any, res:any) => {
+    const score = req.body
+
+    const scoring = await postMbtiScoringService(score)
 
     if(!(scoring.status)) {
         return res.status(400).json(scoring)

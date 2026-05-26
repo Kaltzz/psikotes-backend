@@ -27,6 +27,7 @@ model Peserta {
   discScoring        DiscScoring[]
   papikostickScoring PapikostickScoring[]
   msdtScoring        MsdtScoring[]
+  mbtiScoring        MbtiScoring[]
 
   testSession        TestSession[]
   statusExpired      StatusExpired[]
@@ -342,6 +343,17 @@ model MsdtScoring {
   mainExplanation1 String
   mainExplanation2 String
   description String
+
+  peserta Peserta @relation(fields: [pesertaId], references: [id])
+}
+
+model MbtiScoring {
+  id Int @id @default(autoincrement())
+  pesertaId Int
+  statusSent Int
+
+  karakterTalent        String
+  uraianKarakterTalent  String
 
   peserta Peserta @relation(fields: [pesertaId], references: [id])
 }
