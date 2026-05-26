@@ -26,6 +26,8 @@ model Peserta {
 
   discScoring        DiscScoring[]
   papikostickScoring PapikostickScoring[]
+  msdtScoring        MsdtScoring[]
+
   testSession        TestSession[]
   statusExpired      StatusExpired[]
 }
@@ -328,6 +330,20 @@ model DiscScoring {
   jobMatch                String @default("NULL")
 
   peserta                 Peserta @relation(fields: [pesertaId], references: [id])
+}
+
+model MsdtScoring {
+  id Int @id @default(autoincrement())
+  pesertaId Int
+  statusSent Int
+
+  hasilTest String
+  status String
+  mainExplanation1 String
+  mainExplanation2 String
+  description String
+
+  peserta Peserta @relation(fields: [pesertaId], references: [id])
 }
 
 model Testing {
