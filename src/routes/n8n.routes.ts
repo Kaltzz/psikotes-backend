@@ -15,7 +15,8 @@ import {
     getAllMbtiAnswers,
     postPapikostickScoring,
     postDiscScoring,
-    postMsdtScoring
+    postMsdtScoring,
+    postMbtiScoring
  } from "../controllers/n8n.controller";
 
 const router = Router()
@@ -43,6 +44,7 @@ router.post('/msdt', postMsdtScoring)
 
 router.get('/mbti/:pesertaId', n8nMbti)
 router.get('/mbti', getAllMbtiAnswers)
+router.post('/mbti', postMbtiScoring)
 
 
 
