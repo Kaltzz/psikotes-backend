@@ -565,3 +565,30 @@ export const postDiscScoringModel = async (score:any) => {
 
     return result;
 }
+
+export const postMsdtScoringModel = async (score:any) => {
+    const filtered = score.filter((item: any) => item.statusSent === 0);
+
+    const dataToInsert = filtered.map(({ statusSent, ...rest }: any) => ({
+    ...rest,
+    statusSent: 1,
+    }));
+
+    await prisma.msdtScoring.createMany({
+        data: dataToInsert,
+        skipDuplicates: true,
+    });
+
+    const result = await prisma.discScoring.findMany({
+    where: {
+        pesertaId: { in: dataToInsert.map((item: any) => item.pesertaId) },
+        statusSent: 1,
+    },
+    select: {
+        pesertaId: true,
+        statusSent: true,
+    },
+    });
+
+    return result;
+}
