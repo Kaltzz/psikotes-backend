@@ -620,29 +620,33 @@ export const postMbtiScoringModel = async (score:any) => {
     return result;
 }
 
-export const postKraepelinScoringModel = async (score:any) => {
-    const filtered = score.filter((item: any) => item.statusSent === 0);
+export const postKraepelinScoringModel = async (score: any) => {
+  const filtered = score.filter((item: any) => item.statusSent === 0);
 
-    const dataToInsert = filtered.map(({ statusSent, ...rest }: any) => ({
+  const dataToInsert = filtered.map(({ statusSent, ...rest }: any) => ({
     ...rest,
+    skorKecepatan:  Number(rest.skorKecepatan),
+    skorKetelitian: Number(rest.skorKetelitian),
+    skorKeajegan:   Number(rest.skorKeajegan),
+    skorKetahanan:  Number(rest.skorKetahanan),
     statusSent: 1,
-    }));
+  }));
 
-    await prisma.kraepelinScoring.createMany({
-        data: dataToInsert,
-        skipDuplicates: true,
-    });
+  await prisma.kraepelinScoring.createMany({
+    data: dataToInsert,
+    skipDuplicates: true,
+  });
 
-    const result = await prisma.kraepelinScoring.findMany({
+  const result = await prisma.kraepelinScoring.findMany({
     where: {
-        pesertaId: { in: dataToInsert.map((item: any) => item.pesertaId) },
-        statusSent: 1,
+      pesertaId: { in: dataToInsert.map((item: any) => item.pesertaId) },
+      statusSent: 1,
     },
     select: {
-        pesertaId: true,
-        statusSent: true,
+      pesertaId: true,
+      statusSent: true,
     },
-    });
+  });
 
-    return result;
-}
+  return result;
+};
