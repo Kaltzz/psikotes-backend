@@ -247,9 +247,9 @@ export const kraepelinScoring = async (req:any, res:any) => {
 
     const scoring = await postKraepelinScoringService(score)
 
-    // if(!(scoring.status)) {
-    //     return res.status(400).json(scoring)
-    // }
+    if(!(scoring.status)) {
+        return res.status(400).json(scoring)
+    }
 
-    // return res.status(201).json(scoring)
+    return res.status(201).json(scoring)
 }
