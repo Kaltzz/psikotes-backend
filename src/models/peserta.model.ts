@@ -394,45 +394,110 @@ export const allDataHasilModel = async (
     })
 }
 
-export const hasilTesModel = async (id:number) => {
-    return await prisma.peserta.findUnique({
-
-        where: {
-            id: Number(id)
-        },
-        
+export const hasilTesModel = async (id: number) => {
+  return await prisma.peserta.findUnique({
+    where: {
+      id: Number(id),
+    },
+    select: {
+      id: true,
+      nama: true,
+      email: true,
+      jenisKelamin: true,
+      usia: true,
+      pendidikanTerakhir: true,
+      jurusan: true,
+      unit: true,
+      posisi: true,
+      tanggalLahir: true,
+      createdAt: true,
+      token: {
         select: {
-            nama: true,
-            email: true,
-            jenisKelamin: true,
-            usia: true,
-            pendidikanTerakhir: true,
-            jurusan: true, 
-            unit: true,
-            posisi: true,
-            tanggalLahir: true,
-            createdAt: true,
-            token: {
+          tests: true,
+        },
+      },
+      discScoring: {
+        select: {
+            id: true,
+            maskType: true,
+            maskCharacteristics: true,
+            coreType: true,
+            coreCharacteristics: true,
+            mirrorType: true,
+            mirrorCharacteristics: true,
+            personalityDescription:true,
+            jobMatch: true 
+        }
+      },
+      papikostickScoring: {
+        select: {
+            id: true,
+            sub1: true,
+            sub2: true,
+            sub3: true,
+            sub4: true,
+            sub5: true,
+            sub6: true,
+            sub7: true,
+            sub8: true,
+            sub9: true,
+            sub10: true,
+            sub11: true,
+            sub12: true,
+            sub13: true,
+            sub14: true,
+            sub15: true,
+            sub16: true,
+            sub17: true,
+            sub18: true,
+            sub19: true,
+            sub20: true
+        }
+      },
+      msdtScoring: {
+        select: {
+            id: true,
+            hasilTest: true,
+            mainExplanation1: true,
+            mainExplanation2: true,
+            description: true
+        }
+      },
+      mbtiScoring: {
+        select: {
+            id: true,
+            karakterTalent: true,
+            uraianKarakterTalent: true
+        }
+      },
+      kraepelinScoring: {
+        select: {
+            id: true,
+            skorKecepatan: true,
+            skorKetelitian: true,
+            skorKeajegan: true,
+            skorKetahanan: true,
+            kecepatanVariabel: true,
+            ketelitianVariabel: true,
+            keajeganVariabel: true,
+            ketahananVariabel: true
+        }
+      },
+      testSession: {
+        select: {
+            jawabanCfit: {
                 select: {
-                    tests: true
-                }
-            },
-            testSession: {
-                select: {
-                    jawabanCfit: {
-                        select: {
-                            id: true,
-                            subtest: true,
-                            questionId: true,
-                            answers: true
-                        }
-                    }
+                    id: true,
+                    subtest: true,
+                    questionId: true,
+                    answers: true
                 }
             }
-            
         }
-    })
-}
+      }
+    },
+  });
+};
 
 export const userExpiredModel = async (nik:string) => {
     return await prisma.peserta.findFirst({
