@@ -536,7 +536,7 @@ export const hasilTesService = async (id: number) => {
         }
 
         const jawabanCfit = peserta.testSession.flatMap(s => s.jawabanCfit ?? [])
-        const skorCfit = jawabanCfit.length > 0 ? scoringCfit(jawabanCfit) : null
+        const skorCfit = jawabanCfit.length > 0 ? scoringCfit(jawabanCfit) : []
 
         let unit:string = peserta.unit
         let unitTrue = ''
@@ -595,7 +595,12 @@ export const hasilTesService = async (id: number) => {
             "posisiYangDilamar": peserta.posisi,
             // "jawaban": peserta.testSession,
             "tests": peserta.token.tests,
-            "skorCfit": skorCfit
+            "skorCfit": skorCfit,
+            "skorDisc": peserta.discScoring,
+            "skorMsdt": peserta.msdtScoring,
+            "skorMbti": peserta.mbtiScoring,
+            "skorPapikostik": peserta.papikostickScoring,
+            "skorKraepelin": peserta.kraepelinScoring
         }
 
         return({
