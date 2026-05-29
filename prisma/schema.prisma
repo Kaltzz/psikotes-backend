@@ -28,6 +28,7 @@ model Peserta {
   papikostickScoring PapikostickScoring[]
   msdtScoring        MsdtScoring[]
   mbtiScoring        MbtiScoring[]
+  kraepelinScoring   KraepelinScoring[]
 
   testSession        TestSession[]
   statusExpired      StatusExpired[]
@@ -354,6 +355,23 @@ model MbtiScoring {
 
   karakterTalent        String
   uraianKarakterTalent  String
+
+  peserta Peserta @relation(fields: [pesertaId], references: [id])
+}
+
+model KraepelinScoring {
+  id Int @id @default(autoincrement())
+  pesertaId Int
+  statusSent Int
+
+  skorKecepatan       Int
+  skorKetelitian      Int
+  skorKeajegan        Int
+  skorKetahanan       Int
+  kecepatanVariabel   String
+  ketelitianVariabel  String
+  keajeganVariabel    String
+  ketahananVariabel   String
 
   peserta Peserta @relation(fields: [pesertaId], references: [id])
 }

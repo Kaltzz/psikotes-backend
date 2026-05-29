@@ -15,7 +15,8 @@ import {
     postPapikostickScoringModel,
     postDiscScoringModel,
     postMsdtScoringModel,
-    postMbtiScoringModel
+    postMbtiScoringModel,
+    postKraepelinScoringModel
 } from "../models/n8n.model"
 import { addToN8NQueue } from "../utils/n8nqueue";
 
@@ -1258,4 +1259,27 @@ export const postDiscScoringService = async (score:any) => {
     }
 }
 
+export const postKraepelinScoringService = async (score:any) => {
+    try {
+        const scoring = await postKraepelinScoringModel(score)
+        if (!scoring) {
+            return ({
+                status: true,
+                message: "gagal post scoring disc",
+                data: scoring
+            })
+        }
+
+        return ({
+            status: true,
+            message: "berhasil post scoring disc",
+            data: scoring
+        })
+    } catch (error) {
+        return({
+            status: false,
+            message: `proses gagal: ${error}`
+        })
+    }
+}
 

@@ -619,3 +619,30 @@ export const postMbtiScoringModel = async (score:any) => {
 
     return result;
 }
+
+export const postKraepelinScoringModel = async (score:any) => {
+    const filtered = score.filter((item: any) => item.statusSent === 0);
+
+    const dataToInsert = filtered.map(({ statusSent, ...rest }: any) => ({
+    ...rest,
+    statusSent: 1,
+    }));
+
+    await prisma.kraepelinScoring.createMany({
+        data: dataToInsert,
+        skipDuplicates: true,
+    });
+
+    const result = await prisma.kraepelinScoring.findMany({
+    where: {
+        pesertaId: { in: dataToInsert.map((item: any) => item.pesertaId) },
+        statusSent: 1,
+    },
+    select: {
+        pesertaId: true,
+        statusSent: true,
+    },
+    });
+
+    return result;
+}
