@@ -16,7 +16,8 @@ import {
     postPapikostickScoring,
     postDiscScoring,
     postMsdtScoring,
-    postMbtiScoring
+    postMbtiScoring,
+    kraepelinScoring
  } from "../controllers/n8n.controller";
 
 const router = Router()
@@ -29,6 +30,7 @@ router.get('/cfit', getAllCfitAnswers)
 
 router.get('/kraepelin/:pesertaId', n8nKraepelin)
 router.get('/kraepelin', getAllKraepelinAnswers)
+router.post('/kraepelin', kraepelinScoring)
 
 router.get('/disc/:pesertaId', n8nDisc)
 router.get('/disc', getAllDiscAnswers)
