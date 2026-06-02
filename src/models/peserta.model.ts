@@ -88,6 +88,9 @@ export const getAllPesertaModel = async (
                 } 
             } : {}),
         },
+        orderBy: {
+            createdAt: 'desc'
+        },
         select: {
             nama: true,
             id: true,
@@ -126,7 +129,10 @@ export const getAllPesertaModelAdmin = async (
                     ...(startDate ? { gte: new Date(startDate) } : {}),
                     ...(endDate ? { lte: new Date(endDate) } : {})
                 } 
-            } : {}),
+            }    : {}),
+        },
+        orderBy: {
+            createdAt: 'desc'
         },
         select: {
             nama: true,
@@ -291,6 +297,9 @@ export const hasilPesertaModel = async (
                 } : {}),
             }
         },
+        orderBy: {
+            createdAt: 'desc'
+        },
         select: {
             pesertaId: true,
             peserta: {
@@ -331,6 +340,9 @@ export const hasilPesertaModelAdmin = async (
                 } : {}),
             }
             
+        },
+        orderBy: {
+            createdAt: 'desc'
         },
         select: {
             pesertaId: true,

@@ -1,14 +1,32 @@
-import { PrismaClient, Role } from "@prisma/client";
+import { PrismaClient, Role, Unit } from "@prisma/client";
 // import { prisma } from '../utils/prisma'
 import { generateTestToken } from "../utils/token.utils";
 
 const prisma = new PrismaClient
 
 //read token (semua)
-export const fetchTokenModel = async (role:string) => {
+export const fetchTokenModel = async (
+    role:string,
+    page:number, 
+    limit:number, 
+    offset:number,
+    startDate?:string, 
+    endDate?:string 
+) => {
     return await prisma.token.findMany({
+        take: limit,
+        skip: offset,
         where: {
-            role: role as Role
+            role: role as Role,
+            ...(startDate || endDate ? { 
+                createdAt: { 
+                    ...(startDate ? { gte: new Date(startDate) } : {}),
+                    ...(endDate ? { lte: new Date(endDate) } : {})
+                } 
+            } : {}),
+        },
+        orderBy: {
+            createdAt: 'desc'
         },
         select: {
             id:true,
@@ -23,8 +41,63 @@ export const fetchTokenModel = async (role:string) => {
     })
 }
 
-export const fetchTokenModelAdmin = async () => {
+export const allDataTokenModel = async (
+    role:string,
+    startDate?:string, 
+    endDate?:string
+) => {
+    return await prisma.token.count(
+        {
+            where: {
+                        role: role as Role,
+                        ...(startDate || endDate ? { 
+                            createdAt: { 
+                                ...(startDate ? { gte: new Date(startDate) } : {}),
+                                ...(endDate ? { lte: new Date(endDate) } : {})
+                            } 
+                        } : {}),
+                    }
+        }
+    )
+}
+
+export const allDataTokenAdminModel = async (
+    startDate?:string, 
+    endDate?:string
+) => {
+    return await prisma.token.count(
+        {
+            where: {
+                        ...(startDate || endDate ? { 
+                            createdAt: { 
+                                ...(startDate ? { gte: new Date(startDate) } : {}),
+                                ...(endDate ? { lte: new Date(endDate) } : {})
+                            } 
+                        } : {}),
+                    }
+        }
+    )
+}
+
+
+export const fetchTokenModelAdmin = async (
+    page: number, 
+    limit: number, 
+    offset:number,
+    startDate?: string,
+    endDate?: string
+) => {
     return await prisma.token.findMany({
+        take: limit,
+        skip: offset,
+        where: {
+            ...(startDate || endDate ? { 
+                createdAt: { 
+                    ...(startDate ? { gte: new Date(startDate) } : {}),
+                    ...(endDate ? { lte: new Date(endDate) } : {})
+                } 
+            } : {}),
+        },
         select: {
             id:true,
             token: true,
@@ -34,7 +107,10 @@ export const fetchTokenModelAdmin = async () => {
             isActive: true,
             activeDate: true,
             expiredDate: true
-        }
+        },
+        orderBy: {
+            createdAt: 'desc'
+        },
     })
 }
 
@@ -53,7 +129,8 @@ export const getSpecificToken = async (tokenInput:string) => {
                 isActive: true,
                 activeDate: true,
                 expiredDate: true
-            }
+            },
+            
         })
 }
 
