@@ -4,7 +4,13 @@ import { getTokenService, addTokenService, nonactiveTokenService } from "../serv
 
 export const getToken = async (req:any, res:any) => {
     const role = req.user.role
-    const tokenList = await getTokenService(role)
+    const startDate = req.query.startDate
+    const endDate = req.query.endDate
+    const page = parseInt(req.query.page) || 1
+    const limit = parseInt(req.query.limit) || 10
+    const offset = (page - 1) * limit
+
+    const tokenList = await getTokenService(role, page, limit, offset, startDate, endDate)
 
     if(!tokenList.status) {
         return res.status(400).json(tokenList)
