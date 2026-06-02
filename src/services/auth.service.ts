@@ -28,7 +28,7 @@ export const loginService= async (dataLogin: any, res:any) => {
                 const secret = process.env.ACCESS_TOKEN_SECRET!
                 const token = jwt.sign(
                     payload, secret, {      
-                        expiresIn: '15m'
+                        expiresIn: '1d'
                     }
                 )
 
