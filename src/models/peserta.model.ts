@@ -77,6 +77,8 @@ export const getAllPesertaModel = async (
     endDate?:string
 ) => {
     return await prisma.peserta.findMany({
+        take: limit,
+        skip: offset,
         where: {
             unit: role as Unit,
             ...(posisi ? {posisi}: {}),
@@ -283,6 +285,8 @@ export const hasilPesertaModel = async (
     endDate?:string
 ) => {
     return await prisma.testSession.findMany({
+        take: limit,
+        skip: offset,
         where: {
             statusTest: 2,
             peserta: {
