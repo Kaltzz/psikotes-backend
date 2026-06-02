@@ -372,6 +372,9 @@ model KraepelinScoring {
   ketelitianVariabel  String
   keajeganVariabel    String
   ketahananVariabel   String
+  totalPerLajur String
+
+  createdAt DateTime @default(now())
 
   peserta Peserta @relation(fields: [pesertaId], references: [id])
 }

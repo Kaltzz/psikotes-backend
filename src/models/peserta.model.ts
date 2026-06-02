@@ -460,7 +460,8 @@ export const hasilTesModel = async (id: number) => {
             hasilTest: true,
             mainExplanation1: true,
             mainExplanation2: true,
-            description: true
+            description: true,
+            status: true
         }
       },
       mbtiScoring: {
@@ -492,7 +493,7 @@ export const hasilTesModel = async (id: number) => {
                     questionId: true,
                     answers: true
                 }
-            }
+            },
         }
       }
     },

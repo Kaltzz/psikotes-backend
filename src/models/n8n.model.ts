@@ -625,10 +625,10 @@ export const postKraepelinScoringModel = async (score: any) => {
 
   const dataToInsert = filtered.map(({ statusSent, ...rest }: any) => ({
     ...rest,
-    skorKecepatan:  Number(rest.skorKecepatan),
-    skorKetelitian: Number(rest.skorKetelitian),
-    skorKeajegan:   Number(rest.skorKeajegan),
-    skorKetahanan:  Number(rest.skorKetahanan),
+    skorKecepatan:  (rest.skorKecepatan),
+    skorKetelitian: (rest.skorKetelitian),
+    skorKeajegan:   (rest.skorKeajegan),
+    skorKetahanan:  (rest.skorKetahanan),
     statusSent: 1,
   }));
 
