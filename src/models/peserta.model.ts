@@ -481,7 +481,8 @@ export const hasilTesModel = async (id: number) => {
             kecepatanVariabel: true,
             ketelitianVariabel: true,
             keajeganVariabel: true,
-            ketahananVariabel: true
+            ketahananVariabel: true,
+            totalPerLajur: true
         }
       },
       testSession: {
