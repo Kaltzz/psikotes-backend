@@ -7,7 +7,7 @@ const app = express()
 
 
 app.use(cors({
-  // origin: 'http://localhost:3000', //jika local
+  // origin: 'http://localhost:3000', //jika local/
   origin: 'https://psikotes-frontend.vercel.app',
   credentials: true,
 
