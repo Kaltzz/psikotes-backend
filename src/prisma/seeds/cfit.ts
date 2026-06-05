@@ -36,12 +36,12 @@ const prisma = new PrismaClient();
 
 const cfitSeed = async () => {
   const totalQuestions = 2;
-  const optionLabels = ['A', 'B', 'C', 'D', 'E'] as const;
+  const optionLabels = ["A", "B", "C", "D", "E"] as const;
 
   for (let q = 1; q <= totalQuestions; q++) {
     const options = optionLabels.map((label, i) => ({
       label,
-      imagePath: `/cfitImages/soal-cfit/subtest2/contoh/2-contoh-${q}-answers-${i + 1}.webp`
+      imagePath: `/cfitImages/soal-cfit/subtest2/contoh/2-contoh-${q}-answers-${i + 1}.webp`,
     }));
 
     await prisma.cfitQuestion.create({
@@ -51,14 +51,13 @@ const cfitSeed = async () => {
         isPractice: true,
         imagePath: "",
         options: {
-          create: options
-        }
-      }
+          create: options,
+        },
+      },
     });
 
-    console.log(`✓ Subtest 2 - Soal ${q} ditambahkan`);
+    // console.log(`✓ Subtest 2 - Soal ${q} ditambahkan`);
   }
 };
-
 
 export { cfitSeed };
