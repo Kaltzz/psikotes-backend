@@ -1,232 +1,218 @@
 import {
-    getCfit1QuestionsContohModel, 
-    getCfit1QuestionsSoalModel,
-    getCfit2QuestionsContohModel,
-    getCfit2QuestionsSoalModel,
-    getCfit3QuestionsContohModel,
-    getCfit3QuestionsSoalModel,
-    getCfit4QuestionsContohModel,
-    getCfit4QuestionsSoalModel,
-    getDiscQuestionsModel,
-    getPapikostikQuestionsModel,
-    getMsdtQuestionsModel,
-    getMbtiQuestionsModel
-} from '../models/questions.model'
+  getCfit1QuestionsContohModel,
+  getCfit1QuestionsSoalModel,
+  getCfit2QuestionsContohModel,
+  getCfit2QuestionsSoalModel,
+  getCfit3QuestionsContohModel,
+  getCfit3QuestionsSoalModel,
+  getCfit4QuestionsContohModel,
+  getCfit4QuestionsSoalModel,
+  getDiscQuestionsModel,
+  getPapikostikQuestionsModel,
+  getMsdtQuestionsModel,
+  getMbtiQuestionsModel,
+} from "../models/questions.model";
 
-export const getCfit1QuestionsContohService = async (req:any, res:any) => {
-    try{
-        const questions = await getCfit1QuestionsContohModel(req, res)
+export const getCfit1QuestionsContohService = async (req: any, res: any) => {
+  try {
+    const questions = await getCfit1QuestionsContohModel(req, res);
 
-        return({
-            status: true,
-            message: 'berhasil mengambil data contoh cfit 1',
-            data: questions
-        })
-    } catch(error) {
-        return({
-            status: false,
-            message: error,
-        })
-    }
-}
+    return {
+      status: true,
+      message: "berhasil mengambil data contoh cfit 1",
+      data: questions,
+    };
+  } catch (error) {
+    return {
+      status: false,
+      message: error,
+    };
+  }
+};
 
-export const getCfit1QuestionsSoalService = async (req:any, res:any) => {
-    try {
-        const questions = await getCfit1QuestionsSoalModel(req, res)
+export const getCfit1QuestionsSoalService = async (req: any, res: any) => {
+  try {
+    const questions = await getCfit1QuestionsSoalModel(req, res);
 
-        return({
-            status: true,
-            message: 'Berhasil mengambil data soal cfit 1',
-            data: questions
-        })
-    } catch (error) {
-        return({
-            status: false,
-            message: error
-        })
-    }
-}
+    return {
+      status: true,
+      message: "Berhasil mengambil data soal cfit 1",
+      data: questions,
+    };
+  } catch (error) {
+    return {
+      status: false,
+      message: error,
+    };
+  }
+};
 
-export const getCfit2QuestionsContohService = async (req:any, res:any) => {
-    try{
-        const questions = await getCfit2QuestionsContohModel(req, res)
+export const getCfit2QuestionsContohService = async (req: any, res: any) => {
+  try {
+    const questions = await getCfit2QuestionsContohModel(req, res);
 
-        return({
-            status: true,
-            message: 'berhasil mengambil data contoh cfit 2',
-            data: questions
-        })
-    } catch(error) {
-        return({
-            status: false,
-            message: error,
-        })
-    }
-}
+    return {
+      status: true,
+      message: "berhasil mengambil data contoh cfit 2",
+      data: questions,
+    };
+  } catch (error) {
+    return {
+      status: false,
+      message: error,
+    };
+  }
+};
 
-export const getCfit2QuestionsSoalService = async (req:any, res:any) => {
-    try{
-        const questions = await getCfit2QuestionsSoalModel(req, res)
+export const getCfit2QuestionsSoalService = async (req: any, res: any) => {
+  try {
+    const questions = await getCfit2QuestionsSoalModel(req, res);
 
-        return({
-            status: true,
-            message: 'berhasil mengambil data soal cfit 2',
-            data: questions
-        })
-    } catch(error) {
-        return({
-            status: false,
-            message: error,
-        })
-    }
-} 
+    return {
+      status: true,
+      message: "berhasil mengambil data soal cfit 2",
+      data: questions,
+    };
+  } catch (error) {
+    return {
+      status: false,
+      message: error,
+    };
+  }
+};
 
-export const getCfit3QuestionsContohService = async (req:any, res:any) => {
-    try{
-        const questions = await getCfit3QuestionsContohModel(req, res)
+export const getCfit3QuestionsContohService = async (req: any, res: any) => {
+  try {
+    const questions = await getCfit3QuestionsContohModel(req, res);
 
-        return({
-            status: true,
-            message: 'berhasil mengambil data contoh cfit 3',
-            data: questions
-        })
-    } catch(error) {
-        return({
-            status: false,
-            message: error,
-        })
-    }
-}
+    return {
+      status: true,
+      message: "berhasil mengambil data contoh cfit 3",
+      data: questions,
+    };
+  } catch (error) {
+    return {
+      status: false,
+      message: error,
+    };
+  }
+};
 
-export const getCfit3QuestionsSoalService = async (req:any, res:any) => {
-    try{
-        const questions = await getCfit3QuestionsSoalModel(req, res)
+export const getCfit3QuestionsSoalService = async (req: any, res: any) => {
+  try {
+    const questions = await getCfit3QuestionsSoalModel(req, res);
 
-        return({
-            status: true,
-            message: 'berhasil mengambil data soal cfit 3',
-            data: questions
-        })
-    } catch(error) {
-        return({
-            status: false,
-            message: error,
-        })
-    }
-} 
+    return {
+      status: true,
+      message: "berhasil mengambil data soal cfit 3",
+      data: questions,
+    };
+  } catch (error) {
+    return {
+      status: false,
+      message: error,
+    };
+  }
+};
 
-export const getCfit4QuestionsContohService = async (req:any, res:any) => {
-    try{
-        const questions = await getCfit4QuestionsContohModel(req, res)
+export const getCfit4QuestionsContohService = async (req: any, res: any) => {
+  try {
+    const questions = await getCfit4QuestionsContohModel(req, res);
 
-        return({
-            status: true,
-            message: 'berhasil mengambil data contoh cfit 4',
-            data: questions
-        })
-    } catch(error) {
-        return({
-            status: false,
-            message: error,
-        })
-    }
-}
+    return {
+      status: true,
+      message: "berhasil mengambil data contoh cfit 4",
+      data: questions,
+    };
+  } catch (error) {
+    return {
+      status: false,
+      message: error,
+    };
+  }
+};
 
-export const getCfit4QuestionsSoalService = async (req:any, res:any) => {
-    try{
-        const questions = await getCfit4QuestionsSoalModel(req, res)
+export const getCfit4QuestionsSoalService = async (req: any, res: any) => {
+  try {
+    const questions = await getCfit4QuestionsSoalModel(req, res);
 
-        return({
-            status: true,
-            message: 'berhasil mengambil data soal cfit 4',
-            data: questions
-        })
-    } catch(error) {
-        return({
-            status: false,
-            message: error,
-        })
-    }
-}
+    return {
+      status: true,
+      message: "berhasil mengambil data soal cfit 4",
+      data: questions,
+    };
+  } catch (error) {
+    return {
+      status: false,
+      message: error,
+    };
+  }
+};
 
-export const getDiscQuestionsService = async (req:any, res:any) => {
-    try{
-        const questions = await getDiscQuestionsModel()
+export const getDiscQuestionsService = async (req: any, res: any) => {
+  try {
+    const questions = await getDiscQuestionsModel();
 
-        // const discs = questions.map((item) => {
-        //     const {id, sentences, questionIndex, optionIndex} = item
-        //     const disc = {
-        //         id: id, 
-        //         questionIndex: questionIndex, 
-        //         // questions: {
-        //         //     sentences: sentences, 
-        //         //     optionIndex: optionIndex
-        //         // }
-        //     }
-        //     return disc
-        // })
+    return {
+      status: true,
+      message: "berhasil mengambil data soal disc",
+      data: questions,
+    };
+  } catch (error) {
+    return {
+      status: false,
+      message: error,
+    };
+  }
+};
 
-        return({
-            status: true,
-            message: 'berhasil mengambil data soal disc',
-            data: questions
-        })
-    } catch(error) {
-        return({
-            status: false,
-            message: error,
-        })
-    }
-}
+export const getPapikostikQuestionsService = async (req: any, res: any) => {
+  try {
+    const questions = await getPapikostikQuestionsModel();
 
-export const getPapikostikQuestionsService = async (req:any, res:any) => {
-    try {
-        const questions = await getPapikostikQuestionsModel()
+    return {
+      status: true,
+      message: "Data pertanyaan papikostick berhasil diambil",
+      data: questions,
+    };
+  } catch (error) {
+    return {
+      status: false,
+      message: error,
+    };
+  }
+};
 
-        return({
-            status: true,
-            message: "Data pertanyaan papikostick berhasil diambil",
-            data: questions
-        })
-    } catch(error) {
-        return({
-            status: false,
-            message: error
-        })
-    }
-}
+export const getMsdtQuestionsService = async (req: any, res: any) => {
+  try {
+    const questions = await getMsdtQuestionsModel();
 
-export const getMsdtQuestionsService = async (req:any, res:any) => {
-    try {
-        const questions = await getMsdtQuestionsModel()
+    return {
+      status: true,
+      message: "Data pertanyaan MSDT berhasil diambil",
+      data: questions,
+    };
+  } catch (error) {
+    return {
+      status: false,
+      message: error,
+    };
+  }
+};
 
-        return({
-            status: true,
-            message: "Data pertanyaan MSDT berhasil diambil",
-            data: questions
-        })
+export const getMbtiQuestionsService = async (req: any, res: any) => {
+  try {
+    const question = await getMbtiQuestionsModel();
 
-    } catch (error) {
-        return({
-            status: false,
-            message: error
-        })
-    }
-}
-
-export const getMbtiQuestionsService = async (req: any, res:any) => {
-    try {
-        const question = await getMbtiQuestionsModel()
-
-        return ({
-            status: true,
-            message: "Data pertanyaan MBTI berhasil diambil",
-            data: question
-        })
-    } catch (error) {
-        return({
-            status: false,
-            message: "Data pertanyaan MBTI gagal diambil"
-        })
-    }
-}
+    return {
+      status: true,
+      message: "Data pertanyaan MBTI berhasil diambil",
+      data: question,
+    };
+  } catch (error) {
+    return {
+      status: false,
+      message: "Data pertanyaan MBTI gagal diambil",
+    };
+  }
+};

@@ -1,634 +1,616 @@
-import { PrismaClient, Tests } from "@prisma/client"
-// import { prisma } from '../utils/prisma'
+import { PrismaClient, Tests } from "@prisma/client";
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
-export const n8nCfitModel = async (id:number) => {
-    return await prisma.peserta.findUnique({
-        where: {
-            id: Number(id)
-        },
+export const n8nCfitModel = async (id: number) => {
+  return await prisma.peserta.findUnique({
+    where: {
+      id: Number(id),
+    },
+    select: {
+      nama: true,
+      email: true,
+      tanggalLahir: true,
+      createdAt: true,
+      jenisKelamin: true,
+      usia: true,
+      pendidikanTerakhir: true,
+      unit: true,
+      posisi: true,
+      jurusan: true,
+      testSession: {
         select: {
-            nama: true,
-            email:true,
-            tanggalLahir: true,
-            createdAt: true,
-            jenisKelamin: true,
-            usia: true,
-            pendidikanTerakhir: true,
-            unit: true,
-            posisi:true,
-            jurusan: true,
-            testSession: {
-                select: {
-                    jawabanCfit: {
-                        select: {
-                            id: true,
-                            sessionId: true,
-                            subtest: true,
-                            questionId: true,
-                            answers: true
-                        }
-                    }
-                }
-            }
-        }
-    })
-}
-
-export const n8nKraepelinModel = async (id:number) => {
-    return prisma.peserta.findUnique({
-        where: {
-            id: Number(id)
+          jawabanCfit: {
+            select: {
+              id: true,
+              sessionId: true,
+              subtest: true,
+              questionId: true,
+              answers: true,
+            },
+          },
         },
+      },
+    },
+  });
+};
+
+export const n8nKraepelinModel = async (id: number) => {
+  return prisma.peserta.findUnique({
+    where: {
+      id: Number(id),
+    },
+    select: {
+      nama: true,
+      email: true,
+      tanggalLahir: true,
+      createdAt: true,
+      jenisKelamin: true,
+      usia: true,
+      pendidikanTerakhir: true,
+      unit: true,
+      posisi: true,
+      jurusan: true,
+      testSession: {
         select: {
-            nama: true,
-            email:true,
-            tanggalLahir: true,
-            createdAt: true,
-            jenisKelamin: true,
-            usia: true,
-            pendidikanTerakhir: true,
-            unit: true,
-            posisi:true,
-            jurusan: true,
-            testSession: {
-                select: {
-                    jawabanKraepelin: {
-                        select: {
-                            columnIndex: true,
-                            answers: true,
-                            correctAnswers: true,
-                            wrongAnswers: true,
-                            totalAnswered: true
-                        }
-                    },
-                    kraepelinLog: {
-                        select: {
-                            timestamp: true,
-                            event: true,
-                            fromCol: true,
-                            toCol: true,
-                            fromPair: true,
-                            toPair: true
-                        }
-                    }
-                }
-            }
-        }
-    })
-}
+          jawabanKraepelin: {
+            select: {
+              columnIndex: true,
+              answers: true,
+              correctAnswers: true,
+              wrongAnswers: true,
+              totalAnswered: true,
+            },
+          },
+          kraepelinLog: {
+            select: {
+              timestamp: true,
+              event: true,
+              fromCol: true,
+              toCol: true,
+              fromPair: true,
+              toPair: true,
+            },
+          },
+        },
+      },
+    },
+  });
+};
 
 export const n8nDiscModel = async (id: number) => {
-    return prisma.peserta.findUnique({
-        where: {
-            id: Number(id)
-        },
+  return prisma.peserta.findUnique({
+    where: {
+      id: Number(id),
+    },
+    select: {
+      nama: true,
+      email: true,
+      tanggalLahir: true,
+      createdAt: true,
+      jenisKelamin: true,
+      usia: true,
+      pendidikanTerakhir: true,
+      unit: true,
+      posisi: true,
+      jurusan: true,
+      testSession: {
         select: {
-            nama: true,
-            email:true,
-            tanggalLahir: true,
-            createdAt: true,
-            jenisKelamin: true,
-            usia: true,
-            pendidikanTerakhir: true,
-            unit: true,
-            posisi:true,
-            jurusan: true,
-            testSession: {
-                select: {
-                    jawabanDisc: {
-                        select: {
-                            id: true,
-                            questionIndex: true,
-                            most: true, 
-                            least: true
-                        }
-                    },
-                }
-            }
-        }
-    })
-}
+          jawabanDisc: {
+            select: {
+              id: true,
+              questionIndex: true,
+              most: true,
+              least: true,
+            },
+          },
+        },
+      },
+    },
+  });
+};
 
-export const n8nPapikostikModal = async (id:number) => {
-    return prisma.peserta.findUnique({
-        where: {
-            id: Number(id)
-        },
+export const n8nPapikostikModal = async (id: number) => {
+  return prisma.peserta.findUnique({
+    where: {
+      id: Number(id),
+    },
+    select: {
+      nama: true,
+      email: true,
+      tanggalLahir: true,
+      createdAt: true,
+      jenisKelamin: true,
+      usia: true,
+      pendidikanTerakhir: true,
+      unit: true,
+      posisi: true,
+      jurusan: true,
+      testSession: {
         select: {
-            nama: true,
-            email:true,
-            tanggalLahir: true,
-            createdAt: true,
-            jenisKelamin: true,
-            usia: true,
-            pendidikanTerakhir: true,
-            unit: true,
-            posisi:true,
-            jurusan: true,
-            testSession: {
-                select: {
-                    jawabanPapikostik: {
-                        select:{
-                            
-                            questionIndex: true,
-                            type: true
-                        }
-                    }
-                }
-            }
-        }
-    })
-}
+          jawabanPapikostik: {
+            select: {
+              questionIndex: true,
+              type: true,
+            },
+          },
+        },
+      },
+    },
+  });
+};
 
 export const n8nMsdtModel = async (id: number) => {
-    return prisma.peserta.findUnique({
-        where: {
-            id: Number(id)
-        },
+  return prisma.peserta.findUnique({
+    where: {
+      id: Number(id),
+    },
+    select: {
+      nama: true,
+      email: true,
+      tanggalLahir: true,
+      createdAt: true,
+      jenisKelamin: true,
+      usia: true,
+      pendidikanTerakhir: true,
+      unit: true,
+      posisi: true,
+      jurusan: true,
+      testSession: {
         select: {
-            nama: true,
-            email:true,
-            tanggalLahir: true,
-            createdAt: true,
-            jenisKelamin: true,
-            usia: true,
-            pendidikanTerakhir: true,
-            unit: true,
-            posisi:true,
-            jurusan: true,
-            testSession: {
-                select: {
-                    jawabanMsdt: {
-                        select: {
-                            questionIndex: true,
-                            type: true
-                        }
-                    }
-                }
-            }
-        }
-    })
-}
+          jawabanMsdt: {
+            select: {
+              questionIndex: true,
+              type: true,
+            },
+          },
+        },
+      },
+    },
+  });
+};
 
 export const n8nMbtiModel = async (id: number) => {
-    return await prisma.peserta.findUnique({
-        where: {
-            id: Number(id)
-        },
+  return await prisma.peserta.findUnique({
+    where: {
+      id: Number(id),
+    },
+    select: {
+      nama: true,
+      email: true,
+      tanggalLahir: true,
+      createdAt: true,
+      jenisKelamin: true,
+      usia: true,
+      pendidikanTerakhir: true,
+      unit: true,
+      posisi: true,
+      jurusan: true,
+      testSession: {
         select: {
-            nama: true,
-            email:true,
-            tanggalLahir: true,
-            createdAt: true,
-            jenisKelamin: true,
-            usia: true,
-            pendidikanTerakhir: true,
-            unit: true,
-            posisi:true,
-            jurusan: true,
-            testSession: {
-                select: {
-                    jawabanMbti: {
-                        select: {
-                            questionIndex: true,
-                            type: true
-                        }
-                    }
-                }
-            }
-        }
-    })
-}
-
-export const getAllCfitAnswersModel = async(date:string) => {
-    return prisma.testSession.findMany({
-        where: {
-            statusTest: 2,
-            createdAt: {
-                gte: new Date(date)
+          jawabanMbti: {
+            select: {
+              questionIndex: true,
+              type: true,
             },
-            peserta: {
-                token: {
-                    tests: {
-                        has: "CFIT" as Tests
-                    } 
-                }
-            }
+          },
         },
-        select: {
-            id: true,
-            pesertaId: true,
-            peserta: {
-                select: {
-                    nama: true,
-                    email:true,
-                    tanggalLahir: true,
-                    createdAt: true,
-                    jenisKelamin: true,
-                    usia: true,
-                    pendidikanTerakhir: true,
-                    unit: true,
-                    posisi:true,
-                    jurusan: true,
-                    testSession: {
-                        select: {
-                            jawabanCfit: {
-                                select: {
-                                    id: true,
-                                    sessionId: true,
-                                    subtest: true,
-                                    questionId: true,
-                                    answers: true
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    })
-}
+      },
+    },
+  });
+};
 
-export const getAllKraepelinAnswersModel = async(date:string) => {
-    return prisma.testSession.findMany({
-        where: {
-            statusTest: 2,
-            createdAt: {
-                gte: new Date(date)
+export const getAllCfitAnswersModel = async (date: string) => {
+  return prisma.testSession.findMany({
+    where: {
+      statusTest: 2,
+      createdAt: {
+        gte: new Date(date),
+      },
+      peserta: {
+        token: {
+          tests: {
+            has: "CFIT" as Tests,
+          },
+        },
+      },
+    },
+    select: {
+      id: true,
+      pesertaId: true,
+      peserta: {
+        select: {
+          nama: true,
+          email: true,
+          tanggalLahir: true,
+          createdAt: true,
+          jenisKelamin: true,
+          usia: true,
+          pendidikanTerakhir: true,
+          unit: true,
+          posisi: true,
+          jurusan: true,
+          testSession: {
+            select: {
+              jawabanCfit: {
+                select: {
+                  id: true,
+                  sessionId: true,
+                  subtest: true,
+                  questionId: true,
+                  answers: true,
+                },
+              },
             },
-            peserta: {
-                token: {
-                    tests: {
-                        has: "KRAEPELIN" as Tests
-                    } 
-                }
-            }
+          },
         },
-        select: {
-            id: true,
-            pesertaId: true,
-            peserta: {
-                select: {
-                    nama: true,
-                    email:true,
-                    tanggalLahir: true,
-                    createdAt: true,
-                    jenisKelamin: true,
-                    usia: true,
-                    pendidikanTerakhir: true,
-                    unit: true,
-                    posisi:true,
-                    jurusan: true,
-                    testSession: {
-                        select: {
-                            jawabanKraepelin: {
-                                select: {
-                                    columnIndex: true,
-                                    answers: true,
-                                    correctAnswers: true,
-                                    wrongAnswers: true,
-                                    totalAnswered: true
-                                }
-                            },
-                            kraepelinLog: {
-                                select: {
-                                    timestamp: true,
-                                    event: true,
-                                    fromCol: true,
-                                    toCol: true,
-                                    fromPair: true,
-                                    toPair: true
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    })
-}
+      },
+    },
+  });
+};
 
-export const getAllDiscAnswersModel = async (date:string) => {
-    return prisma.testSession.findMany({
-        where: {
-            statusTest: 2,
-            createdAt: {
-                gte: new Date(date)
+export const getAllKraepelinAnswersModel = async (date: string) => {
+  return prisma.testSession.findMany({
+    where: {
+      statusTest: 2,
+      createdAt: {
+        gte: new Date(date),
+      },
+      peserta: {
+        token: {
+          tests: {
+            has: "KRAEPELIN" as Tests,
+          },
+        },
+      },
+    },
+    select: {
+      id: true,
+      pesertaId: true,
+      peserta: {
+        select: {
+          nama: true,
+          email: true,
+          tanggalLahir: true,
+          createdAt: true,
+          jenisKelamin: true,
+          usia: true,
+          pendidikanTerakhir: true,
+          unit: true,
+          posisi: true,
+          jurusan: true,
+          testSession: {
+            select: {
+              jawabanKraepelin: {
+                select: {
+                  columnIndex: true,
+                  answers: true,
+                  correctAnswers: true,
+                  wrongAnswers: true,
+                  totalAnswered: true,
+                },
+              },
+              kraepelinLog: {
+                select: {
+                  timestamp: true,
+                  event: true,
+                  fromCol: true,
+                  toCol: true,
+                  fromPair: true,
+                  toPair: true,
+                },
+              },
             },
-            peserta: {
-                token: {
-                    tests: {
-                        has: "DISC" as Tests
-                    } 
-                }
-            }
+          },
         },
-        select: {
-            id: true,
-            pesertaId: true,
-            peserta: {
-                select: {
-                    nama: true,
-                    email:true,
-                    tanggalLahir: true,
-                    createdAt: true,
-                    jenisKelamin: true,
-                    usia: true,
-                    pendidikanTerakhir: true,
-                    unit: true,
-                    posisi:true,
-                    jurusan: true,
-                    testSession: {
-                        select: {
-                            jawabanDisc: {
-                                select: {
-                                    id: true,
-                                    questionIndex: true,
-                                    most: true, 
-                                    least: true
-                                }
-                            },
-                        }
-                    }
-                }
-            }
-        }
-    })
-}
+      },
+    },
+  });
+};
 
-export const getAllPapikostickAnswersModel = async (date:string) => {
-    return prisma.testSession.findMany({
-        where: {
-            statusTest: 2,
-            createdAt: {
-                gte: new Date(date)
+export const getAllDiscAnswersModel = async (date: string) => {
+  return prisma.testSession.findMany({
+    where: {
+      statusTest: 2,
+      createdAt: {
+        gte: new Date(date),
+      },
+      peserta: {
+        token: {
+          tests: {
+            has: "DISC" as Tests,
+          },
+        },
+      },
+    },
+    select: {
+      id: true,
+      pesertaId: true,
+      peserta: {
+        select: {
+          nama: true,
+          email: true,
+          tanggalLahir: true,
+          createdAt: true,
+          jenisKelamin: true,
+          usia: true,
+          pendidikanTerakhir: true,
+          unit: true,
+          posisi: true,
+          jurusan: true,
+          testSession: {
+            select: {
+              jawabanDisc: {
+                select: {
+                  id: true,
+                  questionIndex: true,
+                  most: true,
+                  least: true,
+                },
+              },
             },
-            peserta: {
-                token: {
-                    tests: {
-                        has: "PAPIKOSTICK" as Tests
-                    } 
-                }
-            }
+          },
         },
-        select: {
-            id: true,
-            pesertaId: true,
-            peserta: {
-                select: {
-                    nama: true,
-                    email:true,
-                    tanggalLahir: true,
-                    createdAt: true,
-                    jenisKelamin: true,
-                    usia: true,
-                    pendidikanTerakhir: true,
-                    unit: true,
-                    posisi:true,
-                    jurusan: true,
-                    testSession: {
-                        select: {
-                            jawabanPapikostik: {
-                                select:{
-                                    questionIndex: true,
-                                    type: true
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    })
-}
+      },
+    },
+  });
+};
 
-export const getAllMsdtAnswersModel = async (date:string) => {
-    return prisma.testSession.findMany({
-        where: {
-            statusTest: 2,
-            createdAt: {
-                gte: new Date(date)
+export const getAllPapikostickAnswersModel = async (date: string) => {
+  return prisma.testSession.findMany({
+    where: {
+      statusTest: 2,
+      createdAt: {
+        gte: new Date(date),
+      },
+      peserta: {
+        token: {
+          tests: {
+            has: "PAPIKOSTICK" as Tests,
+          },
+        },
+      },
+    },
+    select: {
+      id: true,
+      pesertaId: true,
+      peserta: {
+        select: {
+          nama: true,
+          email: true,
+          tanggalLahir: true,
+          createdAt: true,
+          jenisKelamin: true,
+          usia: true,
+          pendidikanTerakhir: true,
+          unit: true,
+          posisi: true,
+          jurusan: true,
+          testSession: {
+            select: {
+              jawabanPapikostik: {
+                select: {
+                  questionIndex: true,
+                  type: true,
+                },
+              },
             },
-            peserta: {
-                token: {
-                    tests: {
-                        has: "MSDT" as Tests
-                    } 
-                }
-            }
+          },
         },
-        select: {
-            id: true,
-            pesertaId: true,
-            peserta: {
-                select: {
-                    nama: true,
-                    email:true,
-                    tanggalLahir: true,
-                    createdAt: true,
-                    jenisKelamin: true,
-                    usia: true,
-                    pendidikanTerakhir: true,
-                    unit: true,
-                    posisi:true,
-                    jurusan: true,
-                    testSession: {
-                        select: {
-                            jawabanMsdt: {
-                                select: {
-                                    questionIndex: true,
-                                    type: true
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    })
-}
+      },
+    },
+  });
+};
 
-export const getAllMbtiAnswersModel = async (date:string) => {
-    return prisma.testSession.findMany({
-        where: {
-            statusTest: 2,
-            createdAt: {
-                gte: new Date(date)
+export const getAllMsdtAnswersModel = async (date: string) => {
+  return prisma.testSession.findMany({
+    where: {
+      statusTest: 2,
+      createdAt: {
+        gte: new Date(date),
+      },
+      peserta: {
+        token: {
+          tests: {
+            has: "MSDT" as Tests,
+          },
+        },
+      },
+    },
+    select: {
+      id: true,
+      pesertaId: true,
+      peserta: {
+        select: {
+          nama: true,
+          email: true,
+          tanggalLahir: true,
+          createdAt: true,
+          jenisKelamin: true,
+          usia: true,
+          pendidikanTerakhir: true,
+          unit: true,
+          posisi: true,
+          jurusan: true,
+          testSession: {
+            select: {
+              jawabanMsdt: {
+                select: {
+                  questionIndex: true,
+                  type: true,
+                },
+              },
             },
-            peserta: {
-                token: {
-                    tests: {
-                        has: "MBTI" as Tests
-                    } 
-                }
-            }
+          },
         },
+      },
+    },
+  });
+};
+
+export const getAllMbtiAnswersModel = async (date: string) => {
+  return prisma.testSession.findMany({
+    where: {
+      statusTest: 2,
+      createdAt: {
+        gte: new Date(date),
+      },
+      peserta: {
+        token: {
+          tests: {
+            has: "MBTI" as Tests,
+          },
+        },
+      },
+    },
+    select: {
+      id: true,
+      pesertaId: true,
+      peserta: {
         select: {
-            id: true,
-            pesertaId: true,
-            peserta: {
+          nama: true,
+          email: true,
+          tanggalLahir: true,
+          createdAt: true,
+          jenisKelamin: true,
+          usia: true,
+          pendidikanTerakhir: true,
+          unit: true,
+          posisi: true,
+          jurusan: true,
+          testSession: {
+            select: {
+              jawabanMbti: {
                 select: {
-                    nama: true,
-                    email:true,
-                    tanggalLahir: true,
-                    createdAt: true,
-                    jenisKelamin: true,
-                    usia: true,
-                    pendidikanTerakhir: true,
-                    unit: true,
-                    posisi:true,
-                    jurusan: true,
-                    testSession: {
-                        select: {
-                            jawabanMbti: {
-                                select: {
-                                    questionIndex: true,
-                                    type: true
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    })
-}
+                  questionIndex: true,
+                  type: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+};
 
-export const postPapikostickScoringModel = async (score:any) => {
-    const filtered = score.filter((item: any) => item.statusSent === 0);
+export const postPapikostickScoringModel = async (score: any) => {
+  const filtered = score.filter((item: any) => item.statusSent === 0);
 
-    const dataToInsert = filtered.map(({ statusSent, ...rest }: any) => ({
+  const dataToInsert = filtered.map(({ statusSent, ...rest }: any) => ({
     ...rest,
     statusSent: 1,
-    }));
+  }));
 
-    await prisma.papikostickScoring.createMany({
+  await prisma.papikostickScoring.createMany({
     data: dataToInsert,
     skipDuplicates: true,
-    });
+  });
 
-    const result = await prisma.papikostickScoring.findMany({
+  const result = await prisma.papikostickScoring.findMany({
     where: {
-        pesertaId: { in: dataToInsert.map((item: any) => item.pesertaId) },
-        statusSent: 1,
+      pesertaId: { in: dataToInsert.map((item: any) => item.pesertaId) },
+      statusSent: 1,
     },
     select: {
-        pesertaId: true,
-        statusSent: true,
+      pesertaId: true,
+      statusSent: true,
     },
-    });
+  });
 
-    return result;
+  return result;
+};
 
-    // return await prisma.$transaction([
-    // prisma.papikostickScoring.createMany({
-    //     data: filtered.map(({ statusSent, ...rest }: any) => ({
-    //     ...rest,
-    //     statusSent: 1, // langsung set 1 saat insert
-    //     })),
-    //     skipDuplicates: true,
-    // }),
-    // ]);
-    // return await prisma.papikostickScoring.createMany({
-    //     data: score
-    //         .filter((item: any) => item.statusSent === 0)
-    //         .map((item: any) => ({ ...item })),
-    //     skipDuplicates: true,
-    // });
-}
+export const postDiscScoringModel = async (score: any) => {
+  const filtered = score.filter((item: any) => item.statusSent === 0);
 
-export const postDiscScoringModel = async (score:any) => {
-    const filtered = score.filter((item: any) => item.statusSent === 0);
-
-    const dataToInsert = filtered.map(({ statusSent, ...rest }: any) => ({
+  const dataToInsert = filtered.map(({ statusSent, ...rest }: any) => ({
     ...rest,
     statusSent: 1,
-    }));
+  }));
 
-    await prisma.discScoring.createMany({
-        data: dataToInsert,
-        skipDuplicates: true,
-    });
+  await prisma.discScoring.createMany({
+    data: dataToInsert,
+    skipDuplicates: true,
+  });
 
-    const result = await prisma.discScoring.findMany({
+  const result = await prisma.discScoring.findMany({
     where: {
-        pesertaId: { in: dataToInsert.map((item: any) => item.pesertaId) },
-        statusSent: 1,
+      pesertaId: { in: dataToInsert.map((item: any) => item.pesertaId) },
+      statusSent: 1,
     },
     select: {
-        pesertaId: true,
-        statusSent: true,
+      pesertaId: true,
+      statusSent: true,
     },
-    });
+  });
 
-    return result;
-}
+  return result;
+};
 
-export const postMsdtScoringModel = async (score:any) => {
-    const filtered = score.filter((item: any) => item.statusSent === 0);
+export const postMsdtScoringModel = async (score: any) => {
+  const filtered = score.filter((item: any) => item.statusSent === 0);
 
-    const dataToInsert = filtered.map(({ statusSent, ...rest }: any) => ({
+  const dataToInsert = filtered.map(({ statusSent, ...rest }: any) => ({
     ...rest,
     statusSent: 1,
-    }));
+  }));
 
-    await prisma.msdtScoring.createMany({
-        data: dataToInsert,
-        skipDuplicates: true,
-    });
+  await prisma.msdtScoring.createMany({
+    data: dataToInsert,
+    skipDuplicates: true,
+  });
 
-    const result = await prisma.msdtScoring.findMany({
+  const result = await prisma.msdtScoring.findMany({
     where: {
-        pesertaId: { in: dataToInsert.map((item: any) => item.pesertaId) },
-        statusSent: 1,
+      pesertaId: { in: dataToInsert.map((item: any) => item.pesertaId) },
+      statusSent: 1,
     },
     select: {
-        pesertaId: true,
-        statusSent: true,
+      pesertaId: true,
+      statusSent: true,
     },
-    });
+  });
 
-    return result;
-}
+  return result;
+};
 
-export const postMbtiScoringModel = async (score:any) => {
-    const filtered = score.filter((item: any) => item.statusSent === 0);
+export const postMbtiScoringModel = async (score: any) => {
+  const filtered = score.filter((item: any) => item.statusSent === 0);
 
-    const dataToInsert = filtered.map(({ statusSent, ...rest }: any) => ({
+  const dataToInsert = filtered.map(({ statusSent, ...rest }: any) => ({
     ...rest,
     statusSent: 1,
-    }));
+  }));
 
-    await prisma.mbtiScoring.createMany({
-        data: dataToInsert,
-        skipDuplicates: true,
-    });
+  await prisma.mbtiScoring.createMany({
+    data: dataToInsert,
+    skipDuplicates: true,
+  });
 
-    const result = await prisma.mbtiScoring.findMany({
+  const result = await prisma.mbtiScoring.findMany({
     where: {
-        pesertaId: { in: dataToInsert.map((item: any) => item.pesertaId) },
-        statusSent: 1,
+      pesertaId: { in: dataToInsert.map((item: any) => item.pesertaId) },
+      statusSent: 1,
     },
     select: {
-        pesertaId: true,
-        statusSent: true,
+      pesertaId: true,
+      statusSent: true,
     },
-    });
+  });
 
-    return result;
-}
+  return result;
+};
 
 export const postKraepelinScoringModel = async (score: any) => {
   const filtered = score.filter((item: any) => item.statusSent === 0);
 
   const dataToInsert = filtered.map(({ statusSent, ...rest }: any) => ({
     ...rest,
-    skorKecepatan:  (rest.skorKecepatan),
-    skorKetelitian: (rest.skorKetelitian),
-    skorKeajegan:   (rest.skorKeajegan),
-    skorKetahanan:  (rest.skorKetahanan),
+    skorKecepatan: rest.skorKecepatan,
+    skorKetelitian: rest.skorKetelitian,
+    skorKeajegan: rest.skorKeajegan,
+    skorKetahanan: rest.skorKetahanan,
     statusSent: 1,
   }));
 

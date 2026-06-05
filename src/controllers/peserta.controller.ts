@@ -1,105 +1,112 @@
-import { start } from "node:repl"
-import { postPesertaService, 
-        getAllPesertaService, 
-        getDetailPesertaService,
-        statusPesertaService,
-        hasilPesertaService,
-        hasilTesService,
-        userExpiredService,
-        getAllPosisiService,
-        getAllHasilPosisiService,
-        getCountAllPesertaService
-        // getFilteredDateService
-        // setTrueService
-    } from "../services/peserta.service"
+import { start } from "node:repl";
+import {
+  postPesertaService,
+  getAllPesertaService,
+  getDetailPesertaService,
+  statusPesertaService,
+  hasilPesertaService,
+  hasilTesService,
+  userExpiredService,
+  getAllPosisiService,
+  getAllHasilPosisiService,
+  getCountAllPesertaService,
+  // getFilteredDateService
+  // setTrueService
+} from "../services/peserta.service";
 
+export const postPeserta = async (req: any, res: any) => {
+  const peserta = await postPesertaService(req.body, res);
 
-export const postPeserta = async (req:any, res:any) => {
-    const peserta = await postPesertaService(req.body, res)
+  if (!peserta.status) {
+    return res.status(400).json(peserta);
+  }
 
-    if (!peserta.status) {
-        return res.status(400).json(peserta)
-    }
+  return res.status(201).json(peserta);
+};
 
-    return res.status(201).json(peserta)
-}
+export const getCountAllPeserta = async (req: any, res: any) => {
+  const peserta = await getCountAllPesertaService();
 
-export const getCountAllPeserta = async (req:any, res:any) => {
-    const peserta = await getCountAllPesertaService()
+  if (!peserta.status) {
+    return res.status(400).json(peserta);
+  }
+  return res.status(201).json(peserta);
+};
 
-    if (!(peserta.status)) {
-        return res.status(400).json(peserta)
-    }
-    return res.status(201).json(peserta)
-}
+export const getAllPeserta = async (req: any, res: any) => {
+  const role = req.user.role;
 
-export const getAllPeserta = async (req: any, res:any) => {
-    const role = req.user.role
-    
-    //add pagination
-    let posisi = req.query.posisi
-    if (posisi === "Semua") {
-        posisi = null
-    }
-    const startDate = req.query.startDate
-    const endDate = req.query.endDate
-    const nama = req.query.nama 
-    const page = parseInt(req.query.page) || 1
-    const limit = parseInt(req.query.limit) || 10
-    const offset = (page - 1) * limit
-    console.log('ini startDate',startDate)
-    console.log('ini endDate',endDate)
-    const peserta = await getAllPesertaService(role, page, limit, offset, posisi, nama, startDate, endDate)
+  //add pagination
+  let posisi = req.query.posisi;
+  if (posisi === "Semua") {
+    posisi = null;
+  }
+  const startDate = req.query.startDate;
+  const endDate = req.query.endDate;
+  const nama = req.query.nama;
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const offset = (page - 1) * limit;
 
-    if (!peserta.status) {
-        return res.status(400).json(peserta)
-    }
-    return res.status(201).json(peserta)
-}
+  const peserta = await getAllPesertaService(
+    role,
+    page,
+    limit,
+    offset,
+    posisi,
+    nama,
+    startDate,
+    endDate,
+  );
 
-export const getDetailPeserta = async (req: any, res:any) => {
-    const id = Number(req.params.id)
-    const peserta = await getDetailPesertaService(id, res)
+  if (!peserta.status) {
+    return res.status(400).json(peserta);
+  }
+  return res.status(201).json(peserta);
+};
 
-    // return res.status(peserta.status).json({
-    //     message: peserta.message,
-    //     data: peserta.data
-    // })
+export const getDetailPeserta = async (req: any, res: any) => {
+  const id = Number(req.params.id);
+  const peserta = await getDetailPesertaService(id, res);
 
-    if (!peserta.status) {
-        return res.status(400).json(peserta)
-    }
+  // return res.status(peserta.status).json({
+  //     message: peserta.message,
+  //     data: peserta.data
+  // })
 
-    return res.status(201).json(peserta)
-}
+  if (!peserta.status) {
+    return res.status(400).json(peserta);
+  }
 
-export const getAllPosisi = async (req:any, res:any) => {
-    // const posisi = req.query.posisi
-    const nama = req.query.nama
-    const startDate = req.query.startDate
-    const endDate = req.query.endDate
-    const allPosisi = await getAllPosisiService(nama, startDate, endDate)
-    
+  return res.status(201).json(peserta);
+};
 
-    if(!allPosisi.status) {
-        return res.status(400).json(allPosisi)
-    }
+export const getAllPosisi = async (req: any, res: any) => {
+  // const posisi = req.query.posisi
+  const nama = req.query.nama;
+  const startDate = req.query.startDate;
+  const endDate = req.query.endDate;
+  const allPosisi = await getAllPosisiService(nama, startDate, endDate);
 
-    return res.status(201).json(allPosisi)
-}
+  if (!allPosisi.status) {
+    return res.status(400).json(allPosisi);
+  }
 
-export const getAllHasilPosisiController = async (req:any, res:any) => {
-    const nama = req.query.nama
-    const startDate = req.query.startDate
-    const endDate = req.query.endDate
-    const allPosisi = await getAllHasilPosisiService(nama, startDate, endDate)
+  return res.status(201).json(allPosisi);
+};
 
-    if(!allPosisi.status) {
-        return res.status(400).json(allPosisi)
-    }
+export const getAllHasilPosisiController = async (req: any, res: any) => {
+  const nama = req.query.nama;
+  const startDate = req.query.startDate;
+  const endDate = req.query.endDate;
+  const allPosisi = await getAllHasilPosisiService(nama, startDate, endDate);
 
-    return res.status(201).json(allPosisi)
-}
+  if (!allPosisi.status) {
+    return res.status(400).json(allPosisi);
+  }
+
+  return res.status(201).json(allPosisi);
+};
 
 // export const getFilteredTime = async (req:any, res:any) => {
 //     const startDate = req.query.startDate
@@ -107,63 +114,69 @@ export const getAllHasilPosisiController = async (req:any, res:any) => {
 //     const filteredDate = await getFilteredDateService(startDate, endDate)
 // }
 
-export const statusPeserta = async (req:any, res:any) => {
-    const sessionId = Number(req.params.id)
-    
-    const peserta = await statusPesertaService(sessionId, res)
+export const statusPeserta = async (req: any, res: any) => {
+  const sessionId = Number(req.params.id);
 
-    if(!peserta.status) {
-        return res.status(400).json(peserta)
-    }
+  const peserta = await statusPesertaService(sessionId, res);
 
-    return res.status(201).json(peserta)
-}
+  if (!peserta.status) {
+    return res.status(400).json(peserta);
+  }
+
+  return res.status(201).json(peserta);
+};
 
 //hasil tes
 
-export const hasilPesertaController = async (req:any, res:any) => {
-    const role = req.user.role
-    
-    let posisi = req.query.posisi
-    if (posisi === "Semua") {
-        posisi = null
-    }
+export const hasilPesertaController = async (req: any, res: any) => {
+  const role = req.user.role;
 
-    const startDate = req.query.startDate
-    const endDate = req.query.endDate
-    const nama = req.query.nama 
-    const page = parseInt(req.query.page) || 1
-    const limit = parseInt(req.query.limit) || 10
-    const offset = (page - 1) * limit
+  let posisi = req.query.posisi;
+  if (posisi === "Semua") {
+    posisi = null;
+  }
 
-    const peserta = await hasilPesertaService(role, page, limit, offset, posisi, nama, startDate, endDate)
+  const startDate = req.query.startDate;
+  const endDate = req.query.endDate;
+  const nama = req.query.nama;
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const offset = (page - 1) * limit;
 
-    if (!(peserta.status)) {
-        return res.status(400).json(peserta)
-    }
-    return res.status(201).json(peserta)
-}
+  const peserta = await hasilPesertaService(
+    role,
+    page,
+    limit,
+    offset,
+    posisi,
+    nama,
+    startDate,
+    endDate,
+  );
 
-export const hasilTesController = async (req:any, res:any) => {
-    const pesertaId = req.params.id
-    const peserta = await hasilTesService(pesertaId)
+  if (!peserta.status) {
+    return res.status(400).json(peserta);
+  }
+  return res.status(201).json(peserta);
+};
 
-    if (!(peserta.status)) {
-        return res.status(400).json(peserta)
-    }
-    return res.status(201).json(peserta)
-}
+export const hasilTesController = async (req: any, res: any) => {
+  const pesertaId = req.params.id;
+  const peserta = await hasilTesService(pesertaId);
 
-export const userExpired = async (req:any, res:any) => {
-    const nik = req.params.nik
-    const peserta = await userExpiredService(nik)
-    // console.log(nik)
+  if (!peserta.status) {
+    return res.status(400).json(peserta);
+  }
+  return res.status(201).json(peserta);
+};
 
-    if(!(peserta.status)) {
-        return res.status(400).json(peserta)
-    }
+export const userExpired = async (req: any, res: any) => {
+  const nik = req.params.nik;
+  const peserta = await userExpiredService(nik);
 
-    return res.status(201).json(peserta)
-}
+  if (!peserta.status) {
+    return res.status(400).json(peserta);
+  }
 
-
+  return res.status(201).json(peserta);
+};

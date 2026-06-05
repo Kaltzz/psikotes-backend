@@ -1,112 +1,107 @@
-import { 
-    answersCfitService, 
-    answersDiscService,
-    answersKraepelinService,
-    answersPapikostickService,
-    n8nAnswersKraepelinService,
-    answersMsdtService,
-    answersMbtiService,
-    tabSwitchService
-} from "../services/answers.service"
+import {
+  answersCfitService,
+  answersDiscService,
+  answersKraepelinService,
+  answersPapikostickService,
+  n8nAnswersKraepelinService,
+  answersMsdtService,
+  answersMbtiService,
+  tabSwitchService,
+} from "../services/answers.service";
 
 // CFIT
-export const answersCfit = async (req:any, res:any) => {
-    const sessionId = req.params.id
-    const answers = await answersCfitService(req.body, res, sessionId)
-    if(!answers.status) {
-        return res.status(400).json(answers)
-    }
-    return res.status(201).json(answers)
-}
+export const answersCfit = async (req: any, res: any) => {
+  const sessionId = req.params.id;
+  const answers = await answersCfitService(req.body, res, sessionId);
+  if (!answers.status) {
+    return res.status(400).json(answers);
+  }
+  return res.status(201).json(answers);
+};
 
 // DISC
-export const answersDisc = async (req:any, res:any) => {
-    const sessionId = req.params.id
-    const data = req.body
-    // console.log('id:', sessionId)
-    // console.log('data', data)
-    const answers = await answersDiscService(data, sessionId, res)
+export const answersDisc = async (req: any, res: any) => {
+  const sessionId = req.params.id;
+  const data = req.body;
 
-    if(!answers.status) {
-        return res.status(400).json(answers)
-    }
+  const answers = await answersDiscService(data, sessionId, res);
 
-    return res.status(201).json(answers)
-}
+  if (!answers.status) {
+    return res.status(400).json(answers);
+  }
+
+  return res.status(201).json(answers);
+};
 
 //kraepelin
-export const answersKraepelin = async (req:any, res:any) => {
-    const sessionId = parseInt(req.params.id)
-    const data = req.body
-    const answers = await answersKraepelinService(data, sessionId, res)
+export const answersKraepelin = async (req: any, res: any) => {
+  const sessionId = parseInt(req.params.id);
+  const data = req.body;
+  const answers = await answersKraepelinService(data, sessionId, res);
 
-    if(!(answers.status)) {
-        return res.status(400).json(answers)
-    }
+  if (!answers.status) {
+    return res.status(400).json(answers);
+  }
 
-    return res.status(201).json(answers)
-}
+  return res.status(201).json(answers);
+};
 
-export const answersPapikostick = async (req:any, res:any) => {
-    const sessionId = parseInt(req.params.id)
-    const data = req.body
-    console.log('data controller: ', data)
-    const papikostick = await answersPapikostickService(data, sessionId, res)
+export const answersPapikostick = async (req: any, res: any) => {
+  const sessionId = parseInt(req.params.id);
+  const data = req.body;
 
-    if (!(papikostick.status)) {
-        return res.status(400).json(papikostick)
-    }
+  const papikostick = await answersPapikostickService(data, sessionId, res);
 
-    return res.status(201).json(papikostick)
-}
+  if (!papikostick.status) {
+    return res.status(400).json(papikostick);
+  }
 
-export const n8nAnswersKraepelin = async (req:any, res:any) => {
-    const data = req.body.data
-    const kraepelin = await n8nAnswersKraepelinService(data)
+  return res.status(201).json(papikostick);
+};
 
-    if (!(kraepelin.status)) {
-        return res.status(400).json(kraepelin)
-    }
-    
-    return res.status(201).json(kraepelin)
-    // console.log("ini kraepelin",data)
-}
+export const n8nAnswersKraepelin = async (req: any, res: any) => {
+  const data = req.body.data;
+  const kraepelin = await n8nAnswersKraepelinService(data);
 
-export const answersMsdt = async (req:any, res:any) => {
-    const sessionId = parseInt(req.params.id)
-    const data = req.body
+  if (!kraepelin.status) {
+    return res.status(400).json(kraepelin);
+  }
 
-    console.log("ini data: ", data)
+  return res.status(201).json(kraepelin);
+};
 
-    const msdt = await answersMsdtService(sessionId, data)
+export const answersMsdt = async (req: any, res: any) => {
+  const sessionId = parseInt(req.params.id);
+  const data = req.body;
 
-    if(!(msdt.status)) {
-        return res.status(400).json(msdt)
-    }
+  const msdt = await answersMsdtService(sessionId, data);
 
-    return res.status(201).json(msdt)
-}
+  if (!msdt.status) {
+    return res.status(400).json(msdt);
+  }
 
-export const answersMbti = async (req:any, res:any) => {
-    const sessionId = parseInt(req.params.id)
-    const data = req.body
+  return res.status(201).json(msdt);
+};
 
-    const mbti = await answersMbtiService(sessionId, data)
+export const answersMbti = async (req: any, res: any) => {
+  const sessionId = parseInt(req.params.id);
+  const data = req.body;
 
-    if (!(mbti.status)) {
-        return res.status(400).json(mbti)
-    }
+  const mbti = await answersMbtiService(sessionId, data);
 
-    return res.status(201).json(mbti)
-}
+  if (!mbti.status) {
+    return res.status(400).json(mbti);
+  }
 
-export const tabSwitch = async (req:any, res:any) => {
-    console.log('ini isi tabSwitch new', req.body)
-    const tabSwitch = await tabSwitchService(req.body)
+  return res.status(201).json(mbti);
+};
 
-    if(!(tabSwitch.status)) {
-        return res.status(400).json(tabSwitch)
-    }
+export const tabSwitch = async (req: any, res: any) => {
+  const tabSwitch = await tabSwitchService(req.body);
 
-    return res.status(201).json(tabSwitch)
-}
+  if (!tabSwitch.status) {
+    return res.status(400).json(tabSwitch);
+  }
+
+  return res.status(201).json(tabSwitch);
+};

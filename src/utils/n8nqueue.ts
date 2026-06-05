@@ -1,5 +1,3 @@
-// utils/n8nQueue.ts
-
 const queue: Array<() => Promise<void>> = [];
 let isProcessing = false;
 
@@ -16,12 +14,10 @@ const processQueue = async () => {
     const job = queue.shift()!;
     try {
       await job();
-    } catch (error) {
-      console.error('Queue job error:', error);
-    }
+    } catch (error) {}
     // Jeda 2 detik antar trigger — n8n tidak kewalahan
     if (queue.length > 0) {
-      await new Promise(resolve => setTimeout(resolve, 10000));
+      await new Promise((resolve) => setTimeout(resolve, 10000));
     }
   }
 
