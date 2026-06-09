@@ -13,13 +13,19 @@ import {
   getAllPesertaModelAdmin,
   allDataAdminModel,
   allDataModel,
+  getAllPosisiAdminModel,
   getAllPosisiModel,
   allDataHasilModelAdmin,
   allDataHasilModel,
+  getAllHasilPosisiAdminModel,
   getAllHasilPosisiModel,
   getCountAllPesertaModel,
 } from "../models/peserta.model";
-import { addCount, getSpecificToken } from "../models/token.model";
+import {
+  addCount,
+  getSpecificToken,
+  updateTokenModel,
+} from "../models/token.model";
 import { scoringCfit } from "../utils/scoring.utils";
 
 const dateConverter = (date: any) => {
@@ -111,6 +117,7 @@ export const postPesertaService = async (post: any, res: any) => {
       };
     } else {
       if (dateNow < token.activeDate || dateNow > token.expiredDate) {
+        const updateToken = await updateTokenModel(token.id);
         return {
           status: false,
           message: "Token Kadaluwarsa",
@@ -313,12 +320,19 @@ export const getDetailPesertaService = async (id: number, res: any) => {
 };
 
 export const getAllPosisiService = async (
+  role: string,
   nama?: string,
   startDate?: string,
   endDate?: string,
 ) => {
   try {
-    const allPosisi = await getAllPosisiModel(nama, startDate, endDate);
+    let allPosisi;
+
+    if (role == Role.ADMIN) {
+      allPosisi = await getAllPosisiAdminModel(nama, startDate, endDate);
+    } else {
+      allPosisi = await getAllPosisiModel(role, nama, startDate, endDate);
+    }
 
     const newPosisi = allPosisi.map((item) => {
       return {
@@ -347,12 +361,19 @@ export const getAllPosisiService = async (
 };
 
 export const getAllHasilPosisiService = async (
+  role: string,
   nama?: string,
   startDate?: string,
   endDate?: string,
 ) => {
   try {
-    const allPosisi = await getAllHasilPosisiModel(nama, startDate, endDate);
+    let allPosisi;
+
+    if (role == Role.ADMIN) {
+      allPosisi = await getAllHasilPosisiAdminModel(nama, startDate, endDate);
+    } else {
+      allPosisi = await getAllHasilPosisiModel(role, nama, startDate, endDate);
+    }
 
     const newPosisi = allPosisi.map((item) => {
       return {

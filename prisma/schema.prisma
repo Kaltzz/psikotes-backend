@@ -226,8 +226,18 @@ model Admin {
   username  String   @unique
   password  String
   role      Role  @default(ADMIN)
+  refreshToken RefreshToken[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  adminId   Int
+  admin     Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
 }
 
 model JawabanCfit {

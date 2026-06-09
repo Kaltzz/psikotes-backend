@@ -9,6 +9,7 @@ export const fetchTokenModel = async (
   page: number,
   limit: number,
   offset: number,
+  newStatus?: boolean,
   startDate?: string,
   endDate?: string,
 ) => {
@@ -17,6 +18,7 @@ export const fetchTokenModel = async (
     skip: offset,
     where: {
       role: role as Role,
+      ...(newStatus !== undefined && { isActive: newStatus }),
       ...(startDate || endDate
         ? {
             createdAt: {
@@ -26,9 +28,7 @@ export const fetchTokenModel = async (
           }
         : {}),
     },
-    orderBy: {
-      createdAt: "desc",
-    },
+    orderBy: [{ isActive: "asc" }, { createdAt: "desc" }],
     select: {
       id: true,
       token: true,
@@ -44,12 +44,14 @@ export const fetchTokenModel = async (
 
 export const allDataTokenModel = async (
   role: string,
+  newStatus?: boolean,
   startDate?: string,
   endDate?: string,
 ) => {
   return await prisma.token.count({
     where: {
       role: role as Role,
+      ...(newStatus !== undefined && { isActive: newStatus }),
       ...(startDate || endDate
         ? {
             createdAt: {
@@ -63,11 +65,13 @@ export const allDataTokenModel = async (
 };
 
 export const allDataTokenAdminModel = async (
+  newStatus?: boolean,
   startDate?: string,
   endDate?: string,
 ) => {
   return await prisma.token.count({
     where: {
+      ...(newStatus !== undefined && { isActive: newStatus }),
       ...(startDate || endDate
         ? {
             createdAt: {
@@ -84,6 +88,7 @@ export const fetchTokenModelAdmin = async (
   page: number,
   limit: number,
   offset: number,
+  newStatus?: boolean,
   startDate?: string,
   endDate?: string,
 ) => {
@@ -91,6 +96,7 @@ export const fetchTokenModelAdmin = async (
     take: limit,
     skip: offset,
     where: {
+      ...(newStatus !== undefined && { isActive: newStatus }),
       ...(startDate || endDate
         ? {
             createdAt: {
@@ -110,9 +116,11 @@ export const fetchTokenModelAdmin = async (
       activeDate: true,
       expiredDate: true,
     },
-    orderBy: {
-      createdAt: "desc",
-    },
+    orderBy: [
+      { isActive: "desc" },
+      { expiredDate: "desc" },
+      { createdAt: "desc" },
+    ],
   });
 };
 
@@ -171,6 +179,77 @@ export const addCount = async (id: any) => {
     },
     data: {
       usedCount: { increment: 1 },
+    },
+  });
+};
+
+export const updateTokenModel = async (id: number) => {
+  const updateToken = await prisma.token.update({
+    where: {
+      id: id,
+    },
+    data: {
+      isActive: false,
+    },
+  });
+};
+
+export const getAllTokenStatusAdminModel = async (
+  startDate?: string,
+  endDate?: string,
+) => {
+  return await prisma.token.groupBy({
+    by: ["isActive"],
+    _count: {
+      isActive: true,
+    },
+    where: {
+      ...(startDate || endDate
+        ? {
+            createdAt: {
+              ...(startDate ? { gte: new Date(startDate) } : {}),
+              ...(endDate ? { lte: new Date(endDate) } : {}),
+            },
+          }
+        : {}),
+    },
+  });
+};
+
+export const getAllTokenStatusModel = async (
+  role: string,
+  startDate?: string,
+  endDate?: string,
+) => {
+  return await prisma.token.groupBy({
+    by: ["isActive"],
+    _count: {
+      isActive: true,
+    },
+    where: {
+      role: role as Role,
+      ...(startDate || endDate
+        ? {
+            createdAt: {
+              ...(startDate ? { gte: new Date(startDate) } : {}),
+              ...(endDate ? { lte: new Date(endDate) } : {}),
+            },
+          }
+        : {}),
+    },
+  });
+};
+
+export const refreshTokenModel = async () => {
+  const token = await prisma.token.updateMany({
+    where: {
+      expiredDate: {
+        lt: new Date(),
+      },
+      isActive: true,
+    },
+    data: {
+      isActive: false,
     },
   });
 };

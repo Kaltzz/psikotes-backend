@@ -13,9 +13,14 @@ export const authMiddleware = (req: any, res: any, next: NextFunction) => {
     const decoded = jwt.verify(cookie, process.env.ACCESS_TOKEN_SECRET!);
     req.user = decoded;
     next();
-  } catch (err) {
+  } catch (err: any) {
+    if (err.name === "TokenExpiredError") {
+      return res.status(401).json({
+        message: "Token expired.",
+      });
+    }
     return res.status(401).json({
-      message: "Unauthorized. Invalid or expired token.",
+      message: "Unauthorized. Invalid token.",
     });
   }
 };
