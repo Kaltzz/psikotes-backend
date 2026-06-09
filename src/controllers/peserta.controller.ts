@@ -83,10 +83,11 @@ export const getDetailPeserta = async (req: any, res: any) => {
 
 export const getAllPosisi = async (req: any, res: any) => {
   // const posisi = req.query.posisi
+  const role = req.user.role;
   const nama = req.query.nama;
   const startDate = req.query.startDate;
   const endDate = req.query.endDate;
-  const allPosisi = await getAllPosisiService(nama, startDate, endDate);
+  const allPosisi = await getAllPosisiService(role, nama, startDate, endDate);
 
   if (!allPosisi.status) {
     return res.status(400).json(allPosisi);
@@ -96,10 +97,16 @@ export const getAllPosisi = async (req: any, res: any) => {
 };
 
 export const getAllHasilPosisiController = async (req: any, res: any) => {
+  const role = req.user.role;
   const nama = req.query.nama;
   const startDate = req.query.startDate;
   const endDate = req.query.endDate;
-  const allPosisi = await getAllHasilPosisiService(nama, startDate, endDate);
+  const allPosisi = await getAllHasilPosisiService(
+    role,
+    nama,
+    startDate,
+    endDate,
+  );
 
   if (!allPosisi.status) {
     return res.status(400).json(allPosisi);

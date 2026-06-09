@@ -1,4 +1,5 @@
-import { loginService } from "../services/auth.service";
+import { deleteRefreshTokenByToken } from "../models/auth.model";
+import { loginService, refreshTokenService } from "../services/auth.service";
 
 export const login = async (req: any, res: any) => {
   const getLogin = await loginService(req.body, res);
@@ -17,14 +18,29 @@ export const login = async (req: any, res: any) => {
 };
 
 export const logout = async (req: any, res: any) => {
-  res.clearCookie("access_token", {
-    // path: '/',
+  const token = req.cookies?.refresh_token;
+
+  if (token) {
+    await deleteRefreshTokenByToken(token);
+  }
+
+  const cookieOptions = {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    // maxAge: 2 * 60 * 1000, //15 menit
-    sameSite: "strict",
-  });
-  return res.status(200).json({
-    message: "Berhasil logout",
-  });
+    sameSite: "none" as const,
+  };
+
+  res.clearCookie("access_token", cookieOptions);
+  res.clearCookie("refresh_token", cookieOptions);
+
+  return res.status(200).json({ message: "Berhasil logout" });
+};
+
+export const refreshToken = async (req: any, res: any) => {
+  const token = req.cookies?.refresh_token;
+  const refresh = await refreshTokenService(token, req, res);
+
+  if (!refresh.success) return res.status(401).json(refresh);
+
+  return res.status(201).json(refresh);
 };

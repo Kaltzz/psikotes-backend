@@ -213,7 +213,7 @@ export const getDetailPesertaModel = async (id: number, res: any) => {
   });
 };
 
-export const getAllPosisiModel = async (
+export const getAllPosisiAdminModel = async (
   nama?: string,
   startDate?: string,
   endDate?: string,
@@ -237,7 +237,8 @@ export const getAllPosisiModel = async (
   });
 };
 
-export const getAllHasilPosisiModel = async (
+export const getAllPosisiModel = async (
+  role: string,
   nama?: string,
   startDate?: string,
   endDate?: string,
@@ -248,6 +249,58 @@ export const getAllHasilPosisiModel = async (
       posisi: true,
     },
     where: {
+      unit: role as Unit,
+      ...(nama ? { nama: { contains: nama, mode: "insensitive" } } : {}),
+      ...(startDate || endDate
+        ? {
+            createdAt: {
+              ...(startDate ? { gte: new Date(startDate) } : {}),
+              ...(endDate ? { lte: new Date(endDate) } : {}),
+            },
+          }
+        : {}),
+    },
+  });
+};
+
+export const getAllHasilPosisiAdminModel = async (
+  nama?: string,
+  startDate?: string,
+  endDate?: string,
+) => {
+  return await prisma.peserta.groupBy({
+    by: ["posisi"],
+    _count: {
+      posisi: true,
+    },
+    where: {
+      testSession: { some: { statusTest: 2 } },
+      ...(nama ? { nama: { contains: nama, mode: "insensitive" } } : {}),
+      ...(startDate || endDate
+        ? {
+            createdAt: {
+              ...(startDate ? { gte: new Date(startDate) } : {}),
+              ...(endDate ? { lte: new Date(endDate) } : {}),
+            },
+          }
+        : {}),
+    },
+  });
+};
+
+export const getAllHasilPosisiModel = async (
+  role: string,
+  nama?: string,
+  startDate?: string,
+  endDate?: string,
+) => {
+  return await prisma.peserta.groupBy({
+    by: ["posisi"],
+    _count: {
+      posisi: true,
+    },
+    where: {
+      unit: role as Unit,
       testSession: { some: { statusTest: 2 } },
       ...(nama ? { nama: { contains: nama, mode: "insensitive" } } : {}),
       ...(startDate || endDate

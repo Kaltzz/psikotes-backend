@@ -3,6 +3,8 @@ import {
   addToken,
   nonactiveToken,
   getToken,
+  getAllTokenStatusController,
+  refreshTokenController,
 } from "../controllers/token.controller";
 import {
   getAllPeserta,
@@ -21,6 +23,8 @@ router.get("/token", getToken);
 router.get("/token/form", (req, res) => {});
 router.post("/token", addToken);
 router.put("/token/:id", nonactiveToken);
+router.get("/token/status", getAllTokenStatusController);
+router.put("/token/ref/refreshtoken", refreshTokenController);
 
 //peserta
 router.get("/peserta", getAllPeserta);
