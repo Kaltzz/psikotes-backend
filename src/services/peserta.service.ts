@@ -173,7 +173,7 @@ export const postPesertaService = async (post: any, res: any) => {
         };
       } else if (nikCheck.statusCode === 3) {
         return {
-          status: true,
+          status: false,
           message: "hasil tes peserta belum expired",
           statusCode: 3,
         };

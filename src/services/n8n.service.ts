@@ -987,6 +987,20 @@ export const getAllPapikostickAnswersService = async (date: string) => {
         });
       });
 
+      p.testSession.forEach((session) => {
+        session.jawabanPapikostik.forEach((jawaban) => {
+          peserta[`jawaban`] = jawaban.type;
+          for (let i = 1; i < 3; i++) {
+            const b = `${jawaban.questionIndex}B`;
+            if (jawaban.type === 2) {
+              peserta[`${b}`] = 1;
+            } else {
+              peserta[`${b}`] = 0;
+            }
+          }
+        });
+      });
+
       return peserta;
     });
 
